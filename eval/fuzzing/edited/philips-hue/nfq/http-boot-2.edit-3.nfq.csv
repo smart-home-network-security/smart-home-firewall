@@ -1,0 +1,13 @@
+hash,timestamp,policy,state,verdict
+dd461023cfd5a256b12032da72aade56d7c0e70feb566ecaabed8c8ab90722af,1678880702.449842,single#dns-ipv4,0,ACCEPT
+dd461023cfd5a256b12032da72aade56d7c0e70feb566ecaabed8c8ab90722af,1678880702.449842,http-boot-2#dns-hue-dcp,0,ACCEPT
+e31966d98adaf5b50ab325cb8d0186d12e54e47eb2743529dcdbe5a2d77d5e75,1678880702.450300,http-boot-2#dns-hue-dcp,1,ACCEPT
+f0bdfc4b7d857a03cc8a83ddf48434429993f7e6c26c72d5b2999a605e9831ed,1678880702.506365,single#dns-ipv4-backward,1,ACCEPT
+f0bdfc4b7d857a03cc8a83ddf48434429993f7e6c26c72d5b2999a605e9831ed,1678880702.506365,http-boot-2#dns-hue-dcp-backward,1,ACCEPT
+04fbb489ba3c74555f665bd224fe927bf127f61a1b89db4f69409e56cd6798f6,1678880702.506638,http-boot-2#dns-hue-dcp-backward,1,ACCEPT
+d82f73d1d3e8c271249fdc43449def926a75b8c4f32c2543463851256d5ca6fb,1678880702.528506,http-boot-2#http-post-request-handler,2,ACCEPT
+5adcff9a445b22a2db2b7c7d0451368988cc14fff5018bfa269f592ffe153497,1678880702.550052,http-boot-2#http-post-request-handler,3,ACCEPT
+3c45ea168e47cdc89c6b29188dea4a2673d820f70d5ddabf73ae78ae94c58202,1678880702.551012,http-boot-1#http-post-device-portal-1,,DROP
+1f672252a6cbade82267671f3a5962095ece2dcbf41a4401a85761c708644dcf,1678880702.572575,http-boot-1#http-post-device-portal-1,,DROP
+07bfbb349093fcd21beaa59f2dc955f82ca05c143d1ac770415203a548f495f8,1678880702.602481,http-boot-2#http-post-request-handler,3,ACCEPT
+094b8868d4652b165d936272f8f211ae37c58a0b0e4e827893d9d17271f74a87,1678880702.603221,http-boot-2#http-post-request-handler,3,ACCEPT

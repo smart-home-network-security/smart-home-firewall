@@ -1,0 +1,3 @@
+id,hash,timestamp,policy,state,verdict
+1,d9560e942a9c3223be34f89909e0bfa6d7a06100ba4ef0a4e21d813672ca7a60,1678902416.642249,arp-gateway-cam#arp-request-gateway-cam,,QUEUE
+2,cc039823999eb5872c32546fd92c71f7069fc89da91dfa8ec6e144bc8f7e1579,1678902416.646794,arp-gateway-cam#arp-reply-cam-gateway,,QUEUE

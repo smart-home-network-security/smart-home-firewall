@@ -1,0 +1,6 @@
+device,num_interactions,num_policies,nft_rules,nfq_loc
+dlink-cam,18,58,26,4296
+philips-hue,33,96,31,7201
+smartthings-hub,18,41,20,3277
+tplink-plug,13,35,23,2809
+xiaomi-cam,15,37,29,2784

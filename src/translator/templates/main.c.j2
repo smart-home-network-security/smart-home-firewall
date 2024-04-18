@@ -1,0 +1,98 @@
+/**
+ * @brief SIGINT handler, flush stdout and exit.
+ *
+ * @param arg unused
+ */
+void sigint_handler(int arg) {
+    fflush(stdout);
+    exit(0);
+}
+
+/**
+ * @brief Program entry point
+ * 
+ * @param argc number of command line arguments
+ * @param argv list of command line arguments
+ * @return exit code, 0 if success
+ */
+int main(int argc, char const *argv[]) {
+
+    // Setup SIGINT handler
+    signal(SIGINT, sigint_handler);
+
+    #ifdef LOG
+    // CSV log file header
+    printf("hash,timestamp,policy,state,verdict\n");
+    #endif /* LOG */
+
+    /* GLOBAL STRUCTURES INITIALIZATION */
+
+    {% if "dns" in custom_parsers or "mdns" in custom_parsers %}
+    // Initialize DNS map
+    dns_map = dns_map_create();
+    {% endif %}
+
+
+    /* INTERACTION DATA INITIALIZATION */
+
+    int ret = 0;  // Return code for various functions
+    {% for data in interactions %}
+    interactions_data[{{loop.index0}}].nfq_id_base = {{data["nfq_id_base"]}};
+    interactions_data[{{loop.index0}}].num_policies = {{data["policy_idx"] + 1}};
+    interactions_data[{{loop.index0}}].num_states = {{data["max_state"] + 1}};
+    ret = pthread_mutex_init(&(interactions_data[{{loop.index0}}].mutex), NULL);
+    assert(ret == 0);
+    interactions_data[{{loop.index0}}].current_state = 0;
+    interactions_data[{{loop.index0}}].cached_ip = (ip_addr_t) {.version = 0, .value.ipv4 = 0};
+    // Allocate memory for counters
+    interactions_data[{{loop.index0}}].counters = (counters_t *) malloc(sizeof(counters_t) * {{data["policy_idx"] + 1}});
+    assert(interactions_data[{{loop.index0}}].counters != NULL);
+    // Set counters states to uninitialized
+    for (uint8_t i = 0; i < {{data["policy_idx"] + 1}}; i++) {
+        (interactions_data[{{loop.index0}}].counters + i)->packet_count.is_initialized = false;
+        (interactions_data[{{loop.index0}}].counters + i)->duration.is_initialized = false;
+    }
+
+    {% endfor %}
+
+    
+    /* NFQUEUE THREADS LAUNCH */
+
+    // Create threads
+    uint8_t i = 0;
+
+    {% for nfqueue in nfqueues if nfqueue.queue_num >= 0 %}
+    {% set nfqueue_name = nfqueue.name.replace('-', '_') %}
+    {% set nfqueue_name = nfqueue_name.replace('#', '_') %}
+    // {{nfqueue_name}}
+    thread_arg_t thread_arg_{{nfqueue_name}} = {
+        .queue_id = {{nfqueue.queue_num}},
+        .func = &callback_{{nfqueue_name}},
+        .arg = NULL
+    };
+    ret = pthread_create(&threads[i++], NULL, nfqueue_thread, (void *) &thread_arg_{{nfqueue_name}});
+    assert(ret == 0);
+    
+    {% endfor %}
+    // Wait forever for threads
+    for (i = 0; i < NUM_THREADS; i++) {
+        pthread_join(threads[i], NULL);
+    }
+
+
+    /* FREE MEMORY */
+
+    // Free interactions data
+    for (uint8_t i = 0; i < NUM_INTERACTIONS; i++) {
+        free(interactions_data[i].counters);
+        pthread_mutex_destroy(&(interactions_data[i].mutex));
+    }
+
+    {% if "dns" in custom_parsers or "mdns" in custom_parsers %}
+    // Free DNS map
+    dns_map_free(dns_map);
+    {% endif %}
+
+    return 0;
+}
+

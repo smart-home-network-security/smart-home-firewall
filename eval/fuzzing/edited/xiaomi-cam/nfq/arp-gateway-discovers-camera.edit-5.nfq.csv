@@ -1,0 +1,2 @@
+hash,timestamp,policy,state,verdict
+efaae57e156cefcd4d57d5dc67476a1dc76ca910daa13834eff6ced822953451,1678881668.742305,arp-gateway-discovers-camera#arp-reply-from-camera,,DROP

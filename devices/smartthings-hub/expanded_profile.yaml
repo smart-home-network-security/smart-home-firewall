@@ -1,0 +1,266 @@
+device-info:
+  cache-validity: 100
+  ipv4: 192.168.1.223
+  ipv6: fddd:ed18:f05b:0:d8a3:adc0:f68f:e5cf
+  is-supported: true
+  last-update: '2022-03-15T10:27:29.170+01:00'
+  mac: 68:3a:48:13:27:04
+  mud-url: https://smartthings-hub.com/smartthings-hub
+  mud-version: 1
+  name: smartthings-hub
+interactions:
+  arp-from-gateway:
+    arp-reply-hub-gateway:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: gateway
+          tpa: gateway
+          type: reply
+    arp-request-gateway-hub:
+      protocols:
+        arp:
+          sha: gateway
+          spa: gateway
+          tha: default
+          tpa: self
+          type: request
+      stats:
+        rate: 1/second
+  arp-from-phone:
+    arp-reply-hub-phone:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: phone
+          tpa: phone
+          type: reply
+    arp-request-phone-hub:
+      protocols:
+        arp:
+          sha: phone
+          spa: phone
+          tha: default
+          tpa: self
+          type: request
+      stats:
+        rate: 1/second
+  arp-local:
+    arp-reply-local-hub:
+      protocols:
+        arp:
+          spa: local
+          tha: self
+          tpa: self
+          type: reply
+    arp-request-hub-local:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: default
+          tpa: local
+          type: request
+      stats:
+        rate: 1/second
+  background-hub-cloud:
+    dns-hub-cloud:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: api.smartthings.com
+          qtype:
+          - A
+          - AAAA
+        ipv6:
+          dst: gateway
+          src: fddd:ed18:f05b:0:d8a3:adc0:f68f:e5cf
+        udp:
+          dst-port: 53
+    https-hub-cloud:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: api.smartthings.com
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        duration: 1
+  get-ip-address:
+    dhcp-ack:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: ack
+        ipv4:
+          dst: self
+          src: gateway
+        udp:
+          dst-port: 68
+          src-port: 67
+    dhcp-discover:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: discover
+        ipv4:
+          dst: broadcast
+          src: 0.0.0.0
+        udp:
+          dst-port: 67
+          src-port: 68
+    dhcp-offer:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: offer
+        ipv4:
+          dst: self
+          src: gateway
+        udp:
+          dst-port: 68
+          src-port: 67
+    dhcp-request:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: request
+        ipv4:
+          dst: broadcast
+          src: 0.0.0.0
+        udp:
+          dst-port: 67
+          src-port: 68
+  open-app-local:
+    igmp-join-ssdp:
+      protocols:
+        igmp:
+          group: ssdp
+          type: membership report
+          version: 3
+        ipv4:
+          dst: ssdp
+          src: phone
+    ssdp-msearch:
+      protocols:
+        ipv4:
+          dst: ssdp
+          src: phone
+        ssdp:
+          method: M-SEARCH
+        udp:
+          dst-port: 1900
+      stats:
+        rate: 15/second burst 10 packets
+  traffic-hub-update-server:
+    dns-hub-server:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: fw-update2.smartthings.com
+          qtype:
+          - A
+          - AAAA
+        ipv6:
+          dst: gateway
+          src: fddd:ed18:f05b:0:d8a3:adc0:f68f:e5cf
+        udp:
+          dst-port: 53
+    https-hub-server:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: fw-update2.smartthings.com
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        duration: 3
+patterns:
+  dns-ipv4:
+    bidirectional: true
+    protocols:
+      dns:
+        domain-name: null
+        qtype: A
+      ipv4:
+        dst: gateway
+        src: self
+      udp:
+        dst-port: 53
+  dns-ipv6:
+    bidirectional: true
+    protocols:
+      dns:
+        domain-name: null
+        qtype:
+        - A
+        - AAAA
+      ipv6:
+        dst: gateway
+        src: self
+      udp:
+        dst-port: 53
+single-policies:
+  background-https-hub-server:
+    bidirectional: true
+    protocols:
+      ipv4:
+        dst: 54.217.91.49
+        src: self
+      tcp:
+        dst-port: 443
+  dns-ipv4:
+    bidirectional: true
+    protocols:
+      dns:
+        domain-name:
+        - connectivity.smartthings.com
+        - api.smartthings.com
+        - fw-update2.smartthings.com
+        qtype:
+        - A
+        - AAAA
+      ipv4:
+        dst: gateway
+        src: self
+      udp:
+        dst-port: 53
+  dns-ipv6:
+    bidirectional: true
+    protocols:
+      dns:
+        domain-name:
+        - api.smartthings.com
+        - fw-update2.smartthings.com
+        qtype:
+        - A
+        - AAAA
+      ipv6:
+        dst: gateway
+        src: self
+      udp:
+        dst-port: 53
+  mdns-hub-hue:
+    protocols:
+      ipv4:
+        dst: mdns
+        src: self
+      mdns:
+        domain-name: _hue._tcp.local
+        qtype: PTR
+      udp:
+        dst-port: 5353
+        src-port: 5353
+  ssdp-search-hub:
+    protocols:
+      ipv4:
+        dst: ssdp
+        src: self
+      ssdp:
+        type: M-SEARCH
+      udp:
+        dst-port: 1900

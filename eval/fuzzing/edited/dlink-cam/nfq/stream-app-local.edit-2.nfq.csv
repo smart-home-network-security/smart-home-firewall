@@ -1,0 +1,17 @@
+hash,timestamp,policy,state,verdict
+78a14a61d1f9fbf08f2d6fffed1e3b1d59b82b641c828f5bfad561b60016efac,1678880561.744458,stream-app-local#dns-cam-server-aaaa,0,ACCEPT
+01ace1bdc050adf2aee3f1b4c9208abc62a5502b1b1a5fee401913edd9b558e0,1678880561.744850,stream-app-local#dns-cam-server-aaaa-backward,1,ACCEPT
+ad360d5fd79f33d30f349e57b1fd2a19bcd5c5f51899d76ddc60693d0924d062,1678880561.747715,single#dns-ipv4,0,ACCEPT
+ad360d5fd79f33d30f349e57b1fd2a19bcd5c5f51899d76ddc60693d0924d062,1678880561.747715,stream-app-local#dns-cam-server-a,2,ACCEPT
+94555de39e427e616e2efe322bd3cd0036926088e4d5588fab3cc42a2d389014,1678880561.748041,single#dns-ipv4-backward,1,ACCEPT
+94555de39e427e616e2efe322bd3cd0036926088e4d5588fab3cc42a2d389014,1678880561.748041,stream-app-local#dns-cam-server-a-backward,3,ACCEPT
+12358d6643fdf46a4e26a971c53e6ec4101d3ac7e1cfd33610a75a2b8126f455,1678880561.755551,stream-app-local#stun-bind-cam-server,4,ACCEPT
+76765f6a3d8c5c30e79ae80d6b3284ff8aedacc406620cbcf2543998d06697aa,1678880561.776248,stream-app-local#stun-bind-cam-server-backward,5,ACCEPT
+27f86424f3bbad49d8ef7565406468bad8e897b6b47d46aaf524e49a9e8f6f7d,1678880573.508855,stream-app-local#tcp-stop-phone-cam,6,ACCEPT
+27f86424f3bbad49d8ef7565406468bad8e897b6b47d46aaf524e49a9e8f6f7d,1678880573.508855,single#tcp-traffic-phone-cam,,ACCEPT
+56c7e47299174e2bfbe783b6d1732d1d100367a5fd21d5b15e26c8ae3f80a783,1678880573.542688,stream-app-local#tcp-stop-phone-cam-backward,7,ACCEPT
+56c7e47299174e2bfbe783b6d1732d1d100367a5fd21d5b15e26c8ae3f80a783,1678880573.542688,single#tcp-traffic-phone-cam-backward,,ACCEPT
+a9d81e6e17a74a878ce5ba8137533cf1e9db7229d88607de7efefc2da9efbdb5,1678880573.772379,stream-app-local#tcp-stop-phone-cam,7,ACCEPT
+a9d81e6e17a74a878ce5ba8137533cf1e9db7229d88607de7efefc2da9efbdb5,1678880573.772379,single#tcp-traffic-phone-cam,,ACCEPT
+b1d505d82b6f2bb785cb3bce0c2e3135aa014c15321bf2fd793e8fbceeeead24,1678880573.774845,stream-app-local#tcp-stop-phone-cam-backward,7,ACCEPT
+b1d505d82b6f2bb785cb3bce0c2e3135aa014c15321bf2fd793e8fbceeeead24,1678880573.774845,single#tcp-traffic-phone-cam-backward,,ACCEPT

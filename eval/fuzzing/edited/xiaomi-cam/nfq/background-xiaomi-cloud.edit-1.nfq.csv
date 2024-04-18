@@ -1,0 +1,5 @@
+hash,timestamp,policy,state,verdict
+b09410a3f17182bbcb11b4d6cf114223fa62c52683f23bc514b7a42d56a02016,1678880975.184164,background-xiaomi-cloud#dns-xiaomi-api,0,ACCEPT
+d82d7e5e3ea6a13518f142c0b98e3ffd663ccec894ccc036f4e904f8449718da,1678880975.235308,background-xiaomi-cloud#dns-xiaomi-api-backward,,DROP
+39fe70e693ea307e0a5b030d21b550e45c8f7c86009a0019e93e29f05ffc0daf,1678880977.301316,background-xiaomi-cloud#dns-xiaomi-api,,DROP
+a3d9ec29fe5068c8e29a9dfe2ec7b4ef0dbb744dd70034b2c4ed110860e6b7b1,1678880977.301740,background-xiaomi-cloud#dns-xiaomi-api-backward,1,ACCEPT

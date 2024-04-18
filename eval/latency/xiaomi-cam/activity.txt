@@ -1,0 +1,50 @@
+!! WARNING !!
+Packets are potentially dropped when recording video or using the microphone !
+-> Limit capture to the 150 first bytes
+
+TRAFFIC CAPTURE
+Wireless (Camera, Alexa):
+    tcpdump -i wlan1 -w Xiaomi-camera-Alexa.pcap -s 150
+
+
+SCENARIO
+
+00 START
+
+1. 01 Power on - Timestamp 76
+
+2. Control with phone on OpenWrt-5GHz network
+    2.1 From Xiaomi app
+        03 Open app - Timestamp 180
+        04 Stream camera for 10 seconds while moving - Timestamp 240
+        05 Stream camera with sound - Timestamp 300
+        06 Use microphone - Timestamp 360
+        07 Take screenshot - Timestamp 420
+        08 Record video - Timestamp 480
+        09 Move camera - Timestamp 540
+        10 Turn off - Timestamp 600
+        11 Turn on - Timestamp 660
+    2.2. From Alexa App
+        12 Open app - Timestamp 720
+        13 Disable camera - Timestamp 780
+        14 Enable camera - Timestamp 840
+
+3. Control with phone on outside network
+    3.1 From Xiaomi app
+        15 Open app - Timestamp 900
+        16 Stream camera for 10 seconds while moving - Timestamp 960
+        17 Stream camera with sound - Timestamp 1020
+        18 Use microphone - Timestamp 1080
+        19 Take screenshot - Timestamp 1140
+        20 Record video - Timestamp 1200
+        21 Move camera - Timestamp 1260
+        23 Turn off - Timestamp 1320
+        24 Turn on - Timestamp 1380
+    3.2. From Alexa App
+        25 Open app - Timestamp 1440
+        26 Disable camera - Timestamp 1500
+        27 Enable camera - Timestamp 1560
+
+5. Idle
+
+30 STOP

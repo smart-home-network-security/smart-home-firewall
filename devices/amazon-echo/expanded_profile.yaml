@@ -1,0 +1,332 @@
+device-info:
+  cache-validity: 100
+  ipv4: 192.168.1.150
+  ipv6: fddd:ed18:f05b:0:adef:a05d:fcbe:afc9
+  is-supported: true
+  last-update: '2022-03-15T10:27:29.170+01:00'
+  mac: 50:dc:e7:a2:d8:95
+  mud-url: https://amazon-echo.com/amazon-echo
+  mud-version: 1
+  name: amazon-echo
+interactions:
+  http-conn-test:
+    dns-echo-cloudfront:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: d3p8zr0ffa9t17.cloudfront.net
+          qtype: A
+        ipv6:
+          dst: gateway
+          src: fddd:ed18:f05b:0:adef:a05d:fcbe:afc9
+        udp:
+          dst-port: 53
+    http-get-echo-cloudfront:
+      bidirectional: true
+      protocols:
+        http:
+          method: GET
+          uri: /HTTPConnTest.txt
+        ipv4:
+          dst: d3p8zr0ffa9t17.cloudfront.net
+          src: self
+        tcp:
+          dst-port: 80
+      stats:
+        packet-count: 10
+  http-generate-204:
+    dns-echo-captiveportal:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: fos5echocaptiveportal.com
+          qtype: A
+        ipv6:
+          dst: gateway
+          src: fddd:ed18:f05b:0:adef:a05d:fcbe:afc9
+        udp:
+          dst-port: 53
+    http-get-echo-captiveportal:
+      bidirectional: true
+      protocols:
+        http:
+          method: GET
+          uri: /generate_204
+        ipv4:
+          dst: fos5echocaptiveportal.com
+          src: self
+        tcp:
+          dst-port: 80
+      stats:
+        packet-count: 7
+  https-api-amazonalexa:
+    dns-echo-api:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: api.amazonalexa.com
+          qtype: A
+        ipv6:
+          dst: gateway
+          src: fddd:ed18:f05b:0:adef:a05d:fcbe:afc9
+        udp:
+          dst-port: 53
+    https-echo-api:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: api.amazonalexa.com
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        duration: 1
+        rate: 30/second
+  https-arcus-uswest:
+    dns-echo-arcus-uswest:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: arcus-uswest.amazon.com
+          qtype: A
+        ipv6:
+          dst: gateway
+          src: fddd:ed18:f05b:0:adef:a05d:fcbe:afc9
+        udp:
+          dst-port: 53
+    https-echo-arcus-uswest:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: arcus-uswest.amazon.com
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        duration: 15
+        rate: 25/second
+  https-det-ta-g7g:
+    dns-echo-det-ta-g7g:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: det-ta-g7g.amazon.com
+          qtype: A
+        ipv6:
+          dst: gateway
+          src: fddd:ed18:f05b:0:adef:a05d:fcbe:afc9
+        udp:
+          dst-port: 53
+    https-echo-det-ta-g7g:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: det-ta-g7g.amazon.com
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        duration: 10
+        rate: 100/second
+  https-device-metrics:
+    dns-echo-device-metrics:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: device-metrics-us.amazon.com
+          qtype: A
+        ipv6:
+          dst: gateway
+          src: fddd:ed18:f05b:0:adef:a05d:fcbe:afc9
+        udp:
+          dst-port: 53
+    https-echo-device-metrics:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: device-metrics-us.amazon.com
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        duration: 20
+        rate: 210/second
+  https-dxz5jxhrrzigf:
+    dns-echo-dxz5jxhrrzigf:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: dxz5jxhrrzigf.cloudfront.net
+          qtype: A
+        ipv6:
+          dst: gateway
+          src: fddd:ed18:f05b:0:adef:a05d:fcbe:afc9
+        udp:
+          dst-port: 53
+    https-echo-dxz5jxhrrzigf:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: dxz5jxhrrzigf.cloudfront.net
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        duration: 1
+        rate: 20/second
+  ntp-amazon:
+    dns-ntp-server:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: ntp-g7g.amazon.com
+          qtype: A
+        ipv6:
+          dst: gateway
+          src: fddd:ed18:f05b:0:adef:a05d:fcbe:afc9
+        udp:
+          dst-port: 53
+    ntp-echo-server:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: ntp-g7g.amazon.com
+          src: self
+        udp:
+          dst-port: 123
+  voice-command:
+    dns-echo-unagi:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: unagi-na.amazon.com
+          qtype: A
+        ipv6:
+          dst: gateway
+          src: fddd:ed18:f05b:0:adef:a05d:fcbe:afc9
+        udp:
+          dst-port: 53
+    https-echo-unagi:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: unagi-na.amazon.com
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        rate: 100/second
+patterns:
+  dns-ipv6:
+    bidirectional: true
+    protocols:
+      dns:
+        domain-name: null
+        qtype: A
+      ipv6:
+        dst: gateway
+        src: self
+      udp:
+        dst-port: 53
+single-policies:
+  arp-local:
+    protocols:
+      arp:
+        sha: self
+        spa: self
+        tha: default
+        tpa: local
+        type: request
+  arp-reply:
+    protocols:
+      arp:
+        sha: self
+        spa: self
+        tpa: local
+        type: reply
+  dns-all:
+    bidirectional: true
+    protocols:
+      dns:
+        domain-name:
+        - api.amazonalexa.com
+        - msh.amazon.com
+        - fos5echocaptiveportal.com
+        - ntp-g7g.amazon.com
+        - device-metrics-us.amazon.com
+        - arcus-uswest.amazon.com
+        - d3p8zr0ffa9t17.cloudfront.net
+        - dxz5jxhrrzigf.cloudfront.net
+        - kindle-time.amazon.com
+        - det-ta-g7g.amazon.com
+        - dp-gw-na.amazon.com
+        - dcape-na.amazon.com
+        - dss-na.amazon.com
+        - wl.amazon-dss.com
+        - latinum.amazon.com
+        - softwareupdates.amazon.com
+        - device-messaging-na.amazon.com
+        - prod.amcs-tachyon.com
+        - 41e22e775ba933d15747317445b8600037ee36714927df6247d93754d7a3ea1.us-east-1.prod.service.minerva.devices.a2z.com
+        qtype:
+        - A
+        - AAAA
+      ipv6:
+        dst: gateway
+        src: self
+      udp:
+        dst-port: 53
+  https-echo-cloud:
+    bidirectional: true
+    protocols:
+      ipv4:
+        dst: 52.119.196.28
+        src: self
+      tcp:
+        dst-port: 443
+    stats:
+      rate: 50/second burst 150 packets
+  https-echo-cloud-2:
+    bidirectional: true
+    protocols:
+      ipv4:
+        dst: 52.46.158.181
+        src: self
+      tcp:
+        dst-port: 443
+    stats:
+      rate: 20/second
+  igmp-join-all:
+    protocols:
+      igmp:
+        group: ssdp
+        type: membership report
+        version: 3
+      ipv4:
+        dst: igmpv3
+        src: self
+  mdns-all:
+    protocols:
+      ipv4:
+        dst: mdns
+        src: self
+      mdns:
+        domain-name:
+        - _viziocast._tcp.local
+        - _amzn-alexa._tcp.local
+        - _matter._tcp.local
+        - _matterc._udp.local
+        - _ipp._tcp.local
+        qtype: PTR
+      udp:
+        dst-port: 5353
+        src-port: 5353
+  ssdp-all:
+    protocols:
+      ipv4:
+        dst: ssdp
+        src: self
+      ssdp:
+        method: M-SEARCH
+      udp:
+        dst-port: 1900

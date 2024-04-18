@@ -1,0 +1,283 @@
+device-info:
+  cache-validity: 100
+  ipv4: 192.168.1.161
+  is-supported: true
+  last-update: '2022-03-15T10:27:29.170+01:00'
+  mac: 78:8b:2a:b2:20:ea
+  mud-url: https://xiaomi-cam.com/xiaomi-cam
+  mud-version: 1
+  name: xiaomi-cam
+  network: wireless
+interactions:
+  arp-cam-gateway:
+    arp-cam-gateway-reply:
+      protocols:
+        arp:
+          sha: gateway
+          spa: gateway
+          tha: self
+          tpa: self
+          type: reply
+    arp-cam-gateway-request:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: default
+          tpa: gateway
+          type: request
+  arp-cam-phone:
+    arp-cam-phone-reply:
+      protocols:
+        arp:
+          spa: phone
+          tha: self
+          tpa: self
+          type: reply
+    arp-cam-phone-request:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: default
+          tpa: phone
+          type: request
+  arp-gateway-cam:
+    arp-reply-cam-gateway:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: gateway
+          tpa: gateway
+          type: reply
+    arp-request-gateway-cam:
+      protocols:
+        arp:
+          sha: gateway
+          spa: gateway
+          tha: default
+          tpa: self
+          type: request
+      stats:
+        rate: 1/second
+  arp-phone-cam:
+    arp-phone-cam-reply:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: phone
+          tpa: phone
+          type: reply
+    arp-phone-cam-request:
+      protocols:
+        arp:
+          sha: phone
+          spa: phone
+          tha: default
+          tpa: self
+          type: request
+      stats:
+        rate: 1/second
+  get-ip-address:
+    dhcp-ack:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: ack
+        ipv4:
+          dst: self
+          src: gateway
+        udp:
+          dst-port: 68
+          src-port: 67
+    dhcp-discover:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: discover
+        ipv4:
+          dst: broadcast
+          src: 0.0.0.0
+        udp:
+          dst-port: 67
+          src-port: 68
+    dhcp-offer:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: offer
+        ipv4:
+          dst: self
+          src: gateway
+        udp:
+          dst-port: 68
+          src-port: 67
+    dhcp-request:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: request
+        ipv4:
+          dst: broadcast
+          src: 0.0.0.0
+        udp:
+          dst-port: 67
+          src-port: 68
+  https-cam-cloud-api:
+    dns-cam-api:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: business.smartcamera.api.io.mi.com
+          qtype: A
+        ipv4:
+          dst: gateway
+          src: self
+        udp:
+          dst-port: 53
+    https-cam-api:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: business.smartcamera.api.io.mi.com
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        packet-count: 25
+  udp-cam-cloud-psy2:
+    dns-cam-cloud-psy2:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: xiaomi5.p2psy2.io.mi.com
+          qtype: A
+        ipv4:
+          dst: gateway
+          src: self
+        udp:
+          dst-port: 53
+    udp-cam-cloud-psy2:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: xiaomi5.p2psy2.io.mi.com
+          src: self
+        udp: null
+      stats:
+        rate: 0
+  udp-cam-cloud-psy3:
+    dns-cam-cloud-psy3:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: xiaomi5.p2psy3.io.mi.com
+          qtype: A
+        ipv4:
+          dst: gateway
+          src: self
+        udp:
+          dst-port: 53
+    udp-cam-cloud-psy3:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: xiaomi5.p2psy3.io.mi.com
+          src: self
+        udp: null
+      stats:
+        rate: 0
+patterns:
+  stream:
+    bidirectional: true
+    protocols:
+      ipv4:
+        dst: null
+        src: self
+      udp: null
+    stats:
+      packet-size: < 1100
+      rate: 0
+single-policies:
+  http-cam-cloud:
+    bidirectional: true
+    protocols:
+      http:
+        method: GET
+        uri: /gslb?*
+      ipv4:
+        dst: 110.43.0.83
+        src: self
+      tcp:
+        dst-port: 80
+    stats:
+      packet-count: 10
+  https-cam-cloud:
+    bidirectional: true
+    protocols:
+      ipv4:
+        dst: 120.92.0.0/16
+        src: self
+      tcp:
+        dst-port: 443
+    stats:
+      rate: 100/second
+  mdns-phone:
+    protocols:
+      ipv4:
+        dst: mdns
+        src: phone
+      mdns:
+        domain-name:
+        - _miio._udp.local
+        - _rc._tcp.local
+        qtype: PTR
+      udp:
+        dst-port: 5353
+        src-port: 5353
+    stats:
+      rate: 20/second
+  ping-quad8:
+    bidirectional: true
+    protocols:
+      icmp:
+        type: echo-request
+      ipv4:
+        dst: 8.8.8.8
+        src: self
+  udp-cam-cloud:
+    bidirectional: true
+    protocols:
+      ipv4:
+        dst:
+        - 36.156.49.0/24
+        - 42.157.165.0/24
+        - 45.124.124.0/24
+        - 110.43.0.0/16
+        - 120.92.0.0/16
+        src: self
+      udp: null
+    stats:
+      rate: 10/second
+  udp-stream-external:
+    bidirectional: true
+    protocols:
+      ipv4:
+        dst: external
+        src: 192.168.1.161
+      udp: null
+    stats:
+      packet-size: < 1100
+      rate: 0
+  udp-stream-local:
+    bidirectional: true
+    protocols:
+      ipv4:
+        dst: phone
+        src: 192.168.1.161
+      udp: null
+    stats:
+      packet-size: < 1100
+      rate: 0

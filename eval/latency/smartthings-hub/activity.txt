@@ -1,0 +1,31 @@
+START
+
+1. 01 Power on - Timestamp 60
+
+2. Control with phone on OpenWrt-5GHz network
+    2.1. From SmartThings app
+        03 Open app - Timestamp 180
+        04 On - Timestamp 240
+        05 Off - Timestamp 300
+    2.2. From Alexa App
+        06 Open app - Timestamp 360
+        08 On - Timestamp 420
+        09 Off - Timestamp 480
+
+2. Control with phone on outside network
+    2.1. From SmartThings app
+        10 Open app - Timestamp 540
+        11 On - Timestamp 600
+        12 Off - Timestamp 660
+    2.2. From Alexa App
+        13 Open app - Timestamp 720
+        14 On - Timestamp 780
+        15 Off - Timestamp 840
+
+3. Control with Alexa voice
+    16 "Alexa, turn on SmartThings Outlet"  - Timestamp 900
+    17 "Alexa, turn off SmartThings Outlet" - Timestamp 960
+
+4. Idle
+
+20 STOP

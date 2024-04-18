@@ -1,0 +1,5 @@
+id,hash,timestamp,policy,state,verdict
+1,02971feea0b3c76735f0e25f68b4ff9e63facfa7dfcea047507e65a8dbf17d37,1678881506.546506,single#ping-quad8,0,ACCEPT
+2,0505e3f0420cd14a3ce5a277dfa70443bd56797d4db3b6efb21f65d15019cc9b,1678881506.554166,single#ping-quad8-backward,1,ACCEPT
+3,433e3c83b5af0b26902f8bc7884442dc830caae260271fccad7080bd008e4cdb,1678881626.903243,single#ping-quad8,0,ACCEPT
+4,42c590d2fcfccba7ef8b91f1e81c02aa9ceb874e4105e34b99cbf6659b18b1ee,1678881626.910973,single#ping-quad8-backward,,DROP

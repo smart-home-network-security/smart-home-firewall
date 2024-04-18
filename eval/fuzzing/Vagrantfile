@@ -1,0 +1,39 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile that describes the VM used for testing.
+# Deploy with `vagrant up` and then run `vagrant ssh` to log in.
+# Adapted from https://bl.ocks.org/turtlemonvh/2f40fa7ca0acaaabaf6a6ecb0ee556c7
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # https://vagrantcloud.com/ubuntu
+  config.vm.box = "ubuntu/jammy64"  # Ubuntu 22.04
+  config.vm.hostname = "firewall-test"
+  config.vm.network "private_network", type: "dhcp", name: "vboxnet0"
+
+  config.vm.provider "virtualbox" do |vb|
+    
+    # Hardware
+    vb.memory = 4096
+    vb.cpus = 2
+
+  end
+
+  # If true, then any SSH connections made will enable agent forwarding.
+  config.ssh.forward_agent = true
+
+  # Share additional folders to the guest VM.
+  config.vm.synced_folder "../../", "/home/vagrant/smart-home-firewall"
+
+  # Bash provision script
+  config.vm.provision "shell", inline: <<-SHELL
+    sudo apt-get update
+    sudo apt-get upgrade -y
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential cmake net-tools tshark nftables libnetfilter-queue-dev libnetfilter-log-dev python3-pip 
+    sudo pip3 install scapy
+  SHELL
+
+end

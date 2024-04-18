@@ -1,0 +1,127 @@
+---
+# Simplified profile, which mimics a MUD profile.
+# Supports only a limited set of protocols.
+# Does not support traffic statistics.
+
+device-info:
+  name: tplink-plug
+  mac: 50:c7:bf:ed:0a:54
+  ipv4: 192.168.1.135
+  network: wireless
+
+
+# For this simplified profile, only individual policies will be defined
+single-policies:
+
+
+  ##### DHCP #####
+
+  dhcp-plug-broadcast:
+    protocols:
+      udp:
+        src-port: 68
+        dst-port: 67
+      ipv4:
+        src: 0.0.0.0
+        dst: broadcast
+
+  dhcp-gateway-plug:
+    protocols:
+      udp:
+        src-port: 67
+        dst-port: 68
+      ipv4:
+        src: gateway
+        dst: self
+
+  
+  ##### DNS #####
+
+  dns-plug-gateway:
+    protocols:
+      udp:
+        src-port: 53
+      ipv4:
+        src: self
+        dst: gateway
+
+  dns-gateway-plug:
+    protocols:
+      udp:
+        dst-port: 53
+      ipv4:
+        src: gateway
+        dst: self
+
+
+  ##### NTP #####
+
+  ntp-plug-gateway:
+    protocols:
+      udp:
+        dst-port: 123
+      ipv4:
+        src: self
+        dst: external
+
+  ntp-gateway-plug:
+    protocols:
+      udp:
+        src-port: 123
+      ipv4:
+        src: external
+        dst: self
+
+
+  ##### HTTPS #####
+  
+  https-plug-server:
+    protocols:
+      tcp:
+        dst-port: 443
+      ipv4:
+        src: self
+        dst: external
+
+  https-server-plug:
+    protocols:
+      tcp:
+        src-port: 443
+      ipv4:
+        src: external
+        dst: self
+
+
+  #### TCP with device in LAN ####
+
+  tcp-device-plug-lan:
+    protocols:
+      tcp:
+        dst-port: 9999
+      ipv4:
+        src:
+          - phone
+          - !include ../amazon-echo/profile.yaml#device-info.ipv4
+        dst: self
+
+  tcp-plug-device-lan:
+    protocols:
+      tcp:
+        src-port: 9999
+      ipv4:
+        src: self
+        dst:
+          - phone
+          - !include ../amazon-echo/profile.yaml#device-info.ipv4
+
+
+# Background UDP traffic between phone in LAN with Kasa app open and plug
+  udp-plug-phone:
+    protocols:
+      udp:
+        src-port: 9999
+      ipv4:
+        src: self
+        dst: phone
+
+...

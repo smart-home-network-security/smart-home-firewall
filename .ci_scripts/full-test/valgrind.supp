@@ -1,0 +1,137 @@
+{
+   suppr_1
+   Memcheck:Param
+   socketcall.sendto(msg)
+   fun:sendto
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   fun:nft_run_cmd_from_buffer
+   fun:exec_nft_cmd
+   fun:test_exec_nft_cmd
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   fun:CU_run_all_tests
+   fun:main
+}
+
+{
+   suppr_2
+   Memcheck:Param
+   sendmsg(msg.msg_iov[0])
+   fun:sendmsg
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   fun:nft_run_cmd_from_buffer
+   fun:exec_nft_cmd
+   fun:test_exec_nft_cmd
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   fun:CU_run_all_tests
+   fun:main
+}
+
+{
+   suppr_3
+   Memcheck:Param
+   sendmsg(msg.msg_iov[0])
+   fun:sendmsg
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   fun:nft_run_cmd_from_buffer
+   fun:exec_nft_cmd_verbose
+   fun:test_exec_nft_cmd_verbose
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   fun:CU_run_all_tests
+   fun:main
+}
+
+{
+   suppr_4
+   Memcheck:Param
+   socketcall.sendto(msg)
+   fun:sendto
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   fun:nft_run_cmd_from_buffer
+   fun:exec_nft_cmd_verbose
+   fun:delete_nft_rule
+   fun:test_delete_nft_rule
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   fun:CU_run_all_tests
+   fun:main
+}
+
+{
+   suppr_5
+   Memcheck:Param
+   socketcall.sendto(msg)
+   fun:sendto
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   fun:nft_run_cmd_from_buffer
+   fun:exec_nft_cmd_verbose
+   fun:delete_nft_rule
+   fun:test_delete_nft_rule
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   fun:CU_run_all_tests
+}
+
+{
+   suppr_6
+   Memcheck:Param
+   socketcall.sendto(msg)
+   fun:sendto
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   fun:nft_run_cmd_from_buffer
+   fun:exec_nft_cmd_verbose
+   fun:delete_nft_rule
+   fun:test_delete_nft_rule
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   fun:CU_run_all_tests
+   fun:main
+}
+
+{
+   suppr_7
+   Memcheck:Param
+   socketcall.sendto(msg)
+   fun:sendto
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   fun:nft_run_cmd_from_buffer
+   fun:exec_nft_cmd_verbose
+   fun:delete_nft_rule
+   fun:test_delete_nft_rule
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   fun:CU_run_all_tests
+   fun:main
+}
+
+{
+   suppr_8
+   Memcheck:Param
+   socketcall.sendto(msg)
+   fun:sendto
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   obj:/usr/lib/x86_64-linux-gnu/libnftables.so.1.1.0
+   fun:nft_run_cmd_from_buffer
+   fun:exec_nft_cmd_verbose
+   fun:delete_nft_rule
+   fun:test_delete_nft_rule
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   obj:/usr/lib/x86_64-linux-gnu/libcunit.so.1.0.1
+   fun:CU_run_all_tests
+}

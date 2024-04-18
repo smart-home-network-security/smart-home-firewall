@@ -1,0 +1,165 @@
+---
+# Simplified profile, which mimics a MUD profile.
+# Supports only a limited set of protocols.
+# Does not support traffic statistics.
+
+device-info:
+  name: xiaomi-cam
+  mac: 78:8b:2a:b2:20:ea
+  ipv4: 192.168.1.161
+  network: wireless
+
+
+# For this simplified profile, only individual policies will be defined
+single-policies:
+
+  ##### ICMP #####
+
+  ping-quad8-request:
+    protocols:
+      icmp:
+        type: echo-request
+      ipv4:
+        src: self
+        dst: 8.8.8.8
+  
+  ping-quad8-reply:
+    protocols:
+      icmp:
+        type: echo-reply
+      ipv4:
+        src: 8.8.8.8
+        dst: self
+
+
+  ##### DHCP #####
+
+  dhcp-cam-broadcast:
+    protocols:
+      udp:
+        src-port: 68
+        dst-port: 67
+      ipv4:
+        src: 0.0.0.0
+        dst: broadcast
+
+  dhcp-gateway-cam:
+    protocols:
+      udp:
+        src-port: 67
+        dst-port: 68
+      ipv4:
+        src: gateway
+        dst: self
+
+  
+  ##### DNS #####
+
+  dns-cam-gateway:
+    protocols:
+      udp:
+        src-port: 53
+      ipv4:
+        src: self
+        dst: gateway
+
+  dns-gateway-cam:
+    protocols:
+      udp:
+        dst-port: 53
+      ipv4:
+        src: gateway
+        dst: self
+
+  
+  ##### mDNS #####
+
+  mdns-all:
+    protocols:
+      udp:
+        src-port: 5353
+        dst-port: 5353
+      ipv4:
+        src: phone
+        dst: mdns
+
+  
+  ##### UDP #####
+
+  udp-stream-lan-forward:
+    protocols:
+      udp:
+      ipv4:
+        src: self
+        dst: phone
+
+  udp-stream-lan-backward:
+    protocols:
+      udp:
+      ipv4:
+        src: phone
+        dst: self
+
+  udp-cam-server:
+    protocols:
+      udp:
+      ipv4:
+        src: self
+        dst:
+          - 36.156.49.0/24
+          - 42.157.165.0/24
+          - 45.124.124.0/24
+          - 110.43.0.0/16
+          - 120.92.0.0/16
+  
+  udp-server-cam:
+    protocols:
+      udp:
+      ipv4:
+        src:
+          - 36.156.49.0/24
+          - 42.157.165.0/24
+          - 45.124.124.0/24
+          - 110.43.0.0/16
+          - 120.92.0.0/16
+        dst: self
+
+
+  ##### HTTP #####
+
+  http-boot-cam-cloud:
+    protocols:
+      tcp:
+        dst-port: 80
+      ipv4:
+        src: self
+        dst: 110.43.0.83
+
+  http-boot-cloud-cam:
+    protocols:
+      tcp:
+        src-port: 80
+      ipv4:
+        src: 110.43.0.83
+        dst: self
+
+  
+  ##### HTTPS #####
+
+  https-cam-cloud:
+    protocols:
+      tcp:
+        dst-port: 443
+      ipv4:
+        src: self
+        dst: external
+
+  https-cloud-cam:
+    protocols:
+      tcp:
+        src-port: 443
+      ipv4:
+        src: external
+        dst: self
+
+...

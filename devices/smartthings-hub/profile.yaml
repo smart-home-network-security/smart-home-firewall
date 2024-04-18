@@ -1,0 +1,332 @@
+---
+device-info:
+  name: smartthings-hub
+  mac: 68:3a:48:13:27:04
+  ipv4: 192.168.1.223
+  ipv6: fddd:ed18:f05b:0:d8a3:adc0:f68f:e5cf
+  mud-version: 1
+  mud-url: https://smartthings-hub.com/smartthings-hub
+  last-update: "2022-03-15T10:27:29.170+01:00"
+  cache-validity: 100
+  is-supported: true
+
+
+patterns:
+
+  dns-ipv4:
+    protocols:
+      dns:
+        qtype: A
+        domain-name: # Will be populated by parsing #
+      udp:
+        dst-port: 53
+      ipv4:
+        src: self
+        dst: gateway
+    bidirectional: true
+
+  dns-ipv6:
+    protocols:
+      dns:
+        qtype:
+          - A
+          - AAAA
+        domain-name: # Will be populated by parsing #
+      udp:
+        dst-port: 53
+      ipv6:
+        src: self
+        dst: gateway
+    bidirectional: true
+
+
+single-policies:
+
+  # DNS over IPv4
+  dns-ipv4:
+    protocols:
+      dns:
+        qtype:
+          - A
+          - AAAA
+        domain-name:
+          - connectivity.smartthings.com
+          - api.smartthings.com
+          - fw-update2.smartthings.com
+      udp:
+        dst-port: 53
+      ipv4:
+        src: self
+        dst: gateway
+    bidirectional: true
+
+  # DNS over IPv6
+  dns-ipv6:
+    protocols:
+      dns:
+        qtype:
+          - A
+          - AAAA
+        domain-name:
+          - api.smartthings.com
+          - fw-update2.smartthings.com
+      udp:
+        dst-port: 53
+      ipv6:
+        src: self
+        dst: gateway
+    bidirectional: true
+
+  # mDNS
+  mdns-hub-hue:
+    protocols:
+      mdns:
+        qtype: PTR
+        domain-name: _hue._tcp.local
+      udp:
+        src-port: 5353
+        dst-port: 5353
+      ipv4: 
+        src: self
+        dst: mdns
+
+  # SSDP
+  ssdp-search-hub:
+    protocols:
+      ssdp:
+        type: M-SEARCH
+      udp:
+        dst-port: 1900
+      ipv4:
+        src: self
+        dst: ssdp
+
+  # Background HTTPS traffic with server
+  background-https-hub-server:
+    protocols:
+      tcp:
+        dst-port: 443
+      ipv4:
+        src: self
+        dst: 54.217.91.49
+    bidirectional: true
+
+
+
+interactions:
+
+  # Retrieve IPv4 address with DHCP
+  get-ip-address:
+
+    dhcp-discover:
+      protocols:
+        dhcp:
+          type: discover
+          client-mac: self
+        udp:
+          src-port: 68
+          dst-port: 67
+        ipv4:
+          src: 0.0.0.0
+          dst: broadcast
+    
+    dhcp-offer:
+      protocols:
+        dhcp:
+          type: offer
+          client-mac: self
+        udp:
+          src-port: 67
+          dst-port: 68
+        ipv4:
+          src: gateway
+          dst: self
+
+    dhcp-request:
+      protocols:
+        dhcp:
+          type: request
+          client-mac: self
+        udp:
+          src-port: 68
+          dst-port: 67
+        ipv4:
+          src: 0.0.0.0
+          dst: broadcast
+
+    dhcp-ack:
+      protocols:
+        dhcp:
+          type: ack
+          client-mac: self
+        udp:
+          src-port: 67
+          dst-port: 68
+        ipv4:
+          src: gateway
+          dst: self
+
+  
+  # ARP request from gateway
+  arp-from-gateway:
+
+    arp-request-gateway-hub:
+      protocols:
+        arp:
+          type: request
+          sha: gateway
+          tha: default
+          spa: gateway
+          tpa: self
+      stats:
+        rate: 1/second
+    
+    arp-reply-hub-gateway:
+      protocols:
+        arp:
+          type: reply
+          sha: self
+          tha: gateway
+          spa: self
+          tpa: gateway
+
+  
+  # ARP request from phone
+  arp-from-phone:
+
+    arp-request-phone-hub:
+      protocols:
+        arp:
+          type: request
+          sha: phone
+          tha: default
+          spa: phone
+          tpa: self
+      stats:
+        rate: 1/second
+    
+    arp-reply-hub-phone:
+      protocols:
+        arp:
+          type: reply
+          sha: self
+          tha: phone
+          spa: self
+          tpa: phone
+
+
+  # ARP requests from hub towards devices in LAN
+  arp-local:
+
+    arp-request-hub-local:
+      protocols:
+        arp:
+          type: request
+          sha: self
+          tha: default
+          spa: self
+          tpa: local
+      stats:
+        rate: 1/second
+
+    arp-reply-local-hub:
+      protocols:
+        arp:
+          type: reply
+          tha: self
+          spa: local
+          tpa: self
+
+
+  # Background traffic with SmartThings cloud
+  background-hub-cloud:
+
+    dns-hub-cloud: !include patterns.dns-ipv6 protocols.dns.domain-name:api.smartthings.com
+    
+    https-hub-cloud:
+      protocols:
+        tcp:
+          dst-port: 443
+        ipv4:
+          src: self
+          dst: api.smartthings.com
+      bidirectional: true
+      stats:
+        duration: 1
+
+  # Traffic between Hub and update server
+  traffic-hub-update-server:
+
+    dns-hub-server: !include patterns.dns-ipv6 protocols.dns.domain-name:fw-update2.smartthings.com
+    
+    https-hub-server:
+      protocols:
+        tcp:
+          dst-port: 443
+        ipv4:
+          src: self
+          dst: fw-update2.smartthings.com
+      bidirectional: true
+      stats:
+        duration: 3
+
+  
+  # Open SmartThings app on mobile phone in local network
+  open-app-local:
+
+    ## Left out for now
+    #igmp-join-coap:
+    #  protocols:
+    #    igmp:
+    #      version: 2
+    #      type: membership report
+    #      group: coap  # 224.0.1.187
+    #    ipv4:
+    #      src: phone   # Phone running app
+    #      dst: coap    # 224.0.1.187
+    
+    ## Unsupported for now
+    #icmpv6-mld-listener-report:
+    #  protocols:
+    #    icmpv6:
+    #      type: mld-listener-report
+    #    ipv6:
+    #      src: phone               # Phone running app
+    #      dst: all-mldv2-routers   # ff02::16
+
+    ## Unsupported for now
+    #coap-multicast-ipv6:
+    #  protocols:
+    #    coap:
+    #      type: NON
+    #      method: GET
+    #      uri: /oic/res?rt=x.com.samsung.provisioninginfo
+    #    udp:
+    #      dst-port: 5683
+    #    ipv6:
+    #      src: phone  # Phone running app
+    #      dst: coap   # ff02::158
+    
+    igmp-join-ssdp:
+      protocols:
+        igmp:
+          version: 3
+          type: membership report
+          group: ssdp  # 239.255.255.250
+        ipv4:
+          src: phone   # Phone running app
+          dst: ssdp    # 239.255.255.250
+    
+    ssdp-msearch:
+      protocols:
+        ssdp:
+          method: M-SEARCH
+        udp:
+          dst-port: 1900
+        ipv4:
+          src: phone  # Phone running app
+          dst: ssdp   # 239.255.255.250
+      stats:
+        rate: 15/second burst 10 packets
+
+...

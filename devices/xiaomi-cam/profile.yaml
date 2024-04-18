@@ -1,0 +1,332 @@
+---
+device-info:
+  name: xiaomi-cam
+  mac: 78:8b:2a:b2:20:ea
+  ipv4: 192.168.1.161
+  network: wireless
+  mud-version: 1
+  mud-url: https://xiaomi-cam.com/xiaomi-cam
+  last-update: "2022-03-15T10:27:29.170+01:00"
+  cache-validity: 100
+  is-supported: true
+
+
+patterns:
+
+  stream:
+    protocols:
+      udp:
+      ipv4:
+        src: self
+        dst: # Will be populated by parsing
+    bidirectional: true
+    stats:
+      rate: 0
+      packet-size: < 1100
+
+
+
+single-policies:
+
+  ##### STREAM #####
+
+  udp-stream-local: !include patterns.stream protocols.ipv4.dst:phone
+
+  udp-stream-external: !include patterns.stream protocols.ipv4.dst:external
+
+
+  ##### BOOT TRAFFIC #####
+
+  http-cam-cloud:
+    protocols:
+      http:
+        method: GET
+        uri: /gslb?*
+      tcp:
+        dst-port: 80
+      ipv4:
+        src: self
+        dst: 110.43.0.83
+    bidirectional: true
+    stats:
+      packet-count: 10
+
+  https-cam-cloud:
+    protocols:
+      tcp:
+        dst-port: 443
+      ipv4:
+        src: self
+        dst: 120.92.0.0/16
+    bidirectional: true
+    stats:
+      rate: 100/second
+
+
+  ##### IDLE TRAFFIC #####
+
+  udp-cam-cloud:
+    protocols:
+      udp:
+      ipv4:
+        src: self
+        dst:
+          - 36.156.49.0/24
+          - 42.157.165.0/24
+          - 45.124.124.0/24
+          - 110.43.0.0/16
+          - 120.92.0.0/16
+    bidirectional: true
+    stats:
+      rate: 10/second
+
+  ping-quad8:
+    protocols:
+      icmp:
+        type: echo-request
+      ipv4:
+        src: self
+        dst: 8.8.8.8
+    bidirectional: true
+  
+  mdns-phone:
+    protocols:
+      mdns:
+        qtype: PTR
+        domain-name:
+          - _miio._udp.local
+          - _rc._tcp.local
+      udp:
+        src-port: 5353
+        dst-port: 5353
+      ipv4:
+        src: phone
+        dst: mdns  # 224.0.0.251
+    stats:
+      rate: 20/second
+
+
+
+interactions:
+
+  ######### LOCAL NETWORK ##########
+
+  ##### ARP #####
+  
+  # ARP from camera to gateway
+  arp-cam-gateway:
+
+    arp-cam-gateway-request:
+      protocols:
+        arp:
+          type: request
+          sha: self
+          tha: default
+          spa: self
+          tpa: gateway
+  
+    arp-cam-gateway-reply:
+      protocols:
+        arp:
+          type: reply
+          sha: gateway
+          tha: self
+          spa: gateway
+          tpa: self
+  
+  # ARP from gateway to camera
+  arp-gateway-cam:
+
+    arp-request-gateway-cam:
+      protocols:
+        arp:
+          type: request
+          sha: gateway
+          tha: default
+          spa: gateway
+          tpa: self
+      stats:
+        rate: 1/second
+
+    arp-reply-cam-gateway:
+      protocols:
+        arp:
+          type: reply
+          sha: self
+          tha: gateway
+          spa: self
+          tpa: gateway
+
+  # ARP from camera to phone
+  arp-cam-phone:
+
+    arp-cam-phone-request:
+      protocols:
+        arp:
+          type: request
+          sha: self
+          tha: default
+          spa: self
+          tpa: phone
+
+    arp-cam-phone-reply:
+      protocols:
+        arp:
+          type: reply
+          tha: self
+          spa: phone
+          tpa: self
+
+  # ARP from phone to camera
+  arp-phone-cam:
+
+    arp-phone-cam-request:
+      protocols:
+        arp:
+          type: request
+          sha: phone
+          tha: default
+          spa: phone
+          tpa: self
+      stats:
+        rate: 1/second
+
+    arp-phone-cam-reply:
+      protocols:
+        arp:
+          type: reply
+          sha: self
+          tha: phone
+          spa: self
+          tpa: phone
+
+
+  ##### GET IP ADDRESS AT BOOT #####
+  get-ip-address:
+
+    dhcp-discover:
+      protocols:
+        dhcp:
+          type: discover
+          client-mac: self
+        udp:
+          src-port: 68
+          dst-port: 67
+        ipv4:
+          src: 0.0.0.0
+          dst: broadcast
+
+    dhcp-offer:
+      protocols:
+        dhcp:
+          type: offer
+          client-mac: self
+        udp:
+          src-port: 67
+          dst-port: 68
+        ipv4:
+          src: gateway
+          dst: self
+
+    dhcp-request:
+      protocols:
+        dhcp:
+          type: request
+          client-mac: self
+        udp:
+          src-port: 68
+          dst-port: 67
+        ipv4:
+          src: 0.0.0.0
+          dst: broadcast
+
+    dhcp-ack:
+      protocols:
+        dhcp:
+          type: ack
+          client-mac: self
+        udp:
+          src-port: 67
+          dst-port: 68
+        ipv4:
+          src: gateway
+          dst: self
+
+
+  # Communication with cloud
+  https-cam-cloud-api:
+
+    dns-cam-api:
+      protocols:
+        dns:
+          qtype: A
+          domain-name: business.smartcamera.api.io.mi.com
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+
+    https-cam-api:
+      protocols:
+        tcp:
+          dst-port: 443
+        ipv4:
+          src: self
+          dst: business.smartcamera.api.io.mi.com
+      bidirectional: true
+      stats:
+        packet-count: 25
+  
+
+  udp-cam-cloud-psy2:
+
+    dns-cam-cloud-psy2:
+      protocols:
+        dns:
+          qtype: A
+          domain-name: xiaomi5.p2psy2.io.mi.com
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+
+    udp-cam-cloud-psy2:
+      protocols:
+        udp:
+        ipv4:
+          src: self
+          dst: xiaomi5.p2psy2.io.mi.com
+      bidirectional: true
+      stats:
+        rate: 0
+  
+
+  udp-cam-cloud-psy3:
+
+    dns-cam-cloud-psy3:
+      protocols:
+        dns:
+          qtype: A
+          domain-name: xiaomi5.p2psy3.io.mi.com
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+
+    udp-cam-cloud-psy3:
+      protocols:
+        udp:
+        ipv4:
+          src: self
+          dst: xiaomi5.p2psy3.io.mi.com
+      bidirectional: true
+      stats:
+        rate: 0
+
+...

@@ -1,0 +1,285 @@
+---
+device-info:
+  name: tuya-motion
+  mac: a0:92:08:7b:03:1c
+  ipv4: 192.168.1.102
+  network: wireless
+
+
+patterns:
+
+  # ARP announcement if static IP
+  arp-announcement-static: &pattern-arp-announcement
+    protocols:
+      arp:
+        type: request
+        sha: self
+        tha: default
+        spa: self
+        tpa: self
+
+
+  # ARP from phone to self
+  arp-phone-self: &pattern-arp-phone-self
+
+    arp-request-phone-self:
+      protocols:
+        arp:
+          type: request
+          sha: phone
+          tha: default
+          spa: phone
+          tpa: self
+      stats:
+        rate: 1/second
+
+    arp-reply-self-phone:
+      protocols:
+        arp:
+          type: reply
+          sha: self
+          tha: phone
+          spa: self
+          tpa: phone
+
+
+single-policies:
+
+  # DNS query/response for manufacturer's cloud
+  dns-query-self-cloud:
+    protocols:
+      dns:
+        qtype: A
+        domain-name: m2.tuyaeu.com
+      udp:
+        dst-port: 53
+      ipv4:
+        src: self
+        dst: gateway
+    bidirectional: true
+
+
+interactions:
+
+  ### BOOT TRAFFIC ###
+
+  ## DHCP ###
+  dhcp-boot:
+
+    dhcp-discover:
+      protocols:
+        dhcp:
+          type: discover
+          client-mac: self
+        udp:
+          src-port: 68
+          dst-port: 67
+        ipv4:
+          src: 0.0.0.0
+          dst: broadcast
+    
+    dhcp-offer:
+      protocols:
+        dhcp:
+          type: offer
+          client-mac: self
+        udp:
+          src-port: 67
+          dst-port: 68
+        ipv4:
+          src: gateway
+          dst: self
+
+    dhcp-request:
+      protocols:
+        dhcp:
+          type: request
+          client-mac: self
+        udp:
+          src-port: 68
+          dst-port: 67
+        ipv4:
+          src: 0.0.0.0
+          dst: broadcast
+
+    dhcp-ack:
+      protocols:
+        dhcp:
+          type: ack
+          client-mac: self
+        udp:
+          src-port: 67
+          dst-port: 68
+        ipv4:
+          src: gateway
+          dst: self
+
+
+  ## ARP ##
+
+  # ARP request from self to gateway
+  arp-self-gateway:
+    arp-request:
+      protocols:
+        arp:
+          type: request
+          sha: self
+          tha: default
+          spa: self
+          tpa: gateway
+      stats:
+        rate: 1/second
+
+    arp-reply:
+      protocols:
+        arp:
+          type: reply
+          sha: gateway
+          tha: self
+          spa: gateway
+          tpa: self
+  
+  # ARP from gateway to self
+  arp-gateway-self:
+
+    arp-request:
+      protocols:
+        arp:
+          type: request
+          sha: gateway
+          tha: default
+          spa: gateway
+          tpa: self
+      stats:
+        rate: 1/second
+
+    arp-reply:
+      protocols:
+        arp:
+          type: reply
+          sha: self
+          tha: gateway
+          spa: self
+          tpa: gateway
+
+  # ARP from Amazon Echo to self
+  arp-echo-self:
+
+    arp-request-echo-self:
+      protocols:
+        arp:
+          type: reply
+          sha: !include ../amazon-echo/profile.yaml#device-info.mac
+          tha: broadcast
+          spa: !include ../amazon-echo/profile.yaml#device-info.ipv4
+          tpa: self
+          
+      
+    arp-reply-self-echo:
+      protocols:
+        arp:
+          type: request
+          sha: self
+          tha: !include ../amazon-echo/profile.yaml#device-info.mac
+          spa: self
+          tpa: !include ../amazon-echo/profile.yaml#device-info.ipv4
+
+
+  ### ACTIVITY ###
+
+  # TCP traffic when Tuya app is open
+  tcp-app:
+    
+    # ARP request/response from phone to self
+    arp-phone-self: *pattern-arp-phone-self
+
+    # TCP traffic
+    tcp-phone-self:
+      protocols:
+        tcp:
+          dst-port: 6668
+        ipv4:
+          src: phone
+          dst: self
+      bidirectional: true
+      stats:
+        rate: 20/second
+
+  
+  # UDP broadcast
+  udp-broadcast:
+
+    # ARP announcement: sensor boot
+    arp-announcement: *pattern-arp-announcement
+
+    # UDP broadcast from self
+    udp-broadcast:
+      protocols:
+        udp:
+          dst-port: 6667
+        ipv4:
+          src: self
+          dst: broadcast
+      stats:
+        rate: 2/second
+
+  
+  # HTTPS background traffic
+  https-background:
+
+    # ARP announcement: sensor boot
+    arp-announcement: *pattern-arp-announcement
+
+    # HTTPS bidirectional traffic with cloud server
+    https-self-cloud:
+      protocols:
+        tcp:
+          dst-port: 443
+        ipv4:
+          src: self
+          dst: external
+      bidirectional: true
+      stats:
+        rate: 30/second
+
+  
+  # HTTPS background traffic on other port
+  https-background-2:
+
+    # ARP announcement: sensor boot
+    arp-announcement: *pattern-arp-announcement
+
+    https-self-cloud-2:
+      protocols:
+        tcp:
+          dst-port: 8886
+        ipv4:
+          src: self
+          dst: external
+      bidirectional: true
+      stats:
+        rate: 30/second
+
+  
+  # HTTPS traffic upon motion detection
+  https-motion-detection:
+
+    # ARP announcement: sensor boot
+    arp-announcement: *pattern-arp-announcement
+
+    # Bidirectional communication with cloud
+    https-self-cloud:
+      protocols:
+        tcp:
+          dst-port: 443
+        ip4:
+          src: self
+          dst:
+            - 52.28.144.124
+            - 3.123.124.46
+            - 3.122.134.146
+      bidirectional: true
+      stats:
+        rate: 30/second
+
+...

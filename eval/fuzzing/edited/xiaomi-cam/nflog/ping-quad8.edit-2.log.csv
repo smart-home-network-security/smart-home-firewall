@@ -1,0 +1,5 @@
+id,hash,timestamp,policy,state,verdict
+1,28e71a581f04f7735c0aed3894d53afe8465dbfc2fafd45042bb15d08f187189,1678881132.966561,xiaomi-cam,,DROP
+2,0505e3f0420cd14a3ce5a277dfa70443bd56797d4db3b6efb21f65d15019cc9b,1678881132.974353,single#ping-quad8-backward,,QUEUE
+3,433e3c83b5af0b26902f8bc7884442dc830caae260271fccad7080bd008e4cdb,1678881253.323527,single#ping-quad8,,QUEUE
+4,8e0fe5364f88632459704fc5e2b2db68c9dc61a0a1ceeccc1abadc35c6b0a841,1678881253.331232,single#ping-quad8-backward,,QUEUE

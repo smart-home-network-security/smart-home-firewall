@@ -1,0 +1,480 @@
+---
+device-info:
+  name: dlink-cam
+  mac: b0:c5:54:43:54:83
+  ipv4: 192.168.1.115
+  network: wireless
+  mud-version: 1
+  mud-url: https://dlink-cam.com/dlink-cam
+  last-update: "2022-03-15T10:27:29.170+01:00"
+  cache-validity: 100
+  is-supported: true
+
+
+patterns:
+
+  # DNS AAAA query + response
+  dns-aaaa:
+    protocols:
+      dns:
+        qtype: AAAA
+        domain-name: # Will be populated by parsing #
+      udp:
+        dst-port: 53
+      ipv4:
+        src: self
+        dst: gateway
+    bidirectional: true
+
+  # DNS A query + response
+  dns-a:
+    protocols:
+      dns:
+        qtype: A
+        domain-name: # Will be populated by parsing #
+      udp:
+        dst-port: 53
+      ipv4:
+        src: self
+        dst: gateway
+    bidirectional: true
+
+
+  # Start streaming camera
+  start-stream: &pattern-start-stream
+    
+    dns-cam-server-aaaa:
+      protocols:
+        dns:
+          qtype: AAAA
+          domain-name: mp-eu-sas.auto.mydlink.com
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+
+    dns-cam-server-a:
+      protocols:
+        dns:
+          qtype: A
+          domain-name: mp-eu-sas.auto.mydlink.com
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+
+    stun-bind-cam-server:
+      protocols:
+        udp:
+          dst-port: 3478
+        ipv4:
+          src: self
+          dst: mp-eu-sas.auto.mydlink.com
+      bidirectional: true
+  
+
+  # Stop streaming camera
+  tcp-stop-stream: &pattern-tcp-stop-stream
+    protocols:
+      tcp:
+        dst-port: 80
+      ipv4:
+        src: self
+        dst: mp-eu-sas-1.auto.mydlink.com
+    bidirectional: true
+    stats:
+      packet-count: 3
+
+
+
+single-policies:
+
+  # DNS
+  dns-ipv4:
+    protocols:
+      dns:
+        qtype:
+          - A
+          - AAAA
+        domain-name:
+          - ca-mgr.auto.mydlink.com
+          - mp-eu-sas.auto.mydlink.com
+          - mp-eu-sas-1.auto.mydlink.com
+          - mp-eu-dcdda.auto.mydlink.com
+          - mp-us-sas.auto.mydlink.com
+          - mp-eu-fwd.auto.mydlink.com
+      udp:
+        dst-port: 53
+      ipv4:
+        src: self
+        dst: gateway
+    bidirectional: true
+
+  # IGMP
+  igmp-join-mdns:
+    protocols:
+      igmp:
+        version: 3
+        type: membership report
+        group: mdns
+      ipv4:
+        src: self
+        dst: igmpv3
+
+  ### mDNS ###
+  mdns-query-ptr:
+    protocols:
+      mdns:
+        qtype: PTR
+        domain-name: _dcp._tcp.local
+      udp:
+        src-port: 5353
+        dst-port: 5353
+      ipv4:
+        src: self
+        dst: mdns
+
+  mdns-query-any:
+    protocols:
+      mdns:
+        qtype: ANY
+        domain-name:
+          - DCS-8000LH-B0C554435483.local
+          - DCS-8000LH-5483._http._tcp.local
+          - DCS-8000LH-5483._dcp._tcp.local
+      udp:
+        src-port: 5353
+        dst-port: 5353
+      ipv4:
+        src: self
+        dst: mdns
+
+  mdns-response:
+    protocols:
+      mdns:
+        response: true
+      udp:
+        src-port: 5353
+        dst-port: 5353
+      ipv4:
+        src: self
+        dst: mdns
+
+  # TCP traffic between phone and camera
+  tcp-traffic-phone-cam:
+    protocols:
+      tcp:
+        dst-port: 8080
+      ipv4:
+        src: phone
+        dst: self
+    bidirectional: true
+    stats:
+      rate: 30/second
+
+
+
+interactions:
+
+  ##### BOOT TRAFFIC #####
+
+  # ARP from gateway to camera
+  arp-gateway-cam:
+
+    arp-request-gateway-cam:
+      protocols:
+        arp:
+          type: request
+          sha: gateway
+          tha: default
+          spa: gateway
+          tpa: self
+      stats:
+        rate: 1/second
+
+    arp-reply-cam-gateway:
+      protocols:
+        arp:
+          type: reply
+          sha: self
+          tha: gateway
+          spa: self
+          tpa: gateway
+
+
+  # ARP from camera to gateway
+  arp-cam-gateway:
+  
+    arp-request-cam-gateway:
+      protocols:
+        arp:
+          type: request
+          sha: self
+          tha: default
+          spa: self
+          tpa: gateway
+
+    arp-reply-gateway-cam:
+      protocols:
+        arp:
+          type: reply
+          sha: gateway
+          tha: self
+          spa: gateway
+          tpa: self
+
+
+  # Retrieve IPv4 address with DHCP
+  get-ip-address:
+
+    dhcp-discover:
+      protocols:
+        dhcp:
+          type: discover
+          client-mac: self
+        udp:
+          src-port: 68
+          dst-port: 67
+        ipv4:
+          src: 0.0.0.0
+          dst: broadcast
+    
+    dhcp-offer:
+      protocols:
+        dhcp:
+          type: offer
+          client-mac: self
+        udp:
+          src-port: 67
+          dst-port: 68
+        ipv4:
+          src: gateway
+          dst: self
+
+    dhcp-request:
+      protocols:
+        dhcp:
+          type: request
+          client-mac: self
+        udp:
+          src-port: 68
+          dst-port: 67
+        ipv4:
+          src: 0.0.0.0
+          dst: broadcast
+
+    dhcp-ack:
+      protocols:
+        dhcp:
+          type: ack
+          client-mac: self
+        udp:
+          src-port: 67
+          dst-port: 68
+        ipv4:
+          src: gateway
+          dst: self
+    
+
+  # HTTP HEAD request towards ca-mgr.auto.mydlink.com
+  http-head-boot:
+
+    dns-cam-ca-mgr:
+      protocols:
+        dns:
+          qtype: A
+          domain-name: ca-mgr.auto.mydlink.com
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+    
+    http-head-cam-cloud:
+      protocols:
+        http:
+          method: HEAD
+          uri: /default/ca-bundle.crt
+        tcp:
+          dst-port: 80
+        ipv4:
+          src: self
+          dst: ca-mgr.auto.mydlink.com
+      bidirectional: true
+      stats:
+        packet-count: 15
+
+
+  # HTTPS traffic towards mp-eu-fwd.auto.mydlink.com at boot
+  https-boot-cam-fwd:
+
+    dns-cam-fwd:
+      protocols:
+        dns:
+          qtype: A
+          domain-name: mp-eu-fwd.auto.mydlink.com
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+    
+    https-cam-fwd:
+      protocols:
+        tcp:
+          dst-port: 443
+        ipv4:
+          src: self
+          dst: mp-eu-fwd.auto.mydlink.com
+      bidirectional: true
+      stats:
+        packet-count: 30
+
+        
+  ##### BACKGROUND TRAFFIC #####
+
+  ### HTTP(S) with servers ###
+
+  https-dcdda:
+
+    dns-cam-dcdda: !include patterns.dns-a protocols.dns.domain-name:mp-eu-dcdda.auto.mydlink.com
+
+    https-cam-dcdda:
+      protocols:
+        tcp:
+          dst-port: 443
+        ipv4:
+          src: self
+          dst: mp-eu-dcdda.auto.mydlink.com
+      bidirectional: true
+      stats:
+        rate: 20/second
+
+
+  # WebSocket traffic with server
+  # (potentially used for streaming when there is no other possibility)
+  websocket-sas-1:
+
+    dns-cam-sas-1: !include patterns.dns-a protocols.dns.domain-name:mp-eu-sas-1.auto.mydlink.com
+
+    websocket-cam-sas-1:
+      protocols:
+        tcp:
+          dst-port: 80
+        ipv4:
+          src: self
+          dst: mp-eu-sas-1.auto.mydlink.com
+      bidirectional: true
+      stats:
+        rate: 0
+
+  
+  ##### INTERACTIONS WITH APP #####
+
+  # ARP from camera to phone
+  arp-camera-phone:
+    
+    arp-request-cam-phone:
+      protocols:
+        arp:
+          type: request
+          sha: self
+          tha: default
+          spa: self
+          tpa: phone
+    
+    arp-reply-phone-cam:
+      protocols:
+        arp:
+          type: reply
+          sha: phone
+          tha: self
+          spa: phone
+          tpa: self
+
+
+  # ARP from phone to camera
+  arp-phone-camera:
+    
+    arp-request-phone-cam:
+      protocols:
+        arp:
+          type: request
+          sha: phone
+          tha: default
+          spa: phone
+          tpa: self
+      stats:
+        rate: 1/second
+    
+    arp-reply-cam-phone:
+      protocols:
+        arp:
+          type: reply
+          sha: self
+          tha: phone
+          spa: self
+          tpa: phone
+
+
+  # Stream on app in local network
+  stream-app-local:
+
+    start-stream-lan: *pattern-start-stream
+
+    # UDP stream from camera to phone in LAN
+    udp-stream-lan:
+      protocols:
+        udp:
+        ipv4:
+          src: self
+          dst: phone
+      bidirectional: true
+      stats:
+        rate: 0
+
+  
+  bootstrap-stream-wan:
+
+    dns-cam-sas-1-aaaa: !include patterns.dns-aaaa protocols.dns.domain-name:mp-eu-sas-1.auto.mydlink.com
+    
+    dns-cam-sas-1-a: !include patterns.dns-a protocols.dns.domain-name:mp-eu-sas-1.auto.mydlink.com
+
+    http-relay-cam-sas-1:
+      protocols:
+        http:
+          method: GET
+          uri: /relay
+        tcp:
+          dst-port: 80
+        ipv4:
+          src: self
+          dst: mp-eu-sas-1.auto.mydlink.com
+      bidirectional: true
+      stats:
+        packet-count: 15
+
+
+  # Stream on app in external network
+  stream-app-external:
+
+    start-stream-wan: *pattern-start-stream
+
+    # UDP stream from camera to phone in WAN
+    udp-stream-wan:
+      protocols:
+        udp:
+        ipv4:
+          src: self
+          dst: external
+      bidirectional: true
+      stats:
+        rate: 0
+
+...

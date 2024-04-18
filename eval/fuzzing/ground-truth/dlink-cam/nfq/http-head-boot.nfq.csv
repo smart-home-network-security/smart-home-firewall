@@ -1,0 +1,15 @@
+hash,timestamp,policy,state,verdict
+d4cf548e3feb109a1feea3e378aaaf10cbd2343aaa91924f19baddc9410007a6,1678902877.409732,single#dns-ipv4,0,ACCEPT
+d4cf548e3feb109a1feea3e378aaaf10cbd2343aaa91924f19baddc9410007a6,1678902877.409732,http-head-boot#dns-cam-ca-mgr,0,ACCEPT
+203a1385f465c27a74c636b3c815db8bce6c6850fd58a9ee47afe83778cee81a,1678902877.584187,single#dns-ipv4-backward,1,ACCEPT
+203a1385f465c27a74c636b3c815db8bce6c6850fd58a9ee47afe83778cee81a,1678902877.584187,http-head-boot#dns-cam-ca-mgr-backward,1,ACCEPT
+cfbc035a68c0d687233430ef8fc667ccb2c52c4f9e4ea8241f77e5125df86d46,1678902877.587672,http-head-boot#http-head-cam-cloud,2,ACCEPT
+147bb078ce0d4e82231bc31c7f0947f38a7da3ffb7d97045c76d341a541e0869,1678902877.589856,http-head-boot#http-head-cam-cloud-backward,3,ACCEPT
+a8a9d7417f642477ff39212b64e1539d507bd546af490a626d7ac446515f1b9f,1678902877.592370,http-head-boot#http-head-cam-cloud,3,ACCEPT
+9eae8471d573c97acdb93c682e15e7d9390c2ef2e880946c7650117607ad5014,1678902877.595412,http-head-boot#http-head-cam-cloud,3,ACCEPT
+38f676135a2c42493c92cd884b9c181f8d441914de7eff8a96f7563ff8102d5c,1678902877.597281,http-head-boot#http-head-cam-cloud-backward,3,ACCEPT
+d78ec2cb5f467b7da1f5412d09ec85c9d94dde7fb8dbc075a250bc41eed1bff9,1678902877.598772,http-head-boot#http-head-cam-cloud-backward,3,ACCEPT
+d05c1068dbaa73cc9c3128e4545119766a79e5da40aeb249143b6e215dfcca9d,1678902877.601417,http-head-boot#http-head-cam-cloud,3,ACCEPT
+7a6ba61096b0ff3e76a07f74a0a130b0774dd2cf9b66d6f29a0c22983b30245e,1678902877.619995,http-head-boot#http-head-cam-cloud,3,ACCEPT
+ccc6ee4f477c57b20fd29cded29e8b8ee902f7a12e9fbe6719daa2d0162014cf,1678902877.623568,http-head-boot#http-head-cam-cloud-backward,3,ACCEPT
+d56f97e009384cc035f780ec8be4b80a9381bca16b7176db58945c058202922d,1678902877.627781,http-head-boot#http-head-cam-cloud,3,ACCEPT

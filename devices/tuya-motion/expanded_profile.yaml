@@ -1,0 +1,208 @@
+device-info:
+  ipv4: 192.168.1.102
+  mac: a0:92:08:7b:03:1c
+  name: tuya-motion
+  network: wireless
+interactions:
+  arp-echo-self:
+    arp-reply-self-echo:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: 50:dc:e7:a2:d8:95
+          tpa: 192.168.1.150
+          type: request
+    arp-request-echo-self:
+      protocols:
+        arp:
+          sha: 50:dc:e7:a2:d8:95
+          spa: 192.168.1.150
+          tha: broadcast
+          tpa: self
+          type: reply
+  arp-gateway-self:
+    arp-reply:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: gateway
+          tpa: gateway
+          type: reply
+    arp-request:
+      protocols:
+        arp:
+          sha: gateway
+          spa: gateway
+          tha: default
+          tpa: self
+          type: request
+      stats:
+        rate: 1/second
+  arp-self-gateway:
+    arp-reply:
+      protocols:
+        arp:
+          sha: gateway
+          spa: gateway
+          tha: self
+          tpa: self
+          type: reply
+    arp-request:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: default
+          tpa: gateway
+          type: request
+      stats:
+        rate: 1/second
+  dhcp-boot:
+    dhcp-ack:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: ack
+        ipv4:
+          dst: self
+          src: gateway
+        udp:
+          dst-port: 68
+          src-port: 67
+    dhcp-discover:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: discover
+        ipv4:
+          dst: broadcast
+          src: 0.0.0.0
+        udp:
+          dst-port: 67
+          src-port: 68
+    dhcp-offer:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: offer
+        ipv4:
+          dst: self
+          src: gateway
+        udp:
+          dst-port: 68
+          src-port: 67
+    dhcp-request:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: request
+        ipv4:
+          dst: broadcast
+          src: 0.0.0.0
+        udp:
+          dst-port: 67
+          src-port: 68
+  https-background:
+    arp-announcement: &id001
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: default
+          tpa: self
+          type: request
+    https-self-cloud:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: external
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        rate: 30/second
+  https-background-2:
+    arp-announcement: *id001
+    https-self-cloud-2:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: external
+          src: self
+        tcp:
+          dst-port: 8886
+      stats:
+        rate: 30/second
+  https-motion-detection:
+    arp-announcement: *id001
+    https-self-cloud:
+      bidirectional: true
+      protocols:
+        ip4:
+          dst:
+          - 52.28.144.124
+          - 3.123.124.46
+          - 3.122.134.146
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        rate: 30/second
+  tcp-app:
+    arp-phone-self: &id002
+      arp-reply-self-phone:
+        protocols:
+          arp:
+            sha: self
+            spa: self
+            tha: phone
+            tpa: phone
+            type: reply
+      arp-request-phone-self:
+        protocols:
+          arp:
+            sha: phone
+            spa: phone
+            tha: default
+            tpa: self
+            type: request
+        stats:
+          rate: 1/second
+    tcp-phone-self:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: self
+          src: phone
+        tcp:
+          dst-port: 6668
+      stats:
+        rate: 20/second
+  udp-broadcast:
+    arp-announcement: *id001
+    udp-broadcast:
+      protocols:
+        ipv4:
+          dst: broadcast
+          src: self
+        udp:
+          dst-port: 6667
+      stats:
+        rate: 2/second
+patterns:
+  arp-announcement-static: *id001
+  arp-phone-self: *id002
+single-policies:
+  dns-query-self-cloud:
+    bidirectional: true
+    protocols:
+      dns:
+        domain-name: m2.tuyaeu.com
+        qtype: A
+      ipv4:
+        dst: gateway
+        src: self
+      udp:
+        dst-port: 53

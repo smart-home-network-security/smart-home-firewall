@@ -1,0 +1,61 @@
+---
+device-info:
+  name: test
+  mac: 50:dc:e7:a2:d8:95
+  ipv4: 192.168.1.150
+  ipv6: fddd:ed18:f05b:0:adef:a05d:fcbe:afc9
+
+interactions:
+
+  ##### GET IP ADDRESS AT BOOT #####
+  get-ip-address:
+
+    dhcp-discover:
+      protocols:
+        dhcp:
+          type: discover
+          client-mac: self
+        udp:
+          src-port: 68
+          dst-port: 67
+        ipv4:
+          src: 0.0.0.0
+          dst: broadcast
+
+    dhcp-offer:
+      protocols:
+        dhcp:
+          type: offer
+          client-mac: self
+        udp:
+          src-port: 67
+          dst-port: 68
+        ipv4:
+          src: gateway
+          dst: self
+
+    dhcp-request:
+      protocols:
+        dhcp:
+          type: request
+          client-mac: self
+        udp:
+          src-port: 68
+          dst-port: 67
+        ipv4:
+          src: 0.0.0.0
+          dst: broadcast
+
+    dhcp-ack:
+      protocols:
+        dhcp:
+          type: ack
+          client-mac: self
+        udp:
+          src-port: 67
+          dst-port: 68
+        ipv4:
+          src: gateway
+          dst: self
+
+...

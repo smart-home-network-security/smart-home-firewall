@@ -1,0 +1,768 @@
+device-info:
+  cache-validity: 100
+  ipv4: 192.168.1.141
+  ipv6: fe80::217:88ff:fe74:c2dc
+  is-supported: true
+  last-update: '2022-03-15T10:27:29.170+01:00'
+  mac: 00:17:88:74:c2:dc
+  mud-url: https://philips-hue.com/philips-hue
+  mud-version: 1
+  name: philips-hue
+  network: wired
+interactions:
+  arp-hue-gateway:
+    arp-reply-gateway-hue:
+      protocols:
+        arp:
+          sha: gateway
+          spa: gateway
+          tha: self
+          tpa: self
+          type: reply
+    arp-request-hue-gateway:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: default
+          tpa: gateway
+          type: request
+  arp-hue-phone:
+    arp-reply-phone-hue:
+      protocols:
+        arp:
+          sha: phone
+          spa: phone
+          tha: self
+          tpa: self
+          type: reply
+    arp-request-hue-phone:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: default
+          tpa: phone
+          type: request
+  arp-phone-hue:
+    arp-reply-hue-phone:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: phone
+          tpa: phone
+          type: reply
+    arp-request-phone-hue:
+      protocols:
+        arp:
+          sha: phone
+          spa: phone
+          tha: default
+          tpa: self
+          type: request
+  background-data-meethue:
+    dns-data-meethue:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: data.meethue.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: 192.168.1.141
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    https-data-meethue:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: data.meethue.com
+          src: 192.168.1.141
+        tcp:
+          dst-port: 443
+      stats:
+        rate: 200/second burst 200 packets
+  background-diag-meethue:
+    dns-diag-meethue:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: diag.meethue.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: 192.168.1.141
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    https-diag-meethue:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: diag.meethue.com
+          src: 192.168.1.141
+        tcp:
+          dst-port: 443
+      stats:
+        rate: 200/second burst 200 packets
+  background-mqtt:
+    dns-mqtt:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: mqtt.2030.ltsapis.goog
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: 192.168.1.141
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    https-mqtt:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: mqtt.2030.ltsapis.goog
+          src: 192.168.1.141
+        tcp:
+          dst-port: 443
+      stats:
+        rate: 200/second burst 200 packets
+  background-time-meethue:
+    dns-time-meethue:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: time.meethue.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: 192.168.1.141
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    https-time-meethue:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: time.meethue.com
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        packet-count: 20
+  background-ws-meethue:
+    dns-ws-meethue:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: ws.meethue.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: 192.168.1.141
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    https-hue-ws:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: ws.meethue.com
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        rate: 10/second burst 100 packets
+  http-boot-dcp-request-handler:
+    dns-hue-dcp:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: dcp.dc1.philips.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: self
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    http-post-dcp-request-handler:
+      bidirectional: true
+      protocols:
+        http:
+          method: POST
+          url: /DcpRequestHandler/index.ashx
+        ipv4:
+          dst: dcp.dc1.philips.com
+          src: self
+        tcp:
+          dst-port: 80
+      stats:
+        packet-count: 15
+  http-boot-device-portal:
+    dns-ecd-interface:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: www.ecdinterface.philips.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: self
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    http-post-device-portal:
+      bidirectional: true
+      protocols:
+        http:
+          method: POST
+          url: /DevicePortalICPRequestHandler/RequestHandler.ashx
+        ipv4:
+          dst: www.ecdinterface.philips.com
+          src: self
+        tcp:
+          dst-port: 80
+      stats:
+        packet-count: 30
+  http-boot-notification-service:
+    dns-ecd-interface:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: www.ecdinterface.philips.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: self
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    http-post-notification-service:
+      bidirectional: true
+      protocols:
+        http:
+          method: POST
+          url: /NotificationService/RequestHandler.ashx
+        ipv4:
+          dst: www.ecdinterface.philips.com
+          src: self
+        tcp:
+          dst-port: 80
+      stats:
+        packet-count: 15
+  http-get-description:
+    http-get-phone-hue:
+      bidirectional: true
+      protocols:
+        http:
+          method: GET
+          uri: /description.xml
+        ipv4:
+          dst: self
+          src: phone
+        tcp:
+          dst-port: 80
+      stats:
+        packet-count: 15
+    ssdp-response-hue-phone:
+      protocols:
+        ipv4:
+          dst: phone
+          src: self
+        ssdp:
+          response: true
+        udp:
+          src-port: 1900
+  ip-allocation:
+    dhcp-ack:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: ack
+        ipv4:
+          dst: self
+          src: gateway
+        udp:
+          dst-port: 68
+          src-port: 67
+    dhcp-discover:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: discover
+        ipv4:
+          dst: broadcast
+          src: 0.0.0.0
+        udp:
+          dst-port: 67
+          src-port: 68
+    dhcp-offer:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: offer
+        ipv4:
+          dst: self
+          src: gateway
+        udp:
+          dst-port: 68
+          src-port: 67
+    dhcp-request:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: request
+        ipv4:
+          dst: broadcast
+          src: 0.0.0.0
+        udp:
+          dst-port: 67
+          src-port: 68
+  ntp-aliyun-1:
+    dns-to-ntp-server:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: ntp1.aliyun.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: 192.168.1.141
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    ntp-to-server:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: ntp1.aliyun.com
+          src: 192.168.1.141
+        udp:
+          dst-port: 123
+      stats:
+        rate: 15/second
+  ntp-aliyun-2:
+    dns-to-ntp-server:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: ntp2.aliyun.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: 192.168.1.141
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    ntp-to-server:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: ntp2.aliyun.com
+          src: 192.168.1.141
+        udp:
+          dst-port: 123
+      stats:
+        rate: 15/second
+  ntp-aliyun-3:
+    dns-to-ntp-server:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: ntp3.aliyun.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: 192.168.1.141
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    ntp-to-server:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: ntp3.aliyun.com
+          src: 192.168.1.141
+        udp:
+          dst-port: 123
+      stats:
+        rate: 15/second
+  ntp-aliyun-4:
+    dns-to-ntp-server:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: ntp4.aliyun.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: 192.168.1.141
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    ntp-to-server:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: ntp4.aliyun.com
+          src: 192.168.1.141
+        udp:
+          dst-port: 123
+      stats:
+        rate: 15/second
+  ntp-time1-google:
+    dns-to-ntp-server:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: time1.google.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: 192.168.1.141
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    ntp-to-server:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: time1.google.com
+          src: 192.168.1.141
+        udp:
+          dst-port: 123
+      stats:
+        rate: 15/second
+  ntp-time2-google:
+    dns-to-ntp-server:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: time2.google.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: 192.168.1.141
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    ntp-to-server:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: time2.google.com
+          src: 192.168.1.141
+        udp:
+          dst-port: 123
+      stats:
+        rate: 15/second
+  ntp-time3-google:
+    dns-to-ntp-server:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: time3.google.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: 192.168.1.141
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    ntp-to-server:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: time3.google.com
+          src: 192.168.1.141
+        udp:
+          dst-port: 123
+      stats:
+        rate: 15/second
+  ntp-time4-google:
+    dns-to-ntp-server:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: time4.google.com
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: 192.168.1.141
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    ntp-to-server:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: time4.google.com
+          src: 192.168.1.141
+        udp:
+          dst-port: 123
+      stats:
+        rate: 15/second
+  open-smartthings-app-local:
+    open-app:
+      igmp-join-ssdp:
+        protocols:
+          igmp:
+            group: ssdp
+            type: membership report
+            version: 3
+          ipv4:
+            dst: ssdp
+            src: phone
+      ssdp-msearch:
+        protocols:
+          ipv4:
+            dst: ssdp
+            src: phone
+          ssdp:
+            method: M-SEARCH
+          udp:
+            dst-port: 1900
+        stats:
+          rate: 15/second burst 10 packets
+    ssdp-response-hue-phone:
+      protocols:
+        ipv4:
+          dst: phone
+          src: self
+        ssdp:
+          response: true
+        udp:
+          src-port: 1900
+      stats:
+        rate: 10/second
+    ssdp-search-phone:
+      protocols:
+        ipv4:
+          dst: ssdp
+          src: phone
+        ssdp:
+          method: M-SEARCH
+        udp:
+          dst-port: 1900
+      stats:
+        rate: 10/second
+patterns:
+  dns-hue-server:
+    bidirectional: true
+    protocols:
+      dns:
+        domain-name: null
+        qtype:
+        - A
+        - AAAA
+      ipv4:
+        dst: gateway
+        src: self
+      udp:
+        dst-port: 53
+    stats:
+      packet-count: 4
+  dns-ntp-hue-server:
+    dns-to-ntp-server:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: null
+          qtype:
+          - A
+          - AAAA
+        ipv4:
+          dst: gateway
+          src: self
+        udp:
+          dst-port: 53
+      stats:
+        packet-count: 4
+    ntp-to-server:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: null
+          src: self
+        udp:
+          dst-port: 123
+      stats:
+        rate: 15/second
+  https-hue-server:
+    bidirectional: true
+    protocols:
+      ipv4:
+        dst: null
+        src: self
+      tcp:
+        dst-port: 443
+    stats:
+      rate: 200/second burst 200 packets
+single-policies:
+  arp-reply-cam-gateway:
+    protocols:
+      arp:
+        sha: self
+        spa: self
+        tha: gateway
+        tpa: gateway
+        type: reply
+  arp-request-gateway-cam:
+    protocols:
+      arp:
+        sha: gateway
+        spa: gateway
+        tha: default
+        tpa: self
+        type: request
+  dns-ipv4:
+    bidirectional: true
+    protocols:
+      dns:
+        domain-name:
+        - www.philips-hue.com
+        - www.ecdinterface.philips.com
+        - ws.meethue.com
+        - dcp.dc1.philips.com
+        qtype:
+        - A
+        - AAAA
+      ipv4:
+        dst: gateway
+        src: self
+      udp:
+        dst-port: 53
+  http-echo-hue-local:
+    bidirectional: true
+    protocols:
+      http:
+        method: GET
+        uri: /api/MIgLn67KRlSoofSTjWMxxGw5uD-ewnMnYthbfZhg/lights/1
+      ipv4:
+        dst: self
+        src: 192.168.1.150
+      tcp:
+        dst-port: 80
+    stats:
+      packet-count: 20
+  http-get-phone-hue:
+    bidirectional: true
+    protocols:
+      http:
+        method: GET
+        uri: /description.xml
+      ipv4:
+        dst: self
+        src: phone
+      tcp:
+        dst-port: 80
+    stats:
+      packet-count: 11
+  https-local-app-hue:
+    bidirectional: true
+    protocols:
+      ipv4:
+        dst: self
+        src: phone
+      tcp:
+        dst-port: 443
+    stats:
+      rate: 10/second burst 100 packets
+  icmpv6-all:
+    protocols:
+      icmpv6: null
+  igmp-join-multicast:
+    protocols:
+      igmp:
+        group: mdns
+        type: membership report
+        version: 3
+      ipv4:
+        dst: igmpv3
+        src: self
+  mdns-query:
+    protocols:
+      ipv4:
+        dst: mdns
+        src: self
+      mdns:
+        domain-name:
+        - Philips Hue - 74C2DC._hue._tcp.local
+        - Philips hue - 74C2DC._hap._tcp.local
+        - 00178874c2dc.local
+        qtype: ANY
+      udp:
+        dst-port: 5353
+        src-port: 5353
+  mdns-response:
+    protocols:
+      ipv4:
+        dst: mdns
+        src: self
+      mdns:
+        response: true
+      udp:
+        dst-port: 5353
+        src-port: 5353
+  ssdp-notify:
+    protocols:
+      ipv4:
+        dst: ssdp
+        src: self
+      ssdp:
+        method: NOTIFY
+      udp:
+        dst-port: 1900
+        src-port: 1900

@@ -1,0 +1,12 @@
+services:
+  openwrt:
+    image: fdekeers/openwrt_tl-wdr4900
+    #image: fdekeers/openwrt_linksys-wrt1200ac
+    container_name: openwrt
+    environment:
+      - ROUTER=tl-wdr4900
+      #- ROUTER=linksys-wrt1200ac
+    volumes:
+      - .:/home/user/smart-home-firewall
+    command: ["/home/user/smart-home-firewall/build.sh", "-t", "/home/user/smart-home-firewall/openwrt/tl-wdr4900/toolchain.cmake"]
+    #command: ["/home/user/smart-home-firewall/build.sh", "-t", "/home/user/smart-home-firewall/openwrt/linksys-wrt1200ac/toolchain.cmake"]

@@ -1,0 +1,3 @@
+hash,timestamp,policy,state,verdict
+d9560e942a9c3223be34f89909e0bfa6d7a06100ba4ef0a4e21d813672ca7a60,1678878181.031300,arp-gateway-cam#arp-request-gateway-cam,0,ACCEPT
+cc039823999eb5872c32546fd92c71f7069fc89da91dfa8ec6e144bc8f7e1579,1678878181.035832,arp-gateway-cam#arp-reply-cam-gateway,1,ACCEPT

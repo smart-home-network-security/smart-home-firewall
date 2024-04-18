@@ -1,0 +1,227 @@
+---
+# Simplified profile, which mimics a MUD profile.
+# Supports only a limited set of protocols.
+# Does not support traffic statistics.
+
+device-info:
+  name: philips-hue
+  mac: 00:17:88:74:c2:dc
+  ipv4: 192.168.1.141
+  ipv6: fe80::217:88ff:fe74:c2dc
+  network: wired
+
+
+# For this simplified profile, only individual policies will be defined
+single-policies:
+
+  ##### ICMPv6 #####
+
+  icmpv6-all:
+    protocols:
+      icmpv6:
+
+
+  ##### DHCP #####
+
+  dhcp-hue-broadcast:
+    protocols:
+      udp:
+        src-port: 68
+        dst-port: 67
+      ipv4:
+        src: 0.0.0.0
+        dst: broadcast
+
+  dhcp-gateway-hue:
+    protocols:
+      udp:
+        src-port: 67
+        dst-port: 68
+      ipv4:
+        src: gateway
+        dst: self
+
+  
+  ##### IGMP #####
+
+  igmp-join-multicast:
+    protocols:
+      ipv4:
+        src: self
+        dst: igmpv3  # 224.0.0.22
+
+  igmp-phone-join-ssdp:
+    protocols:
+      ipv4:
+        src: phone
+        dst: ssdp  # 239.255.255.250
+
+  
+  ##### DNS #####
+
+  dns-query:
+    protocols:
+      udp:
+        src-port: 53
+      ipv4:
+        src: self
+        dst: gateway
+
+  dns-response:
+    protocols:
+      udp:
+        dst-port: 53
+      ipv4:
+        src: gateway
+        dst: self
+
+  
+  ##### mDNS #####
+
+  mdns-all:
+    protocols:
+      udp:
+        src-port: 5353
+        dst-port: 5353
+      ipv4:
+        src: self
+        dst: mdns
+
+
+  ##### NTP #####
+
+  ntp-client:
+    protocols:
+      udp:
+        dst-port: 123
+      ipv4:
+        src: self
+        dst: external
+
+  ntp-server:
+    protocols:
+      udp:
+        src-port: 123
+      ipv4:
+        src: external
+        dst: self
+
+
+  ##### SSDP #####
+
+  ssdp-hue:
+    protocols:
+      tcp:
+        src-port: 1900
+        dst-port: 1900
+      ipv4:
+        src: self
+        dst: ssdp  # 239.255.255.250
+
+  ssdp-phone:
+    protocols:
+      tcp:
+        dst-port: 1900
+      ipv4:
+        src: phone
+        dst: ssdp  # 239.255.255.250
+
+  ssdp-response-hue-phone:
+    protocols:
+      tcp:
+        src-port: 1900
+      ipv4:
+        src: self
+        dst: phone
+
+  
+  ##### HTTP #####
+
+  # HTTP GET request in LAN, from phone running SmartThings app to Hue bridge
+  http-lan-echo-hue:
+    protocols:
+      tcp:
+        dst-port: 80
+      ipv4:
+        src: phone
+        dst: self
+
+  http-lan-hue-echo:
+    protocols:
+      tcp:
+        src-port: 80
+      ipv4:
+        src: self
+        dst: phone
+
+  # HTTP GET request in LAN, from Amazon Echo to Hue bridge
+  http-lan-echo-hue:
+    protocols:
+      tcp:
+        dst-port: 80
+      ipv4:
+        src: !include ../amazon-echo/profile.yaml#device-info.ipv4
+        dst: self
+
+  http-lan-hue-echo:
+    protocols:
+      tcp:
+        src-port: 80
+      ipv4:
+        src: self
+        dst: !include ../amazon-echo/profile.yaml#device-info.ipv4
+
+  # HTTP traffic with cloud servers
+  http-cam-server:
+    protocols:
+      tcp:
+        dst-port: 80
+      ipv4:
+        src: self
+        dst: 52.208.0.0/13
+
+  http-server-cam:
+    protocols:
+      tcp:
+        src-port: 80
+      ipv4:
+        src: 52.208.0.0/13
+        dst: self
+  
+
+  ##### HTTPS #####
+
+  https-lan-app-hue:
+    protocols:
+      tcp:
+        dst-port: 443
+      ipv4:
+        src: phone
+        dst: self
+
+  https-lan-hue-app:
+    protocols:
+      tcp:
+        src-port: 443
+      ipv4:
+        src: self
+        dst: phone
+
+  # HTTPS traffic with cloud servers
+  https-cam-server:
+    protocols:
+      tcp:
+        dst-port: 443
+      ipv4:
+        src: self
+        dst: external
+  
+  https-server-cam:
+    protocols:
+      tcp:
+        src-port: 443
+      ipv4:
+        src: external
+        dst: self
+
+...

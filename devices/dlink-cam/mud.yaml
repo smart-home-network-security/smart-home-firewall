@@ -1,0 +1,188 @@
+---
+# Simplified profile, which mimics a MUD profile.
+# Supports only a limited set of protocols.
+# Does not support traffic statistics.
+
+device-info:
+  name: dlink-cam
+  mac: b0:c5:54:43:54:83
+  ipv4: 192.168.1.115
+  network: wireless
+
+
+# For this simplified profile, only individual policies will be defined
+single-policies:
+
+
+  ##### DHCP #####
+
+  dhcp-cam-broadcast:
+    protocols:
+      udp:
+        src-port: 68
+        dst-port: 67
+      ipv4:
+        src: 0.0.0.0
+        dst: broadcast
+
+  dhcp-gateway-cam:
+    protocols:
+      udp:
+        src-port: 67
+        dst-port: 68
+      ipv4:
+        src: gateway
+        dst: self
+
+  
+  ##### IGMP #####
+
+  igmp-join-multicast:
+    protocols:
+      ipv4:
+        src: self
+        dst: igmpv3  # 224.0.0.22
+
+  
+  ##### DNS #####
+
+  dns-cam-gateway:
+    protocols:
+      udp:
+        src-port: 53
+      ipv4:
+        src: self
+        dst: gateway
+
+  dns-gateway-cam:
+    protocols:
+      udp:
+        dst-port: 53
+      ipv4:
+        src: gateway
+        dst: self
+
+  
+  ##### mDNS #####
+
+  mdns-all:
+    protocols:
+      udp:
+        src-port: 5353
+        dst-port: 5353
+      ipv4:
+        src: self
+        dst: mdns
+
+  
+  ##### STUN #####
+
+  stun-cam-server:
+    protocols:
+      udp:
+        dst-port: 3478
+      ipv4:
+        src: self
+        dst: 52.212.0.0/14
+
+  stun-server-cam:
+    protocols:
+      udp:
+        src-port: 3478
+      ipv4:
+        src: 52.212.0.0/14
+        dst: self
+
+
+  ##### TCP #####
+  
+  tcp-phone-cam:
+    protocols:
+      tcp:
+        dst-port: 8080
+      ipv4:
+        src: phone
+        dst: self
+  
+  tcp-cam-phone:
+    protocols:
+      tcp:
+        src-port: 8080
+      ipv4:
+        src: self
+        dst: phone
+
+  
+  ##### HTTP #####
+
+  http-cam-server:
+    protocols:
+      tcp:
+        dst-port: 80
+      ipv4:
+        src: self
+        dst:
+          - 52.212.0.0/14
+          - 99.86.227.0/24
+
+  http-server-cam:
+    protocols:
+      tcp:
+        src-port: 80
+      ipv4:
+        src:
+          - 52.212.0.0/14
+          - 99.86.227.0/24
+        dst: self
+  
+
+  ##### HTTPS #####
+
+  https-cam-server:
+    protocols:
+      tcp:
+        dst-port: 443
+      ipv4:
+        src: self
+        dst: 54.194.135.95
+  
+  https-server-cam:
+    protocols:
+      tcp:
+        src-port: 443
+      ipv4:
+        src: 54.194.135.95
+        dst: self
+  
+
+  ##### UDP #####
+
+  udp-stream-lan-forward:
+    protocols:
+      udp:
+      ipv4:
+        src: self
+        dst: phone
+
+  udp-stream-lan-backward:
+    protocols:
+      udp:
+      ipv4:
+        src: phone
+        dst: self
+
+  udp-stream-wan-forward:
+    protocols:
+      udp:
+      ipv4:
+        src: self
+        dst: external
+
+  udp-stream-wan-backward:
+    protocols:
+      udp:
+      ipv4:
+        src: external
+        dst: self
+
+...

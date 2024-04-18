@@ -1,0 +1,49 @@
+TRAFFIC CAPTURE
+Wireless (plug, Alexa):
+    tcpdump -i wlan1 -w TPLink-plug-with-Alexa.pcap
+Ethernet (SmartThings):
+    tcpdump -i eth0.1 -w TPLink-plug-SmartThings.pcap
+Both in background:
+    tcpdump -i wlan1 -w TPLink-plug-with-Alexa.pcap & tcpdump -i eth0.1 -w TPLink-plug-SmartThings.pcap &
+
+SCENARIO
+
+00 START
+
+0. 01 Power on - Timestamp 60
+
+1. Control with phone on OpenWrt-5GHz network
+    1.1. From TP-Link app "Kasa"
+        03 Open app - Timestamp 180
+        04 On - Timestamp 240
+        05 Off - Timestamp 300
+    1.2. From SmartThings app
+        06 Open app - Timestamp 360
+        07 On - Timestamp 420
+        08 Off - Timestamp 480
+    1.3. From Alexa app
+        09 Open app - Timestamp 540
+        10 On - Timestamp 600
+        11 Off - Timestamp 660
+
+2. Control with phone on outside network
+    2.1. From TP-Link app "Kasa"
+        12 Open app - Timestamp 720
+        13 On - Timestamp 780
+        14 Off - Timestamp 840
+    2.2. From SmartThings app
+        15 Open app - Timestamp 900
+        16 On - Timestamp 960
+        17 Off - Timestamp 1020
+    2.3. From Alexa app
+        18 Open app - Timestamp 1080
+        19 On - Timestamp 1140
+        20 Off - Timestamp 1200
+    
+3. Voice control with Alexa
+    21 "Alexa, turn on TP-Link plug" - Timestamp 1230
+    22 "Alexa, turn off TP-Link plug" - Timestamp 1290
+
+4. Idle (record NTP and ARP)
+
+25 STOP

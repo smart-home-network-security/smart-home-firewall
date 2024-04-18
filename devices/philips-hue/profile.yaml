@@ -1,0 +1,585 @@
+---
+device-info:
+  name: philips-hue
+  mac: 00:17:88:74:c2:dc
+  ipv4: 192.168.1.141
+  ipv6: fe80::217:88ff:fe74:c2dc
+  network: wired
+  mud-version: 1
+  mud-url: https://philips-hue.com/philips-hue
+  last-update: "2022-03-15T10:27:29.170+01:00"
+  cache-validity: 100
+  is-supported: true
+
+
+patterns:
+
+  # DNS
+  dns-hue-server:
+    protocols:
+      dns:
+        qtype:
+          - A
+          - AAAA
+        domain-name: # Will be populated by parsing #
+      udp:
+        dst-port: 53
+      ipv4:
+        src: self
+        dst: gateway
+    bidirectional: true
+    stats:
+      packet-count: 4
+
+  # HTTPS
+  https-hue-server:
+    protocols:
+      tcp:
+        dst-port: 443
+      ipv4:
+        src: self
+        dst: # Will be populated by parsing #
+    bidirectional: true
+    stats:
+      rate: 200/second burst 200 packets
+  
+
+  # DNS and NTP
+  dns-ntp-hue-server:
+
+    dns-to-ntp-server:
+      protocols:
+        dns:
+          qtype:
+            - A
+            - AAAA
+          domain-name: # Will be populated by parsing #
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+      stats:
+        packet-count: 4
+
+    ntp-to-server:
+      protocols:
+        udp:
+          dst-port: 123  # NTP port
+        ipv4:
+          src: self
+          dst: # Will be populated by parsing #
+      bidirectional: true
+      stats:
+        rate: 15/second
+
+
+single-policies:
+
+  ### ARP ###
+
+  # ARP request from gateway to camera
+  arp-request-gateway-cam:
+    protocols:
+      arp:
+        type: request
+        sha: gateway
+        tha: default
+        spa: gateway
+        tpa: self
+
+  # ARP reply from camera to gateway
+  arp-reply-cam-gateway:
+    protocols:
+      arp:
+        type: reply
+        sha: self
+        tha: gateway
+        spa: self
+        tpa: gateway
+
+
+  ### ICMPv6 ###
+
+  icmpv6-all:
+    protocols:
+      icmpv6:
+
+
+  ### DNS ###
+  dns-ipv4:
+    protocols:
+      dns:
+        qtype:
+          - A
+          - AAAA
+        domain-name:
+          - www.philips-hue.com
+          - www.ecdinterface.philips.com
+          - ws.meethue.com
+          - dcp.dc1.philips.com
+      udp:
+        dst-port: 53
+      ipv4:
+        src: self
+        dst: gateway
+    bidirectional: true
+
+  # IGMP: join multicast group
+  igmp-join-multicast:
+    protocols:
+      igmp:
+        version: 3
+        type: membership report
+        group: mdns  # 224.0.0.251
+      ipv4:
+        src: self
+        dst: igmpv3  # 224.0.0.22
+
+
+  ### mDNS ###
+
+  # mDNS queries
+  mdns-query:
+    protocols:
+      mdns:
+        qtype: ANY
+        domain-name:
+          - Philips Hue - 74C2DC._hue._tcp.local
+          - Philips hue - 74C2DC._hap._tcp.local
+          - 00178874c2dc.local
+      udp:
+        src-port: 5353
+        dst-port: 5353
+      ipv4:
+        src: self
+        dst: mdns
+  
+  # mDNS response
+  mdns-response:
+    protocols:
+      mdns:
+        response: true
+      udp:
+        src-port: 5353
+        dst-port: 5353
+      ipv4:
+        src: self
+        dst: mdns
+
+  
+  ### SSDP ###
+  ssdp-notify:
+    protocols:
+      ssdp:
+        method: NOTIFY
+      udp:
+        src-port: 1900
+        dst-port: 1900
+      ipv4:
+        src: self
+        dst: ssdp  # 239.255.255.250
+
+
+  # Local HTTPS communication between Philips Hue app and bridge
+  https-local-app-hue:
+    protocols:
+      tcp:
+        dst-port: 443
+      ipv4:
+        src: phone  # Mobile phone running the app
+        dst: self
+    bidirectional: true
+    stats:
+      rate: 10/second burst 100 packets
+
+
+  # HTTP GET request from Amazon Echo to Hue bridge
+  http-echo-hue-local:
+    protocols:
+      http:
+        method: GET
+        uri: /api/MIgLn67KRlSoofSTjWMxxGw5uD-ewnMnYthbfZhg/lights/1
+      tcp:
+        dst-port: 80
+      ipv4:
+        src: !include ../amazon-echo/profile.yaml#device-info.ipv4
+        dst: self
+    bidirectional: true
+    stats:
+      packet-count: 20
+
+  
+  # HTTP request from local SmartThings app to Hue bridge
+  http-get-phone-hue:
+    protocols:
+      http:
+        method: GET
+        uri: /description.xml
+      tcp:
+        dst-port: 80
+      ipv4:
+        src: phone  # Mobile phone running the app
+        dst: self
+    bidirectional: true
+    stats:
+      packet-count: 11
+
+
+
+interactions:
+
+  ##### BOOT TRAFFIC #####
+
+  ### ARP ###
+
+  # ARP: hue to gateway
+  arp-hue-gateway:
+
+    arp-request-hue-gateway:
+      protocols:
+        arp:
+          type: request
+          sha: self
+          tha: default
+          spa: self
+          tpa: gateway
+    
+    arp-reply-gateway-hue:
+      protocols:
+        arp:
+          type: reply
+          sha: gateway
+          tha: self
+          spa: gateway
+          tpa: self
+
+  # ARP: phone to hue
+  arp-phone-hue:
+
+    arp-request-phone-hue:
+      protocols:
+        arp:
+          type: request
+          sha: phone
+          tha: default
+          spa: phone
+          tpa: self
+    
+    arp-reply-hue-phone:
+      protocols:
+        arp:
+          type: reply
+          sha: self
+          tha: phone
+          spa: self
+          tpa: phone
+  
+  # ARP: hue to phone
+  arp-hue-phone:
+
+    arp-request-hue-phone:
+      protocols:
+        arp:
+          type: request
+          sha: self
+          tha: default
+          spa: self
+          tpa: phone
+    
+    arp-reply-phone-hue:
+      protocols:
+        arp:
+          type: reply
+          sha: phone
+          tha: self
+          spa: phone
+          tpa: self
+
+
+  ### DHCP ###
+
+  ip-allocation:
+
+    dhcp-discover:
+      protocols:
+        dhcp:
+          type: discover
+          client-mac: self
+        udp:
+          src-port: 68
+          dst-port: 67
+        ipv4:
+          src: 0.0.0.0
+          dst: broadcast
+    
+    dhcp-offer:
+      protocols:
+        dhcp:
+          type: offer
+          client-mac: self
+        udp:
+          src-port: 67
+          dst-port: 68
+        ipv4:
+          src: gateway
+          dst: self
+    
+    dhcp-request:
+      protocols:
+        dhcp:
+          type: request
+          client-mac: self
+        udp:
+          src-port: 68
+          dst-port: 67
+        ipv4:
+          src: 0.0.0.0
+          dst: broadcast
+
+    dhcp-ack:
+      protocols:
+        dhcp:
+          type: ack
+          client-mac: self
+        udp:
+          src-port: 67
+          dst-port: 68
+        ipv4:
+          src: gateway
+          dst: self
+
+
+  ### HTTP REQUESTS ###
+
+  # HTTP POST request for DevicePortal
+  http-boot-device-portal:
+
+    dns-ecd-interface:
+      protocols:
+        dns:
+          qtype:
+            - A
+            - AAAA
+          domain-name: www.ecdinterface.philips.com
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+      stats:
+        packet-count: 4
+
+    http-post-device-portal:
+      protocols:
+        http:
+          method: POST
+          url: /DevicePortalICPRequestHandler/RequestHandler.ashx
+        tcp:
+          dst-port: 80
+        ipv4:
+          src: self
+          dst: www.ecdinterface.philips.com
+      bidirectional: true
+      stats:
+        packet-count: 30
+
+
+  # HTTP POST request for NotificationService
+  http-boot-notification-service:
+
+    dns-ecd-interface:
+      protocols:
+        dns:
+          qtype:
+            - A
+            - AAAA
+          domain-name: www.ecdinterface.philips.com
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+      stats:
+        packet-count: 4
+    
+    http-post-notification-service:
+      protocols:
+        http:
+          method: POST
+          url: /NotificationService/RequestHandler.ashx
+        tcp:
+          dst-port: 80
+        ipv4:
+          src: self
+          dst: www.ecdinterface.philips.com
+      bidirectional: true
+      stats:
+        packet-count: 15
+
+
+  # HTTP traffic at boot
+  http-boot-dcp-request-handler:
+
+    dns-hue-dcp:
+      protocols:
+        dns:
+          qtype:
+            - A
+            - AAAA
+          domain-name: dcp.dc1.philips.com
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+      stats:
+        packet-count: 4
+
+    http-post-dcp-request-handler:
+      protocols:
+        http:
+          method: POST
+          url: /DcpRequestHandler/index.ashx
+        tcp:
+          dst-port: 80
+        ipv4:
+          src: self
+          dst: dcp.dc1.philips.com
+      bidirectional: true
+      stats:
+        packet-count: 15
+
+  
+  ### NTP ###
+  ntp-time1-google: !include patterns.dns-ntp-hue-server dns-to-ntp-server.protocols.dns.domain-name:time1.google.com ntp-to-server.protocols.ipv4.dst:time1.google.com
+
+  ntp-time2-google: !include patterns.dns-ntp-hue-server dns-to-ntp-server.protocols.dns.domain-name:time2.google.com ntp-to-server.protocols.ipv4.dst:time2.google.com
+
+  ntp-time3-google: !include patterns.dns-ntp-hue-server dns-to-ntp-server.protocols.dns.domain-name:time3.google.com ntp-to-server.protocols.ipv4.dst:time3.google.com
+
+  ntp-time4-google: !include patterns.dns-ntp-hue-server dns-to-ntp-server.protocols.dns.domain-name:time4.google.com ntp-to-server.protocols.ipv4.dst:time4.google.com
+
+  ntp-aliyun-1: !include patterns.dns-ntp-hue-server dns-to-ntp-server.protocols.dns.domain-name:ntp1.aliyun.com ntp-to-server.protocols.ipv4.dst:ntp1.aliyun.com
+
+  ntp-aliyun-2: !include patterns.dns-ntp-hue-server dns-to-ntp-server.protocols.dns.domain-name:ntp2.aliyun.com ntp-to-server.protocols.ipv4.dst:ntp2.aliyun.com
+
+  ntp-aliyun-3: !include patterns.dns-ntp-hue-server dns-to-ntp-server.protocols.dns.domain-name:ntp3.aliyun.com ntp-to-server.protocols.ipv4.dst:ntp3.aliyun.com
+
+  ntp-aliyun-4: !include patterns.dns-ntp-hue-server dns-to-ntp-server.protocols.dns.domain-name:ntp4.aliyun.com ntp-to-server.protocols.ipv4.dst:ntp4.aliyun.com
+
+
+  ##### BACKGROUND TRAFFIC WITH SERVERS #####
+
+  # time.meethue.com
+  background-time-meethue:
+
+    dns-time-meethue: !include patterns.dns-hue-server protocols.dns.domain-name:time.meethue.com
+
+    https-time-meethue:
+      protocols:
+        tcp:
+          dst-port: 443
+        ipv4:
+          src: self
+          dst: time.meethue.com
+      bidirectional: true
+      stats:
+        packet-count: 20
+
+
+  # data.meethue.com
+  background-data-meethue:
+    dns-data-meethue: !include patterns.dns-hue-server protocols.dns.domain-name:data.meethue.com
+    https-data-meethue: !include patterns.https-hue-server protocols.ipv4.dst:data.meethue.com
+
+
+  # diag.meethue.com
+  background-diag-meethue:
+    dns-diag-meethue: !include patterns.dns-hue-server protocols.dns.domain-name:diag.meethue.com
+    https-diag-meethue: !include patterns.https-hue-server protocols.ipv4.dst:diag.meethue.com
+
+
+  # mqtt.2030.ltsapis.goog
+  background-mqtt:
+    dns-mqtt: !include patterns.dns-hue-server protocols.dns.domain-name:mqtt.2030.ltsapis.goog
+    https-mqtt: !include patterns.https-hue-server protocols.ipv4.dst:mqtt.2030.ltsapis.goog
+  
+
+  # ws.meethue.com
+  background-ws-meethue:
+    dns-ws-meethue: !include patterns.dns-hue-server protocols.dns.domain-name:ws.meethue.com
+
+    https-hue-ws:
+      protocols:
+        tcp:
+          dst-port: 443
+        ipv4:
+          src: self
+          dst: ws.meethue.com
+      bidirectional: true
+      stats:
+        rate: 10/second burst 100 packets
+
+
+  # Opening SmartThings app in local network
+  open-smartthings-app-local:
+
+    open-app: !include ../smartthings-hub/profile.yaml#interactions.open-app-local
+
+    ssdp-search-phone:
+      protocols:
+        ssdp:
+          method: M-SEARCH
+        udp:
+          dst-port: 1900
+        ipv4:
+          src: phone  # Mobile phone running the app
+          dst: ssdp
+      stats:
+        rate: 10/second
+
+    ssdp-response-hue-phone:
+      protocols:
+        ssdp:
+          response: true
+        udp:
+          src-port: 1900
+        ipv4:
+          src: self
+          dst: phone  # Mobile phone running the app
+      stats:
+        rate: 10/second
+  
+
+  http-get-description:
+    
+    http-get-phone-hue:
+      protocols:
+        http:
+          method: GET
+          uri: /description.xml
+        tcp:
+          dst-port: 80
+        ipv4:
+          src: phone  # Mobile phone running the app
+          dst: self
+      bidirectional: true
+      stats:
+        packet-count: 15
+
+    ssdp-response-hue-phone:
+      protocols:
+        ssdp:
+          response: true
+        udp:
+          src-port: 1900
+        ipv4:
+          src: self
+          dst: phone  # Mobile phone running the app
+
+...

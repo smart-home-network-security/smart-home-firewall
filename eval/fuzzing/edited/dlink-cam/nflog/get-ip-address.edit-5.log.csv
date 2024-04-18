@@ -1,0 +1,7 @@
+id,hash,timestamp,policy,state,verdict
+1,fbafc955448d8c17b085fd970d43e784dcc6e276281e1f0c58d29e7dad9a6209,1678880469.026034,get-ip-address#dhcp-discover,,QUEUE
+2,fbafc955448d8c17b085fd970d43e784dcc6e276281e1f0c58d29e7dad9a6209,1678880469.026034,get-ip-address#dhcp-discover,,QUEUE
+3,42f7ab2f231d08c82af98e04cf78c1985b07f8fa597fc2a4584ccab64f575d6b,1678880469.027128,get-ip-address#dhcp-offer,,QUEUE
+4,bdd013f4dc9935413b072ed5e916c20a072fc57a9e3ec23f9179571ce310108a,1678880469.109601,get-ip-address#dhcp-discover,,QUEUE
+5,bdd013f4dc9935413b072ed5e916c20a072fc57a9e3ec23f9179571ce310108a,1678880469.109601,get-ip-address#dhcp-discover,,QUEUE
+6,ff684010f914cb03b56ab61d828e317bed585e73ed5b7b30d581a4598b73f689,1678880469.111533,get-ip-address#dhcp-offer,,QUEUE

@@ -1,0 +1,348 @@
+---
+device-info:
+  name: tplink-plug
+  mac: 50:c7:bf:ed:0a:54
+  ipv4: 192.168.1.135
+  network: wireless
+
+
+single-policies:
+
+  ### Local network activity ###
+
+  # Background UDP traffic between phone in LAN with Kasa app open and plug
+  udp-plug-phone:
+    protocols:
+      udp:
+        src-port: 9999
+      ipv4:
+        src: self
+        dst: phone
+
+  # TCP traffic between device in LAN and plug
+  tcp-device-plug-lan:
+    protocols:
+      tcp:
+        dst-port: 9999
+      ipv4:
+        src:
+          - phone
+          - !include ../amazon-echo/profile.yaml#device-info.ipv4
+        dst: self
+    bidirectional: true
+    stats:
+      rate: 20/second
+
+
+
+interactions:
+
+  ### BOOT TRAFFIC ###
+
+  # DHCP towards gateway
+  dhcp-boot:
+
+    dhcp-discover:
+      protocols:
+        dhcp:
+          type: discover
+          client-mac: self
+        udp:
+          src-port: 68
+          dst-port: 67
+        ipv4:
+          src: 0.0.0.0
+          dst: broadcast
+    
+    dhcp-offer:
+      protocols:
+        dhcp:
+          type: offer
+          client-mac: self
+        udp:
+          src-port: 67
+          dst-port: 68
+        ipv4:
+          src: gateway
+          dst: self
+
+    dhcp-request:
+      protocols:
+        dhcp:
+          type: request
+          client-mac: self
+        udp:
+          src-port: 68
+          dst-port: 67
+        ipv4:
+          src: 0.0.0.0
+          dst: broadcast
+
+    dhcp-ack:
+      protocols:
+        dhcp:
+          type: ack
+          client-mac: self
+        udp:
+          src-port: 67
+          dst-port: 68
+        ipv4:
+          src: gateway
+          dst: self
+
+  
+  # ARP from plug to gateway
+  arp-plug-gateway:
+
+    arp-request:
+      protocols:
+        arp:
+          type: request
+          sha: self
+          tha: default
+          spa: self
+          tpa: gateway
+
+    arp-reply:
+      protocols:
+        arp:
+          type: reply
+          sha: gateway
+          tha: self
+          spa: gateway
+          tpa: self
+
+
+  # ARP from gateway to plug
+  arp-gateway-plug:
+
+    arp-request:
+      protocols:
+        arp:
+          type: request
+          sha: gateway
+          tha: default
+          spa: gateway
+          tpa: self
+      stats:
+        rate: 1/second
+
+    arp-reply:
+      protocols:
+        arp:
+          type: reply
+          sha: self
+          tha: gateway
+          spa: self
+          tpa: gateway
+
+
+  # DNS + NTP towards NTP server
+  dns-ntp-boot:
+
+    # DNS query/response toward any supported NTP server
+    dns-query-plug-ntp:
+      protocols:
+        dns:
+          qtype: A
+          domain-name:
+            - $.pool.ntp.org
+            - $.time.edu.cn
+            - $.nist.gov
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+
+    # NTP query & response
+    ntp-plug-server:
+      protocols:
+        udp:
+          dst-port: 123
+        ipv4:
+          src: self
+          dst: external
+      bidirectional: true
+      stats:
+        rate: 2/minute
+
+  
+  # DNS + HTTPS towards cloud (domain n-devs.tplinkcloud.com)
+  dns-https-tplinkcloud:
+
+    dns-query-plug-tplinkcloud:
+      protocols:
+        dns:
+          qtype: A
+          domain-name: n-devs.tplinkcloud.com
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+    
+    https-plug-tplinkcloud:
+      protocols:
+        tcp:
+          dst-port: 443
+        ipv4:
+          src: self
+          dst: n-devs.tplinkcloud.com
+      bidirectional: true
+      stats:
+        rate: 10/second
+
+  
+  # DNS + HTTPS towards cloud (domain euw1-api.tplinkra.com)
+  dns-https-tplinkra:
+
+    dns-query-plug-tplinkra:
+      protocols:
+        dns:
+          qtype: A
+          domain-name: euw1-api.tplinkra.com
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+    
+    https-plug-tplinkra:
+      protocols:
+        tcp:
+          dst-port: 443
+        ipv4:
+          src: self
+          dst: euw1-api.tplinkra.com
+      bidirectional: true
+      stats:
+        packet-count: 40
+
+  
+  ### INTERACTION TRAFFIC ###
+
+  # ARP from plug to phone
+  arp-plug-phone:
+
+    arp-request-plug-phone:
+      protocols:
+        arp:
+          type: request
+          sha: self
+          tha: default
+          spa: self
+          tpa: phone
+
+    arp-reply-phone-plug:
+      protocols:
+        arp:
+          type: reply
+          sha: phone
+          tha: self
+          spa: phone
+          tpa: self
+
+  
+  # ARP from plug to phone
+  arp-phone-plug:
+
+    arp-request-phone-plug:
+      protocols:
+        arp:
+          type: request
+          sha: phone
+          tha: default
+          spa: phone
+          tpa: self
+      stats:
+        rate: 1/second
+
+    arp-reply-plug-phone:
+      protocols:
+        arp:
+          type: reply
+          sha: self
+          tha: phone
+          spa: self
+          tpa: phone
+
+
+  # Generic traffic from plug to cloud API
+  update-to-cloud:
+
+    dns-plug-use1-api:
+      protocols:
+        dns:
+          qtype: A
+          domain-name: use1-api.tplinkra.com
+        udp:
+          dst-port: 53
+        ipv4:
+          src: self
+          dst: gateway
+      bidirectional: true
+
+    https-use1-api:
+      protocols:
+        tcp:
+          dst-port: 443
+        ipv4:
+          src: self
+          dst: use1-api.tplinkra.com
+      stats:
+        packet-count: 40
+      bidirectional: true
+
+
+  ### TRAFFIC WITH AMAZON ECHO ###
+
+  # ARP request/response from plug to Amazon Echo
+  arp-plug-echo:
+
+    arp-request-plug-echo:
+      protocols:
+        arp:
+          type: request
+          sha: self
+          tha: default
+          spa: self
+          tpa: !include ../amazon-echo/profile.yaml#device-info.ipv4
+      
+    arp-reply-echo-plug:
+      protocols:
+        arp:
+          type: reply
+          sha: !include ../amazon-echo/profile.yaml#device-info.mac
+          tha: self
+          spa: !include ../amazon-echo/profile.yaml#device-info.ipv4
+          tpa: self
+
+
+  # ARP request/response from Amazon Echo to plug
+  arp-echo-plug:
+
+    arp-request-echo-plug:
+      protocols:
+        arp:
+          type: request
+          sha: !include ../amazon-echo/profile.yaml#device-info.mac
+          tha: default
+          spa: !include ../amazon-echo/profile.yaml#device-info.ipv4
+          tpa: self
+      stats:
+        rate: 1/second
+
+    arp-reply-plug-echo:
+      protocols:
+        arp:
+          type: reply
+          sha: self
+          tha: !include ../amazon-echo/profile.yaml#device-info.mac
+          spa: self
+          tpa: !include ../amazon-echo/profile.yaml#device-info.ipv4
+
+...

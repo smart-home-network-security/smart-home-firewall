@@ -1,0 +1,144 @@
+##### START #####
+
+Time:
+    Idle:                  120 + 180 = 360 s
+    Power on:              30 * 7    = 210 s
+    LAN:                   30 * 34   = 1020 s
+    WAN:                   30 * 34   = 1020 s
+    Alexa's voice control: 30 * 9    = 270 s
+    TOTAL:                             2880 s (= 48 min)
+
+
+1. Power on
+    - Xiaomi camera: Power on
+    - SmartThings Hub: Power on
+    - D-Link camera: Power on
+    - Philips Hue: Power on
+    - TP-Link plug: Power on
+    - Tuya motion sensor: Power on
+    - Wait for 2 mins (4 beeps)
+
+
+2. Control with phone on OpenWrt-5GHz network
+    2.1. Xiaomi app
+        - Open app
+        - Stream camera for 10 seconds while moving
+    2.2. D-Link app
+        - Start app
+        - Stream camera for 10 seconds
+    2.3. Hue Essentials app
+        - Open app
+        - Turn on
+        - Change color
+        - Change intensity
+        - Turn off
+    2.4. Kasa app
+        - Open app
+        - On
+        - Off
+    2.5. Tuya smart app
+        - Open app
+        - Motion
+    2.6. SmartThings app
+        - Open app
+        2.6.1. SmartThings plug
+            - Turn on
+            - Turn off
+        2.6.2. SmartThings door sensor
+            - Open
+            - Close
+        2.6.3. Philips Hue
+            - Turn on
+            - Change color
+            - Change intensity
+            - Turn off
+        2.6.4. TP-Link plug
+            - On
+            - Off
+    2.7. Alexa app
+        - Open app
+        2.7.1. SmartThings plug
+            - Turn on
+            - Turn off
+        2.7.1. Philips Hue
+            - Turn on
+            - Change color
+            - Change intensity
+            - Turn off
+        2.7.2. TP-Link plug
+            - On
+            - Off
+
+
+
+3. Control with phone on external network
+    3.1. Xiaomi app
+        - Open app
+        - Stream camera for 10 seconds while moving
+    3.2. D-Link app
+        - Start app
+        - Stream camera for 10 seconds
+    3.3. Hue Essentials app
+        - Open app
+        - Turn on
+        - Change color
+        - Change intensity
+        - Turn off
+    3.4. Kasa app
+        - Open app
+        - On
+        - Off
+    3.5. Tuya smart app
+        - Open app
+        - Motion
+    3.6. SmartThings app
+        - Open app
+        3.6.1. SmartThings plug
+            - Turn on
+            - Turn off
+        3.6.2. SmartThings door sensor
+            - Open
+            - Close
+        3.6.3. Philips Hue
+            - Turn on
+            - Change color
+            - Change intensity
+            - Turn off
+        3.6.4. TP-Link plug
+            - On
+            - Off
+    3.7. Alexa app
+        - Open app
+        3.7.1. SmartThings plug
+            - Turn on
+            - Turn off
+        3.7.2. Philips Hue
+            - Turn on
+            - Change color
+            - Change intensity
+            - Turn off
+        3.7.3. TP-Link plug
+            - On
+            - Off
+
+
+4. Voice control with Alexa
+    4.1. SmartThings
+        - "Alexa, turn on SmartThings outlet"
+        - "Alexa, turn off SmartThings outlet"
+    4.2. Philips Hue
+        - "Alexa, turn on color lamp"
+        - "Alexa, set color lamp to green"
+        - "Alexa, lower/increase brightness of color lamp"
+        - "Alexa, turn off color lamp"
+    4.3. TP-Link plug
+        - "Alexa, turn on TP-Link plug"
+        - "Alexa, turn off TP-Link plug"
+    4.4. Tuya motion sensor
+        - "Alexa, what is the battery level of motion sensor ?"
+
+
+5. Idle for 3 min (6 beeps)
+
+
+##### STOP #####

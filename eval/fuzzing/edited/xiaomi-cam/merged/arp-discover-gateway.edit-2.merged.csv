@@ -1,0 +1,4 @@
+id,hash,timestamp,policy,state,verdict
+1,47d5957444802c6c173e7c5ae5c8656281cfe2ee1e5fff23166bc366b7195f1a,1678881635.191726,arp-discover-gateway#arp-request,,DROP
+2,35e9ee885633515f0e365d6ad16d427228e2466196d27de491bcb5f4f677d19d,1678881635.191726,arp-discover-gateway#arp-request,0,ACCEPT
+3,6c4205a0ae891fa618b20b74277d6d449e29e6d33b6cb31b26e5e29ec0e5ccab,1678881635.191986,arp-discover-gateway#arp-reply,,DROP

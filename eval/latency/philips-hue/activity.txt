@@ -1,0 +1,69 @@
+TRAFFIC CAPTURE
+
+Wireless (bulbs, Alexa):
+    tcpdump -i wlan1 -w Hue-Alexa.pcap
+Ethernet (SmartThings & Philips Hue Hub):
+    tcpdump -i eth0.1 -w Hue-Hubs.pcap
+Both in background:
+    tcpdump -i wlan1 -w Hue-Alexa.pcap & tcpdump -i eth0.1 -w Hue-Hubs.pcap &
+Copy pcaps to laptop
+    scp router:/root/FILENAME.pcap path/to/folder/
+Merge
+    mergecap -w Hue-merged.pcap Hue-Alexa.pcap Hue-Hubs.pcap
+
+
+SCENARIO
+
+00 START
+
+1. 01 Power on - Timestamp 60
+
+2. Control with phone on OpenWrt-5GHz network
+    2.1 From Hue app
+        03 Open app - Timestamp 180
+        04 Turn on - Timestamp 240
+        05 Change color - Timestamp 300
+        06 Change intensity - Timestamp 380
+        07 Turn off - Timestamp 420
+    2.2. From SmartThings app
+        08 Open app - Timestamp 480
+        09 Turn on - Timestamp 540
+        10 Change color - Timestamp 600
+        11 Change intensity - Timestamp 660
+        12 Turn off - Timestamp 720
+    2.3. From Alexa App
+        13 Open app - Timestamp 780
+        14 Turn on - Timestamp 840
+        15 Change color - Timestamp 900
+        16 Change intensity - Timestamp 960
+        17 Turn off - Timestamp 1020
+
+3. Control with phone on outside network
+    2.1 From Hue app
+        18 Open app - Timestamp 1080
+        19 Turn on - Timestamp 1140
+        20 Change color - Timestamp 1200
+        21 Change intensity - Timestamp 1260
+        22 Turn off - Timestamp 1320
+    2.2. From SmartThings app
+        23 Open app - Timestamp 1380
+        24 Turn on - Timestamp 1440
+        25 Change color - Timestamp 1500
+        26 Change intensity - Timestamp 1560
+        27 Turn off - Timestamp 1620
+    2.3. From Alexa App
+        28 Open app - Timestamp 1680
+        29 Turn on - Timestamp 1740
+        30 Change color - Timestamp 1800
+        31 Change intensity - Timestamp 1860
+        32 Turn off - Timestamp 1920
+
+4. Control with Alexa voice
+    33 "Alexa, turn on color lamp" - Timestamp 1980
+    34 "Alexa, set color lamp to green" - Timestamp 2040
+    35 "Alexa, lower/increase brightness of color lamp" - Timestamp 2100
+    36 "Alexa, turn off color lamp" - Timestamp 2160
+
+5. Idle
+
+40 STOP

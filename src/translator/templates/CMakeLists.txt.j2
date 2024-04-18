@@ -1,0 +1,15 @@
+# Minimum required CMake version
+cmake_minimum_required(VERSION 3.20)
+
+set(EXECUTABLE_OUTPUT_PATH ${BIN_DIR})
+
+# Nfqueue C file for device {{device}}
+add_executable({{device}} nfqueues.c)
+target_link_libraries({{device}} pthread)
+IF( OPENWRT_CROSSCOMPILING )
+target_link_libraries({{device}} jansson mnl nfnetlink nftnl nftables netfilter_queue netfilter_log)
+ENDIF()
+target_link_libraries({{device}} nfqueue packet_utils rule_utils)
+target_link_libraries({{device}} ${PARSERS})
+target_include_directories({{device}} PRIVATE ${INCLUDE_DIR})
+install(TARGETS {{device}} DESTINATION ${EXECUTABLE_OUTPUT_PATH})

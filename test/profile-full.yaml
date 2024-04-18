@@ -1,0 +1,73 @@
+device-info:
+  name: my-device
+  mac: 00:11:22:33:44:55
+  ipv4: 192.0.2.10
+  ipv6: 2001:db8::10
+  
+patterns:
+
+  http-pattern: &http-pattern
+    protocols:
+      http:
+        method: GET
+        uri: /index.html
+      tcp:
+        dst-port: 80
+      ipv4:
+        src: self
+        dst: gateway
+    bidirectional: true
+
+  dns-pattern:
+    protocols:
+      dns:
+        qtype: A
+        domain-name: # Placeholder #
+      udp:
+        dst-port: 53
+      ipv4:
+        src: self
+        dst: gateway
+    bidirectional: true
+    stats:
+      packet-count: 4
+
+
+single-policies:
+
+  igmp-join-mdns:
+    protocols:
+      igmp:
+        version: 3
+        type: membership report
+        group: mdns
+      ipv4:
+        src: self
+        dst: igmpv3
+
+
+interactions:
+
+  connection-test:
+    ping-gateway: *http-pattern
+    ping-google:
+      protocols:
+        icmp:
+          type: echo-request
+        ipv4:
+          src: self
+          dst: 8.8.8.8
+      bidirectional: true
+
+  dns-https-server:
+    dns-server: !include patterns.dns-p protocols.dns.domain-name:my.server.com
+    https-server:
+      protocols:
+        tcp:
+          dst-port: 443
+        ipv4:
+          src: self
+          dst: my.server.com
+      bidirectional: true
+      stats:
+        rate: 50/second

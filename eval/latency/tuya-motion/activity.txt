@@ -1,0 +1,22 @@
+SCENARIO
+
+00 START
+
+0. 01 Power on - Timestamp 60
+
+1. Control with phone on OpenWrt-5GHz network
+    1.1. From Tuya Smart app
+        02 Open app - Timestamp 180
+        03 Motion - Timestamp 240
+
+2. Control with phone on external network
+    2.1. From Tuya Smart app
+        04 Open app - Timestamp 180
+        05 Motion - Timestamp 240
+    
+3. Voice control with Alexa
+    06 "Alexa, what is the battery level of motion sensor ?" - Timestamp
+
+4. Idle (record NTP and ARP)
+
+08 STOP

@@ -1,0 +1,44 @@
+{
+
+    "amazon-echo": [],
+    
+    "dlink-cam": [
+        "arp-gateway-cam.pcap",
+        "dns-ipv4.pcap",
+        "mdns.pcap",
+        "get-ip-address.pcap",
+        "http-head-boot.pcap",
+        "https-boot-cam-fwd.pcap",
+        "open-app-local-network.pcap",
+        "stream-app-local.pcap"
+    ],
+
+    "philips-hue": [
+        "ip-allocation.pcap",
+        "http-boot-1.pcap",
+        "http-boot-2.pcap",
+        "ntp-all-servers.pcap",
+        "open-smartthings-app-local.pcap",
+        "http-get-description.pcap"
+    ],
+
+    "smartthings-hub": [],
+
+    "tplink-plug": [
+        "tls-plug-server.pcap",
+        "lan-kasa.pcap",
+        "wan-generic.pcap",
+        "lan-alexa.pcap",
+        "alexa-voice.pcap"
+    ],
+
+    "xiaomi-cam": [
+        "http-xiaomi-cloud.pcap",
+        "background-xiaomi-cloud.pcap",
+        "ping-quad8.pcap",
+        "arp-discover-gateway.pcap",
+        "arp-gateway-discovers-camera.pcap",
+        "get-ip-address.pcap",
+        "open-app-local.pcap"
+    ]
+}

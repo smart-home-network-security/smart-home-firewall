@@ -1,0 +1,21 @@
+1. Start firewall as usual
+
+2. Run attack
+    sudo python3 eval/attacks/$ATTACK_DIR/$ATTACK_SCRIPT
+
+3. Launch top on router
+    top -b -d 1 > /tmp/cpu.txt
+
+4. Boot device
+
+5. Interact with device
+
+6. Kill processes
+    - top
+    - attack
+    - firewall
+
+7. Copy result file
+    scp tplink:/tmp/cpu.txt ./eval/attacks/cpu/$FILENAME
+
+8. Process result file

@@ -1,0 +1,9 @@
+hash,timestamp,policy,state,verdict
+78a14a61d1f9fbf08f2d6fffed1e3b1d59b82b641c828f5bfad561b60016efac,1678880545.620704,stream-app-local#dns-cam-server-aaaa,0,ACCEPT
+01ace1bdc050adf2aee3f1b4c9208abc62a5502b1b1a5fee401913edd9b558e0,1678880545.621094,stream-app-local#dns-cam-server-aaaa-backward,1,ACCEPT
+e3148b002fcc3ff17423623ed6335d7f6cbaf9885d573e328e445b89ca80fa26,1678880545.623940,single#dns-ipv4,,DROP
+94555de39e427e616e2efe322bd3cd0036926088e4d5588fab3cc42a2d389014,1678880545.624271,single#dns-ipv4-backward,,DROP
+12358d6643fdf46a4e26a971c53e6ec4101d3ac7e1cfd33610a75a2b8126f455,1678880545.631777,stream-app-local#stun-bind-cam-server,,DROP
+76765f6a3d8c5c30e79ae80d6b3284ff8aedacc406620cbcf2543998d06697aa,1678880545.652445,stream-app-local#stun-bind-cam-server-backward,,DROP
+27f86424f3bbad49d8ef7565406468bad8e897b6b47d46aaf524e49a9e8f6f7d,1678880557.386183,single#tcp-traffic-phone-cam,,ACCEPT
+56c7e47299174e2bfbe783b6d1732d1d100367a5fd21d5b15e26c8ae3f80a783,1678880557.420108,single#tcp-traffic-phone-cam-backward,,ACCEPT

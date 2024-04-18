@@ -1,0 +1,17 @@
+id,hash,timestamp,policy,state,verdict
+1,4825a3aba76574d7a579f4f83b82bc45674fe8aa849e77137ce549d7a792db31,1678880788.273510,single#http-echo-hue-local,0,ACCEPT
+1,4825a3aba76574d7a579f4f83b82bc45674fe8aa849e77137ce549d7a792db31,1678880788.273510,http-get-description#http-get-phone-hue,0,ACCEPT
+2,d2bb7e2392b8436d783575aee2e232cf103af2895f34d3286e67c7ba8d8d6268,1678880788.273847,single#http-echo-hue-local-backward,1,ACCEPT
+3,a8795774c7324fd6a28e871649d85aa5c793491b31f8723e1e375c520641ace1,1678880788.275520,single#http-echo-hue-local,,DROP
+4,39936b504c8f9b81c88c2eacd8903af2fc9b060e80aae9501b14b85bd74eea65,1678880788.277087,http-get-description#http-get-phone-hue,1,ACCEPT
+5,e1e8ed25d102fa6a4b4bb3e352d0a77c39e652057a2895a927134291b24d9fd8,1678880788.277376,single#http-echo-hue-local-backward,1,ACCEPT
+6,78e7c0681b5dfc77c80873e035ab74cbc9c37c5fb8726ac77e6a42f8f11cce14,1678880788.280612,single#http-echo-hue-local-backward,1,ACCEPT
+7,6f865f9951bc593d7fae0a274ede5e5580782572ee077e067ea72a0300c82de2,1678880788.281000,single#http-echo-hue-local-backward,,DROP
+8,e8d01e2e07f24374a6052b7c85c02c067c064670e66902f5b3a2f374c9b0f07a,1678880788.283306,single#http-echo-hue-local,1,ACCEPT
+8,e8d01e2e07f24374a6052b7c85c02c067c064670e66902f5b3a2f374c9b0f07a,1678880788.283306,http-get-description#http-get-phone-hue,1,ACCEPT
+9,09201b3c0a6d0d8c52fe0b1d418b4d44386f90843bbaf5bce1530a15848afe5b,1678880788.285128,single#http-echo-hue-local,1,ACCEPT
+9,09201b3c0a6d0d8c52fe0b1d418b4d44386f90843bbaf5bce1530a15848afe5b,1678880788.285128,http-get-description#http-get-phone-hue,1,ACCEPT
+10,60eb24ff47afbcd6b8c8b4726a90e0e00d1ca242105dfcbca9eb0ee6d0b25107,1678880788.285352,single#http-echo-hue-local-backward,1,ACCEPT
+11,b10574323d6eec958a7fe1a010627db0418e907a8f857a72503a6bc28866ac7c,1678880788.288115,single#http-echo-hue-local,1,ACCEPT
+11,b10574323d6eec958a7fe1a010627db0418e907a8f857a72503a6bc28866ac7c,1678880788.288115,http-get-description#http-get-phone-hue,1,ACCEPT
+12,ae938aafdcdb897a486f981bb76231d638e0a19c2f7a8333d6dac012686bd981,1678880788.319049,open-smartthings-app-local#ssdp-response-hue,,DROP

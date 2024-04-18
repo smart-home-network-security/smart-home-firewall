@@ -1,0 +1,7 @@
+id,hash,timestamp,policy,state,expected_verdict,actual_verdict,reason
+1,4c30736e631b04566191b3a0ad98cb31ffec30cc21bd22c73bfa49b9f71eed0b,1678881685.573123,get-ip-address#dhcp-discover,0,ACCEPT,ACCEPT,GROUND_TRUTH
+2,4c30736e631b04566191b3a0ad98cb31ffec30cc21bd22c73bfa49b9f71eed0b,1678881685.573227,get-ip-address#dhcp-discover,,DROP,DROP,GROUND_TRUTH
+3,53dbe2122160e0758029bf89d2e68fd2554f5cb5c2d3f9d5c348eff2f57c8d00,1678881685.574341,get-ip-address#dhcp-offer,,DROP,DROP,EDITED
+4,15d79f2f0833e8bc274aa8f833e31e69a89af7168270d43a7ffddfc16e6e974c,1678881685.623305,get-ip-address#dhcp-request,,DROP,DROP,INTERACTION
+5,15d79f2f0833e8bc274aa8f833e31e69a89af7168270d43a7ffddfc16e6e974c,1678881685.623409,get-ip-address#dhcp-discover,,DROP,DROP,GROUND_TRUTH
+6,b63a8206a1eacaef6b47f06f7f54ababe06748942022d26a9a547a28a5716f6a,1678881685.625047,get-ip-address#dhcp-ack,,DROP,DROP,INTERACTION

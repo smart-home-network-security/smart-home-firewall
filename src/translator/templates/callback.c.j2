@@ -1,0 +1,443 @@
+{% macro verdict(policy_name, interaction_data = "") %}
+#ifdef LOG
+        print_hash(hash);
+        {% if interaction_data %}
+        printf(",%ld.%06ld,{{policy_name}},%hhu,ACCEPT\n", (long int)timestamp.tv_sec, (long int)timestamp.tv_usec, previous_state);
+        {% else %}
+        printf(",%ld.%06ld,{{policy_name}},,ACCEPT\n", (long int)timestamp.tv_sec, (long int)timestamp.tv_usec);
+        {% endif %}
+        #endif /* LOG */
+        #ifdef DEBUG
+        {% if interaction_data %}
+        printf("ACCEPT - Policy: {{policy_name}} - State: %hhu\n", previous_state);
+        {% else %}
+        printf("ACCEPT - Policy: {{policy_name}}\n");
+        {% endif %}
+        if (verdict != NF_STOP) {
+            accepted_packets++;
+            printf("Accepted packets: %hu\n", accepted_packets);
+        }
+        #endif /* DEBUG */
+
+        verdict = NF_STOP;
+{% endmacro %}
+
+{% macro write_callback_function(loop_index, nfqueue) %}
+{% set nfqueue_name = nfqueue.name.replace('-', '_') %}
+{% set nfqueue_name = nfqueue_name.replace('#', '_') %}
+/**
+ * @brief {{nfqueue.name}} callback function, called when a packet enters the queue.
+ * 
+ * @param pkt_id packet ID for netfilter queue
+ * @param hash packet payload SHA256 hash (only present if LOG is defined)
+ * @param timestamp packet timestamp (only present if LOG is defined)
+ * @param pkt_len packet length, in bytes
+ * @param payload pointer to the packet payload
+ * @param arg pointer to the argument passed to the callback function
+ * @return the verdict for the packet
+ */
+
+#ifdef LOG
+uint32_t callback_{{nfqueue_name}}(int pkt_id, uint8_t *hash, struct timeval timestamp, int pkt_len, uint8_t *payload, void *arg)
+#else
+uint32_t callback_{{nfqueue_name}}(int pkt_id, int pkt_len, uint8_t *payload, void *arg)
+#endif /* LOG */
+{
+    #if defined DEBUG || defined LOG
+    #ifdef DEBUG
+    printf("Received packet from nfqueue {{nfqueue.queue_num}}\n");
+    #endif
+    uint8_t previous_state;
+    #endif /* DEBUG || LOG */
+
+    {% set custom_parsers = [] %}
+    {% set need_src_addr = namespace(value=False) %}
+    {% set need_dst_addr = namespace(value=False) %}
+    {% for policy_dict in nfqueue.policies %}
+    {% set policy = policy_dict["policy"] %}
+    {% for nfq_match in policy.nfq_matches %}
+    {% if nfq_match["template"]|is_list %}
+    {% for template in nfq_match["template"] %}
+    {% if "compare_ip" in template %}
+    {% if "src_addr" in template and not need_src_addr.value %}
+    {% set need_src_addr.value = True %}
+    uint32_t src_addr = get_ipv4_src_addr(payload);  // IPv4 source address, in network byte order
+    {% endif %}
+    {% if "dst_addr" in template and not need_dst_addr.value %}
+    {% set need_dst_addr.value = True %}
+    uint32_t dst_addr = get_ipv4_dst_addr(payload);  // IPv4 destination address, in network byte order
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    {% if "compare_ip" in nfq_match["template"] %}
+    {% if "src_addr" in nfq_match["template"] and not need_src_addr.value %}
+    {% set need_src_addr.value = True %}
+    uint32_t src_addr = get_ipv4_src_addr(payload);  // IPv4 source address, in network byte order
+    {% endif %}
+    {% if "dst_addr" in nfq_match["template"] and not need_dst_addr.value %}
+    {% set need_dst_addr.value = True %}
+    uint32_t dst_addr = get_ipv4_dst_addr(payload);  // IPv4 destination address, in network byte order
+    {% endif %}
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    {% if policy.custom_parser and policy.custom_parser not in custom_parsers %}
+    {% if policy.custom_parser == 'ssdp' and not need_dst_addr.value %}
+    {% set need_dst_addr.value = True %}
+    uint32_t dst_addr = get_ipv4_dst_addr(payload);  // IPv4 destination address, in network byte order
+    {% endif %}
+    {% if policy.nfq_matches %}
+    // Skip layer 3 and 4 headers
+    {% if policy.custom_parser == 'http' or policy.custom_parser == 'coap' %}
+    size_t l3_header_length = get_l3_header_length(payload);
+    {% if policy.custom_parser == 'http' %}
+    uint16_t dst_port = get_dst_port(payload + l3_header_length);
+    {% elif policy.custom_parser == 'coap' %}
+    uint16_t coap_length = get_udp_payload_length(payload + l3_header_length);
+    {% endif %}
+    {% endif %}
+    size_t skipped = get_headers_length(payload);
+    {% if policy.custom_parser == 'http' %}
+    bool has_payload = pkt_len - skipped >= HTTP_MESSAGE_MIN_LEN;
+    bool is_http_message = has_payload && is_http(payload + skipped);
+    {% endif %}
+
+    {% if "dns" in policy.custom_parser %}
+    // Parse payload as DNS message
+    dns_message_t dns_message = dns_parse_message(payload + skipped);
+    #ifdef DEBUG
+    dns_print_message(dns_message);
+    #endif
+    {% elif policy.custom_parser %}
+    // Parse payload as {{policy.custom_parser|upper}} message
+    {{policy.custom_parser}}_message_t {{policy.custom_parser}}_message = {{policy.custom_parser}}_parse_message(payload + skipped
+    {%- if policy.custom_parser == 'http' -%}
+    , dst_port
+    {%- elif policy.custom_parser == 'ssdp' -%}
+    , dst_addr
+    {%- elif policy.custom_parser == 'coap' -%}
+    , coap_length
+    {%- endif -%}
+    );
+    #ifdef DEBUG
+    {% if policy.custom_parser == 'http' %}
+    if (is_http_message) {
+        http_print_message(http_message);
+    } else {
+        printf("TCP message with destination port %hu corresponding to HTTP traffic.\n", dst_port);
+    }
+    {% else %}
+    {{policy.custom_parser}}_print_message({{policy.custom_parser}}_message);
+    {% endif %}
+    #endif
+    {% endif %}
+    {% endif %}
+    {% set tmp = custom_parsers.append(policy.custom_parser) %}
+    {% endif %}
+    {% endfor %}
+    uint32_t verdict = NF_DROP; // Packet verdict: STOP (accept) or DROP
+
+    {% for policy_dict in nfqueue.policies %}
+    {% set interaction_idx = policy_dict["interaction_idx"] %}
+    {% set policy_idx = policy_dict["policy_idx"] %}
+    {% set state = policy_dict["state"] %}
+    {% set policy = policy_dict["policy"] %}
+    {% set counters_idx = policy_dict["counters_idx"] %}
+    {% set interaction = interactions[interaction_idx] %}
+    {% set max_state = interaction["max_state"] %}
+    {% if max_state > 0 and policy.is_base_for_counter("packet-count") %}
+    {% set packet_count = "(interactions_data[{}].counters + {})->packet_count".format(interaction_idx, counters_idx["packet-count"]) %}
+    // Initialize packet count if not initialized yet
+    if (!{{packet_count}}.is_initialized) {
+        {{packet_count}}.value = 0;
+        {{packet_count}}.is_initialized = true;
+    }
+    {% endif %}
+    {% if max_state > 0 and policy.is_base_for_counter("duration") %}
+    {% set duration = "(interactions_data[{}].counters + {})->duration".format(interaction_idx, counters_idx["duration"]) %}
+    // Initialize duration initial value if not initialized yet
+    if (!{{duration}}.is_initialized) {
+        {{duration}} = counter_duration_init();
+    }
+    {% endif %}
+    {% endfor %}
+
+    {% set is_default_policy = namespace(value=False) %}
+    {% for policy_dict in nfqueue.policies %}
+    {% set interaction_idx = policy_dict["interaction_idx"] %}
+    {% set policy_idx = policy_dict["policy_idx"] %}
+    {% set state = policy_dict["state"] %}
+    {% set policy = policy_dict["policy"] %}
+    {% set counters_idx = policy_dict["counters_idx"] %}
+    {% set interaction = interactions[interaction_idx] %}
+    {% set interaction_data = "interactions_data[{}]".format(interaction_idx) %}
+    {% set num_policies = interaction["policy_idx"] + 1 %}
+    {% set max_state = interaction["max_state"] %}
+    {% set previous_policy = interaction["policies"][(policy_idx - 1) % num_policies] %}
+    {% set second_previous_policy = interaction["policies"][(policy_idx - 2) % num_policies] %}
+    {% set next_policy = interaction["policies"][(policy_idx + 1) % num_policies] %}
+    {% set second_next_policy = interaction["policies"][(policy_idx + 2) % num_policies] %}
+    {% if max_state > 0 %}
+    {% if "packet-count" in counters_idx %}
+    {% set packet_count = "(interactions_data[{}].counters + {})->packet_count".format(interaction_idx, counters_idx["packet-count"]) %}
+    {% endif %}
+    {% if "duration" in counters_idx %}
+    {% set duration = "(interactions_data[{}].counters + {})->duration".format(interaction_idx, counters_idx["duration"]) %}
+    {% endif %}
+    {% endif %}
+
+    {% if state >= 0 %}
+    {% set policy_name = "{}#{}".format(policy.interaction_name, policy.name) %}
+    // Policy {{policy_name}}
+    pthread_mutex_lock(&({{interaction_data}}.mutex));
+    #if defined DEBUG || defined LOG
+    previous_state = {{interaction_data}}.current_state;
+    #endif
+    if (
+        {% if "packet-count" in counters_idx %}
+        {{packet_count}}.is_initialized &&
+        {% endif %}
+        {% if policy.transient and "duration" in policy.counters %}
+        {{duration}}.is_initialized &&
+        {% endif %}
+        {% if max_state > 0 %}
+        (
+        {% if ( policy.transient and ( not policy.is_backward and (previous_policy.transient or previous_policy.periodic) ) ) or ( (policy.transient or policy.periodic) and policy.is_backward and (second_previous_policy.transient or second_previous_policy.periodic) ) %}
+        {% set previous_state = (state - 1) % (max_state + 1) if policy.periodic else (state - 2) % (max_state + 1) %}
+        {{interaction_data}}.current_state == {{previous_state}} ||
+        {% endif %}
+        {% if previous_policy.transient or policy.transient or (policy_idx == 0 and previous_policy.periodic) %}
+        {% set previous_state = state if policy.periodic else (state - 1) % (max_state + 1) %}
+        {{interaction_data}}.current_state == {{previous_state}} ||
+        {% endif %}
+        {% if policy.periodic and policy_idx != num_policies - 1 %}
+        {{interaction_data}}.current_state == {{(state + 1) % (max_state + 1)}}
+        {%- if policy.periodic and policy_idx == 0 %} ||
+        {% endif %}
+        {% endif %}
+        {% if (policy.periodic and policy_idx == 0) or not (policy.periodic and policy_idx != num_policies - 1) %}
+        {{interaction_data}}.current_state == {{state}}
+        {% endif %}
+        )
+        {% if policy.nfq_matches %}
+        && (
+        {% endif %}
+        {% endif %}
+        {% if policy.nfq_matches %}
+        {% if policy.custom_parser == 'http' %}
+        !is_http_message || (
+        {% endif %}
+        {% set rule = policy.nfq_matches[0] %}
+        {% if rule['template'] | is_list %}
+        (
+        {% for i in range(rule['template']|length) %}
+        {% set template = rule['template'][i] %}
+        {% set match = rule['match'][i] %}
+        {% if "dns_entry_contains" in template %}
+        {{ template.format(interaction_idx, match) }}
+        {% else %}
+        {{ template.format(match) }}
+        {% endif %}
+        {% if i < rule['template']|length - 1 %}
+        ||
+        {% endif %}
+        {% endfor %}
+        )
+        {% else %}
+        {% if "dns_entry_contains" in rule['template'] %}
+        {{ rule['template'].format(interaction_idx, rule['match']) }}
+        {% else %}
+        {{ rule['template'].format(rule['match']) }}
+        {% endif %}
+        {% endif %}
+        {% for rule in policy.nfq_matches[1:] %}
+        &&
+        {% if rule['match'] | is_list %}
+        (
+        {% for i in range(rule['template']|length) %}
+        {% set template = rule['template'][i] %}
+        {% set match = rule['match'][i] %}
+        {% if "dns_entry_contains" in template %}
+        {{ template.format(interaction_idx, match) }}
+        {% else %}
+        {{ template.format(match) }}
+        {% endif %}
+        {% if i < rule['template']|length - 1 %}
+        ||
+        {% endif %}
+        {% endfor %}
+        )
+        {% else %}
+        {% if "dns_entry_contains" in rule['template'] %}
+        {{ rule['template'].format(interaction_idx, rule['match']) }}
+        {% else %}
+        {{ rule['template'].format(rule['match']) }}
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        {% if policy.custom_parser == 'http' %}
+        )
+        {% endif %}
+        {% if max_state > 0 %}
+        )
+        {% endif %}
+        {% endif %}
+    ) {
+
+        {% set is_dns_response = namespace(value=False) %}
+        {% if policy.custom_parser == "dns" %}
+        {% for nfq_match in policy.nfq_matches %}
+        {% if "dns_message.header.qr == " in nfq_match["template"] and nfq_match["match"] == 1 and not is_dns_response.value %}
+        {% set is_dns_response.value = True %}
+        // Retrieve IP addresses corresponding to the given domain name from the DNS response
+        char *domain_name = NULL;
+        ip_list_t ip_list = ip_list_init();
+        {% endif %}
+        {% if is_dns_response.value %}
+        {% if nfq_match['template'] | is_list %}
+        {% for i in range(nfq_match['template']|length) %}
+        {% set template = nfq_match['template'][i] %}
+        {% if "domain_name" in template %}
+        {% set domain_name = nfq_match['match'][i] %}
+        {% if loop.index == 1 %}
+        if ({{ template.format(domain_name) }}) {
+        {% else %}
+        else if ({{ template.format(domain_name) }}) {
+        {% endif %}
+            domain_name = "{{domain_name}}";
+            ip_list = dns_get_ip_from_name(dns_message.answers, dns_message.header.ancount, domain_name);
+        }
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        {% if "domain_name" in nfq_match["template"] %}
+        {% set domain_name = nfq_match["match"] %}
+        domain_name = "{{domain_name}}";
+        ip_list = dns_get_ip_from_name(dns_message.answers, dns_message.header.ancount, domain_name);
+        {% endif %}
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
+        {% if max_state > 0 %}
+        {% if previous_policy.transient and not (policy.transient and policy.is_backward) %}
+        {% set previous_policy_dict = previous_policy.get_data_from_nfqueues(nfqueues) %}
+        {% set previous_interaction_idx = previous_policy_dict["interaction_idx"] %}
+        {% set previous_counters_idx = previous_policy_dict["counters_idx"] %}
+        // Previous policy was transient
+        {% if policy.periodic %}
+        // Update state
+        {{interaction_data}}.current_state = {{(state + 1) % (max_state + 1)}};
+        {% endif %}
+        {% if "packet-count" in previous_counters_idx %}
+        // Reset packet counter
+        (interactions_data[{{previous_interaction_idx}}].counters + {{previous_counters_idx["packet-count"]}})->packet_count.value = 0;
+        #ifdef DEBUG
+        printf("Reset packet-count counter for interaction {{previous_interaction_idx}} and policy {{previous_counters_idx['packet-count']}}\n");
+        #endif
+        {% endif %}
+        {% if "duration" in previous_counters_idx %}
+        // Reset duration counter
+        (interactions_data[{{previous_interaction_idx}}].counters + {{previous_counters_idx["duration"]}})->duration.is_initialized = false;
+        #ifdef DEBUG
+        printf("Reset duration counter for interaction {{previous_interaction_idx}} and policy {{previous_counters_idx['duration']}}\n");
+        #endif
+        {% endif %}
+        {% endif %}
+        {% if policy.transient %}
+        // Policy is transient, increment state to indicate the transient policy is ongoing
+        #ifdef DEBUG
+        printf("{{policy_name}}: State %hhu -> State {{state}}\n", {{interaction_data}}.current_state);
+        #endif
+        {{interaction_data}}.current_state = {{state}};
+        {% elif policy.one_off or (policy.periodic and policy_idx == 0) %}
+        // Policy is one-off, increment state
+        #ifdef DEBUG
+        printf("{{policy_name}}: State %hhu -> State {{(state + 1) % (max_state + 1)}}\n", {{interaction_data}}.current_state);
+        #endif
+        {{interaction_data}}.current_state = {{(state + 1) % (max_state + 1)}};
+        {% endif %}
+        {% if policy.transient %}
+        {% if "packet-count" in policy.counters %}
+        // Increment packet count
+        {{packet_count}}.value++;
+        {% endif %}
+        if (
+            {% set direction = "bwd" if policy.is_backward else "fwd" %}
+            {% if "packet-count" in policy.counters and "default" in policy.counters["packet-count"] %}
+            {{packet_count}}.value >= {{policy.counters["packet-count"]["default"]}}
+            {% elif "packet-count" in policy.counters and direction in policy.counters["packet-count"] %}
+            {{packet_count}}.value >= {{policy.counters["packet-count"][direction]}}
+            {% endif %}
+            {% if policy.counters|length > 1 %}
+            && {% endif -%}
+            {%- if "duration" in policy.counters and "default" in policy.counters["duration"] -%}
+            {{duration}}.is_initialized && counter_read_microseconds() - {{duration}}.microseconds >= {{policy.counters["duration"]["default"]}}
+            {% elif "duration" in policy.counters and direction in policy.counters["duration"] %}
+            {{duration}}.is_initialized && counter_read_microseconds() - {{duration}}.microseconds >= {{policy.counters["duration"][direction]}}
+            {% endif %}
+        ) {
+            // Policy is transient and counters have been reached
+            // Increment state to indicate the transient policy is over
+            #ifdef DEBUG
+            printf("{{policy_name}}: State %hhu -> State {{(state + 1) % (max_state + 1)}}\n", {{interaction_data}}.current_state);
+            #endif
+            {{interaction_data}}.current_state = {{(state + 1) % (max_state + 1)}};
+            {% if "packet-count" in policy.counters %}
+            {{packet_count}}.is_initialized = false;
+            {% endif %}
+            {% if "duration" in policy.counters %}
+            {{duration}}.is_initialized = false;
+            {% endif %}
+        }
+        {% endif %}
+        {% endif %}
+
+        {% if is_dns_response.value %}
+        if (ip_list.ip_count > 0) {
+            // Add IP addresses to DNS map
+            dns_map_add(dns_map, domain_name, ip_list);
+            // Cache first IP address for quicker access
+            {{interaction_data}}.cached_ip = *(ip_list.ip_addresses);
+        }
+        {% endif %}
+
+        {{ verdict(policy_name, interaction_data) }}
+    }
+    pthread_mutex_unlock(&({{interaction_data}}.mutex));
+    {% elif loop.last %}
+    // No other policy matched for this nfqueue
+    {{ verdict(nfqueue.name) }}
+    {% endif %}
+    {% endfor %}
+
+    {% for custom_parser in custom_parsers %}
+    // Free memory allocated for parsed messages
+    {% if "dns" in custom_parser %}
+    dns_free_message(dns_message);
+    {% elif custom_parser != "ssdp" %}
+    {{custom_parser}}_free_message({{custom_parser}}_message);
+    {% endif %}
+    {% endfor %}
+
+    #ifdef LOG
+    if (verdict != NF_STOP) {
+        // Log packet as dropped
+        print_hash(hash);
+        printf(",%ld.%06ld,{{nfqueue.name}},,DROP\n", (long int)timestamp.tv_sec, (long int)timestamp.tv_usec);
+    }
+    free(hash);
+    #endif /* LOG */
+
+    return verdict;
+}
+
+{% endmacro %}
+
+{% for nfqueue in nfqueues if nfqueue.queue_num >= 0 %}
+
+{{ write_callback_function(loop.index, nfqueue) }}
+
+{% endfor %}

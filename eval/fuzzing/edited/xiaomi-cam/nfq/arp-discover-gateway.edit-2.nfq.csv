@@ -1,0 +1,2 @@
+hash,timestamp,policy,state,verdict
+35e9ee885633515f0e365d6ad16d427228e2466196d27de491bcb5f4f677d19d,1678881635.191726,arp-discover-gateway#arp-request,0,ACCEPT

@@ -1,0 +1,85 @@
+#!/usr/sbin/nft -f
+
+{% if test %}
+table netdev {{device["name"]}} {
+
+    # Chain INGRESS, entry point for all traffic
+    chain ingress {
+{% else %}
+table bridge {{device["name"]}} {
+
+    # Chain PREROUTING, entry point for all traffic
+    chain prerouting {
+{% endif %}
+        
+        # Base chain, need configuration
+        # Default policy is ACCEPT, as it concerns packets that are not related to device {{device["name"]}}
+        {% if test %}
+        type filter hook ingress device enp0s8 priority 0; policy accept;
+        {% else %}
+        type filter hook prerouting priority 0; policy accept;
+        {% endif %}
+
+
+        ## Entry policies, first check to see if traffic involves device {{device["name"]}} or related devices
+
+        # Traffic originiating from or directed toward device {{device["name"]}}
+        ether saddr {{device["mac"]}} jump filter
+        {% if test %}
+        ip daddr {{device["ipv4"]}} jump filter
+        {% if "ipv6" in device %}
+        ip6 daddr {{device["ipv6"]}} jump filter
+        {% endif %}
+        {% else %}
+        ether daddr {{device["mac"]}} jump filter
+        {% endif %}
+        # ARP traffic involving device {{device["name"]}}
+        arp daddr ip {{device["ipv4"]}} jump filter
+
+        # Traffic involving other hosts, which play a role in the device's interactions
+        {% for protocol, hosts in other_hosts.items() %}
+        {% for direction in ["src", "dst"] %}
+        {% set addrs = hosts.get(direction, {}).get("addrs", []) %}
+        {% if addrs|length == 1 %}
+        {{hosts[direction]["match"]}} {{addrs.pop()}} jump filter
+        {% elif addrs|length > 1 %}
+        {{hosts[direction]["match"]}} {{ "{" }} {{", ".join(addrs)}} {{ "}" }} jump filter
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+
+    }
+
+
+    # Chain filter, accessed only by packets related to device {{device["name"]}}
+    # This is the actual filtering chain
+    chain filter {
+
+        # Regular chain, no configuration
+        # Accessed only by jumping from chains not-saddr or not-daddr
+
+        ### NFQUEUE POLICIES ###
+
+        {% for nfqueue in nfqueues %}
+        # NFQueue {{nfqueue.name}}
+        {{nfqueue.get_nft_rule(log_type, log_group)}}
+        
+        {% endfor %}
+        
+        {% if log_type == 1 %}
+        # Default policy for unmatched packets involving this device: log and DROP
+        ether saddr {{device["mac"]}} log prefix "{{device["name"]}},,DROP" group 100 drop
+        ether daddr {{device["mac"]}} log prefix "{{device["name"]}},,DROP" group 100 drop
+        {% else %}
+        # Default policy for unmatched packets involving this device: DROP
+        ether saddr {{device["mac"]}} drop
+        ether daddr {{device["mac"]}} drop
+        arp daddr ip {{device["ipv4"]}} drop
+        {% endif %}
+        # Default policy for other unmatched packets: ACCEPT
+        accept
+
+    }
+
+}
+

@@ -1,0 +1,40 @@
+device-info:
+  name: my-device
+  mac: 00:11:22:33:44:55
+  ipv4: 192.0.2.10
+  
+patterns:
+  dns-p:
+    protocols:
+      dns:
+        qtype: A
+        domain-name: my.server.com
+      udp:
+        dst-port: 53
+      ipv4:
+        src: self
+        dst: gateway
+    bidirectional: true
+    stats:
+      packet-count: 4
+
+[...]
+
+interactions:
+  dns-https-server:
+    dns-server: !include patterns.dns-p
+    https-server:
+      protocols:
+        tcp:
+          dst-port: 443
+        ipv4:
+          src: self
+          dst: my.server.com
+      bidirectional: true
+      stats:
+        rate: 50/second
+
+[...]
+
+
+

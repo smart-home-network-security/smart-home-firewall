@@ -1,0 +1,270 @@
+device-info:
+  ipv4: 192.168.1.135
+  mac: 50:c7:bf:ed:0a:54
+  name: tplink-plug
+  network: wireless
+interactions:
+  arp-echo-plug:
+    arp-reply-plug-echo:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: 50:dc:e7:a2:d8:95
+          tpa: 192.168.1.150
+          type: reply
+    arp-request-echo-plug:
+      protocols:
+        arp:
+          sha: 50:dc:e7:a2:d8:95
+          spa: 192.168.1.150
+          tha: default
+          tpa: self
+          type: request
+      stats:
+        rate: 1/second
+  arp-gateway-plug:
+    arp-reply:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: gateway
+          tpa: gateway
+          type: reply
+    arp-request:
+      protocols:
+        arp:
+          sha: gateway
+          spa: gateway
+          tha: default
+          tpa: self
+          type: request
+      stats:
+        rate: 1/second
+  arp-phone-plug:
+    arp-reply-plug-phone:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: phone
+          tpa: phone
+          type: reply
+    arp-request-phone-plug:
+      protocols:
+        arp:
+          sha: phone
+          spa: phone
+          tha: default
+          tpa: self
+          type: request
+      stats:
+        rate: 1/second
+  arp-plug-echo:
+    arp-reply-echo-plug:
+      protocols:
+        arp:
+          sha: 50:dc:e7:a2:d8:95
+          spa: 192.168.1.150
+          tha: self
+          tpa: self
+          type: reply
+    arp-request-plug-echo:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: default
+          tpa: 192.168.1.150
+          type: request
+  arp-plug-gateway:
+    arp-reply:
+      protocols:
+        arp:
+          sha: gateway
+          spa: gateway
+          tha: self
+          tpa: self
+          type: reply
+    arp-request:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: default
+          tpa: gateway
+          type: request
+  arp-plug-phone:
+    arp-reply-phone-plug:
+      protocols:
+        arp:
+          sha: phone
+          spa: phone
+          tha: self
+          tpa: self
+          type: reply
+    arp-request-plug-phone:
+      protocols:
+        arp:
+          sha: self
+          spa: self
+          tha: default
+          tpa: phone
+          type: request
+  dhcp-boot:
+    dhcp-ack:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: ack
+        ipv4:
+          dst: self
+          src: gateway
+        udp:
+          dst-port: 68
+          src-port: 67
+    dhcp-discover:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: discover
+        ipv4:
+          dst: broadcast
+          src: 0.0.0.0
+        udp:
+          dst-port: 67
+          src-port: 68
+    dhcp-offer:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: offer
+        ipv4:
+          dst: self
+          src: gateway
+        udp:
+          dst-port: 68
+          src-port: 67
+    dhcp-request:
+      protocols:
+        dhcp:
+          client-mac: self
+          type: request
+        ipv4:
+          dst: broadcast
+          src: 0.0.0.0
+        udp:
+          dst-port: 67
+          src-port: 68
+  dns-https-tplinkcloud:
+    dns-query-plug-tplinkcloud:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: n-devs.tplinkcloud.com
+          qtype: A
+        ipv4:
+          dst: gateway
+          src: self
+        udp:
+          dst-port: 53
+    https-plug-tplinkcloud:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: n-devs.tplinkcloud.com
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        rate: 10/second
+  dns-https-tplinkra:
+    dns-query-plug-tplinkra:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: euw1-api.tplinkra.com
+          qtype: A
+        ipv4:
+          dst: gateway
+          src: self
+        udp:
+          dst-port: 53
+    https-plug-tplinkra:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: euw1-api.tplinkra.com
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        packet-count: 40
+  dns-ntp-boot:
+    dns-query-plug-ntp:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name:
+          - $.pool.ntp.org
+          - $.time.edu.cn
+          - $.nist.gov
+          qtype: A
+        ipv4:
+          dst: gateway
+          src: self
+        udp:
+          dst-port: 53
+    ntp-plug-server:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: external
+          src: self
+        udp:
+          dst-port: 123
+      stats:
+        rate: 2/minute
+  update-to-cloud:
+    dns-plug-use1-api:
+      bidirectional: true
+      protocols:
+        dns:
+          domain-name: use1-api.tplinkra.com
+          qtype: A
+        ipv4:
+          dst: gateway
+          src: self
+        udp:
+          dst-port: 53
+    https-use1-api:
+      bidirectional: true
+      protocols:
+        ipv4:
+          dst: use1-api.tplinkra.com
+          src: self
+        tcp:
+          dst-port: 443
+      stats:
+        packet-count: 40
+single-policies:
+  tcp-device-plug-lan:
+    bidirectional: true
+    protocols:
+      ipv4:
+        dst: self
+        src:
+        - phone
+        - 192.168.1.150
+      tcp:
+        dst-port: 9999
+    stats:
+      rate: 20/second
+  udp-plug-phone:
+    protocols:
+      ipv4:
+        dst: phone
+        src: self
+      udp:
+        src-port: 9999

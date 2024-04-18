@@ -1,0 +1,15 @@
+id,hash,timestamp,policy,state,verdict
+1,e0e558edb4aa72c82cce1cae7b9acfc0daf705375081b744d63b633d798f5fdd,1678880815.456011,wan-generic#https-ipv4-cloud-plug,0,ACCEPT
+1,e0e558edb4aa72c82cce1cae7b9acfc0daf705375081b744d63b633d798f5fdd,1678880815.456011,single#tls-plug-server-backward,,ACCEPT
+2,be74ea219a643dd14e724de9a42ec003296a685cc44cd5766f8d7272d2fae072,1678880815.456957,wan-generic#https-ipv4-cloud-plug-backward,1,ACCEPT
+2,be74ea219a643dd14e724de9a42ec003296a685cc44cd5766f8d7272d2fae072,1678880815.456957,single#tls-plug-server,,ACCEPT
+3,4c9906c34efb14dfcf70dc418741fa131818869d6ba8c35bfcc8cb556d13dc41,1678880815.481814,wan-generic#https-ipv4-cloud-plug-backward,,DROP
+4,0f73842dc241c14796756f8022444679fa52704884882cf3e25b3fa8a684b264,1678880815.542841,wan-generic#https-ipv4-cloud-plug,1,ACCEPT
+4,0f73842dc241c14796756f8022444679fa52704884882cf3e25b3fa8a684b264,1678880815.542841,single#tls-plug-server-backward,,ACCEPT
+5,397cdce76677ac470f18bc5a63fc2fce5d8c09b50145448f55faf0a303ff49b7,1678880817.136592,wan-generic#https-ipv4-cloud-plug,1,ACCEPT
+5,397cdce76677ac470f18bc5a63fc2fce5d8c09b50145448f55faf0a303ff49b7,1678880817.136592,single#tls-plug-server-backward,,ACCEPT
+6,cc6f2e1d092ac65c71f1b984b33f99a0eb1851caafe765bf5c28243f638899fb,1678880817.147618,single#tls-plug-server,,ACCEPT
+7,1ecc87df0a5376eecc5ebf60df4a0af41b24b238b99fc3016f125412fa1d1f6e,1678880817.168003,single#tls-plug-server-backward,,ACCEPT
+8,33a787570f50edf515aeb66b127e51395999c89cb51c0078f27b54f4ff87f7bb,1678880817.168991,single#tls-plug-server,,DROP
+9,0e047e633320665e1f83a794948528bb005a85eb5d3410721e4623e1690c861f,1678880817.189348,single#tls-plug-server-backward,,DROP
+10,5edbe52d74012ab15eee337294964d29a06b867c811ec6033decc412eaa46ec5,1678880817.189725,single#tls-plug-server-backward,,ACCEPT

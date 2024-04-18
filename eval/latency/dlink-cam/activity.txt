@@ -1,0 +1,24 @@
+SCENARIO
+
+00 START
+
+1. 01 Power on - Timestamp 60
+
+2. Control with phone on OpenWrt-5GHz network
+    2.1 From D-Link app
+        03 Start app - Timestamp 180
+        04 Stream camera for 10 seconds - Timestamp 240
+    2.2. From Alexa App
+        05 Show status - Timestamp 300
+
+3. Control with phone on outside network
+    3.1 From D-Link app
+        06 Open app - Timestamp 360
+            Nothing special, HTTPS traffic between camera and server (mp-eu-dcdda.auto.mydlink.com)
+        07 Stream camera for 10 seconds - Timestamp 420
+    3.2. From Alexa App
+        08 Show status - Timestamp 480
+
+5. Idle
+
+10 STOP

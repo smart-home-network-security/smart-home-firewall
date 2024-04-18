@@ -33,6 +33,6 @@ docker pull fdekeers/openwrt_linksys-wrt1200ac
 
 To run cross-compilation with either image:
 ```bash
-docker run --rm --mount type=bind,source=$(pwd),target=/home/user/iot-firewall -e ROUTER=tl-wdr4900 fdekeers/openwrt_tl-wdr4900
-docker run --rm --mount type=bind,source=$(pwd),target=/home/user/iot-firewall -e ROUTER=linksys-wrt1200ac fdekeers/openwrt_linksys-wrt1200ac
+docker run --rm --mount type=bind,source="$(pwd)",target=/home/user/smart-home-firewall -e ROUTER=tl-wdr4900 fdekeers/openwrt_tl-wdr4900
+docker run --rm --mount type=bind,source="$(pwd)",target=/home/user/smart-home-firewall -e ROUTER=linksys-wrt1200ac fdekeers/openwrt_linksys-wrt1200ac
 ```

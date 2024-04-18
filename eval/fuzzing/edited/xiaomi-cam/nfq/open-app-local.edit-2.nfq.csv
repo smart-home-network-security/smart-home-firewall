@@ -1,0 +1,14 @@
+hash,timestamp,policy,state,verdict
+16b5395177802288284dce975a144536e940baeb3345a93a1363c809ab3992c5,1678881704.615414,open-app-local#igmp-phone,0,ACCEPT
+7df31dce5428edef35e68668edddae1bcde5926b78f5fa6a8bcc741fd36a4bcd,1678881704.838325,open-app-local#mdns-phone,1,ACCEPT
+4ed2c8b3ed0d167b72ce1c264c14a2a3652584a0fb8d51859760b6f4d84ae8de,1678881704.839854,open-app-local#mdns-phone,,DROP
+09fcb166cba23c558a85cdaccb7e0c31ca94330829368b335747321e0ddef469,1678881704.841024,open-app-local#mdns-phone,2,ACCEPT
+8c40ff36be174f4802b0e938af5abf430f7428746a7a5a7c770f02394e5f6dd1,1678881704.842508,open-app-local#mdns-phone,2,ACCEPT
+b3b3e0f98cd03909ce86902640c869115c88061d4fc044c544debc90e5e3e281,1678881705.262277,open-app-local#udp-phone-broadcast-1,2,ACCEPT
+8412bb401f60f160d6f83ff7f0813c92fd8cebd578e5b9b191d33a03236dfa6e,1678881705.266005,open-app-local#arp-xiaomi-phone-request,4,ACCEPT
+8412bb401f60f160d6f83ff7f0813c92fd8cebd578e5b9b191d33a03236dfa6e,1678881705.266005,open-app-local#arp-xiaomi-phone-request,,DROP
+418d9c5f0f748dfd6aa8e6f4ba14d0f61a12ab5855b992f69bff91894c2b7343,1678881705.356235,open-app-local#arp-xiaomi-phone-reply,5,ACCEPT
+e48151f9ab12e72159a224e053851dbb03e316ec9eebb9c587b0ca6cb0f45818,1678881705.357614,open-app-local#udp-xiaomi-phone-broadcast-response-1,6,ACCEPT
+e47f32c042c51bb0448837730b0c96d1030f061de38b94c9a036dc4459cc64b5,1678881706.259732,open-app-local#udp-phone-broadcast-2,7,ACCEPT
+547b194671a37fc0d195904d956324699535b27b1632927c82dfff3a25bd6e73,1678881706.262880,open-app-local#udp-xiaomi-phone-broadcast-response-2,8,ACCEPT
+c62642f9a109b24e0b6cc6af929a885af2e47ed56f168763c75254531b20b59b,1678881709.980680,open-app-local#igmp-phone-leave-mdns,,DROP
