@@ -26,7 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.forward_agent = true
 
   # Share additional folders to the guest VM.
-  config.vm.synced_folder "../../", "/home/vagrant/smart-home-firewall"
+  config.vm.synced_folder "../../", "/home/vagrant/iot-firewall"
 
   # Bash provision script
   config.vm.provision "shell", inline: <<-SHELL
