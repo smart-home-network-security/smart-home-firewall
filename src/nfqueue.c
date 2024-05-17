@@ -211,3 +211,39 @@ void* nfqueue_thread(void *arg) {
 	bind_queue(thread_arg->queue_id, thread_arg->func, thread_arg->arg);
 	return NULL;
 }
+
+/**
+ * @brief Check if the last request is too old to be accepted
+ * 
+ * @param threshold time in sec before dropping the request
+ * @param last_request time of the last request 
+ * @return true the request is too old and must be refused
+ * @return false the request is recent enought and might be accepted
+ */
+bool is_timedout(double threshold, time_t last_request) {
+	// first request or timeout is disabled
+	if (last_request == 0 || threshold == -1) {
+		#ifdef DEBUG
+		puts("\nFirst request or no timeout has been given") ;
+		#endif
+		return false ; 			// laugh in C and accept the request
+	}
+
+	if (threshold == 0) {		// If there is no timeout, use the default one
+		threshold = DEFAULT_TIMEOUT ;
+		#ifdef DEBUG
+		printf("\nNo timeout given, defaulting to %d", DEFAULT_TIMEOUT) ;
+		#endif
+	} 							// default is define in nfqueue.h
+
+	time_t now = time(NULL); 	// get the time NOW
+
+	double diff = difftime(now, last_request) ;
+
+	#ifdef DEBUG
+		printf("\nComparing the last request %ld and the time now %ld : %f", last_request, now, diff) ;
+		printf("\nthreshold (%f) < diff = %b", threshold,(threshold < diff)) ;
+	#endif
+
+	return threshold < diff ;
+}

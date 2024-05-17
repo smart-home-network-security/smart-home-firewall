@@ -20,6 +20,10 @@
         #endif /* DEBUG */
 
         verdict = NF_STOP;
+        {% if interaction_data %}
+        {{interaction_data}}.time_request = time(NULL) ;
+        {% endif%}
+
 {% endmacro %}
 
 {% macro write_callback_function(loop_index, nfqueue) %}
@@ -186,14 +190,28 @@ uint32_t callback_{{nfqueue_name}}(int pkt_id, int pkt_len, uint8_t *payload, vo
     {% set duration = "(interactions_data[{}].counters + {})->duration".format(interaction_idx, counters_idx["duration"]) %}
     {% endif %}
     {% endif %}
-
+    
     {% if state >= 0 %}
+    {% set timeout = policy["timeout"]%}
     {% set policy_name = "{}#{}".format(policy.interaction_name, policy.name) %}
     // Policy {{policy_name}}
     pthread_mutex_lock(&({{interaction_data}}.mutex));
     #if defined DEBUG || defined LOG
     previous_state = {{interaction_data}}.current_state;
     #endif
+
+    if (is_timedout({{timeout}}, {{interaction_data}}.time_request) && ({{interaction_data}}.current_state != 0)) {
+        {{interaction_data}}.current_state = 0 ; // reset the interaction
+        {{interaction_data}}.time_request = time(NULL) ;
+
+        #if defined DEBUG
+            puts("Packet is too old, dropped. current_state has been reset") ;
+        #endif
+        pthread_mutex_unlock(&({{interaction_data}}.mutex));
+
+        return NF_DROP;
+    }
+
     if (
         {% if "packet-count" in counters_idx %}
         {{packet_count}}.is_initialized &&

@@ -197,10 +197,11 @@ class NFQueue:
         :param policy_idx: index of the policy inside the interaction
         :param state: state for which the policy must be added
         :param policy: policy to add
+        :param timeout: the timeout of the policy
         :return: True if the nfqueue queue number has been updated, False otherwise
         """
         result = False
-
+        timeout = policy.timeout
         # Update nfqueue queue number if necessary
         if self.queue_num < 0 and policy.queue_num >= 0:
             self.queue_num = policy.queue_num
@@ -212,7 +213,8 @@ class NFQueue:
             "policy_idx": policy_idx,
             "state": state,
             "policy": policy,
-            "counters_idx": {}
+            "counters_idx": {},
+            "timeout": timeout
         }
 
         # Update NFT stat matches if necessary

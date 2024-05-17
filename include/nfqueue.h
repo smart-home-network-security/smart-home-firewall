@@ -12,6 +12,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <unistd.h>
 #include <sys/time.h>
 #include <netinet/in.h>
@@ -23,6 +24,7 @@
 #include "rule_utils.h"
 #include "packet_utils.h"
 
+#define DEFAULT_TIMEOUT 3600 // Default timeout is one sec
 
 /**
  * @brief Structure which stores the data relative to one policy interaction.
@@ -35,6 +37,8 @@ typedef struct {
     uint8_t current_state;  // Current state
     counters_t *counters;   // Array of counters
     ip_addr_t cached_ip;    // Cached IP address
+    double timeout;         // Timeout of the request (in sec). 0 = DEFAULT_TIMEOUT ; -1 = no timeout
+    time_t time_request;    // Time since last request ; set to 0 if no request has been made before
 } interaction_data_t;
 
 /**
@@ -115,6 +119,16 @@ void bind_queue(uint16_t queue_num, basic_callback *callback, void *arg);
  * @return NULL
  */
 void* nfqueue_thread(void *arg);
+
+/**
+ * @brief Check if the last request is too old to be accepted
+ * 
+ * @param threshold time in sec before dropping the request
+ * @param last_request time of the last request 
+ * @return true the request is too old and must be refused
+ * @return false the request is recent enought and might be accepted
+ */
+bool is_timedout(double threshold, time_t last_request);
 
 
 #endif /* _IOTFIREWALL_NFQUEUE_ */

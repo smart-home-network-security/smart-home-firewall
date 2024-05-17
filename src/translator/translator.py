@@ -298,6 +298,10 @@ if __name__ == "__main__":
                 for single_policy_name in single_policies:
                     # Create policy and parse it
                     profile_data = single_policies[single_policy_name]
+                    try:
+                        timeout = profile_data["timeout"]
+                    except KeyError:
+                        timeout = 0
                     is_backward = "backward" in single_policy_name and profile_data.get("bidirectional", False)
                     policy_data = {
                         "interaction_name": interaction_policy_name,
@@ -305,7 +309,8 @@ if __name__ == "__main__":
                         "profile_data": profile_data,
                         "device": device,
                         "is_backward": is_backward,
-                        "in_interaction": True
+                        "in_interaction": True,
+                        "timeout": timeout
                     }
                     single_policy, new_nfq = parse_policy(policy_data, interaction_data, global_accs, len(single_policies), True, args.log_type, args.log_group)
                     if new_nfq:

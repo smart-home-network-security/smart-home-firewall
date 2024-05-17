@@ -30,7 +30,7 @@ class Policy:
         "duration": {"counter": True}
     }
 
-    def __init__(self, interaction_name: str, policy_name: str, profile_data: dict, device: dict, is_backward: bool = False, in_interaction: bool = False) -> None:
+    def __init__(self, interaction_name: str, policy_name: str, profile_data: dict, device: dict, is_backward: bool = False, in_interaction: bool = False, timeout = 0) -> None:
         """
         Initialize a new Policy object.
 
@@ -57,6 +57,7 @@ class Policy:
         self.counters = {}                        # Counters associated to this policy (will be populated by parsing)
         self.is_device = False                    # Whether the policy involves the device
         self.other_host = {}                      # If the policy does not involve the device, this will be set to the IP address of the other local involved device
+        self.timeout = timeout
 
         self.is_bidirectional = self.profile_data.get("bidirectional", False)  # Whether the policy is bidirectional
         self.transient = self.is_transient()  # Whether the policy represents a transient pattern
