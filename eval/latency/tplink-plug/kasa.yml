@@ -1,0 +1,14 @@
+appId: com.tplink.kasa_android
+title: "Power-on/off TP-Link plug using Kasa"
+---
+- launchApp:
+    appId: "com.tplink.kasa_android"
+    clearState: false
+    stopApp: true
+    label: "Open the Kasa app"
+- tapOn:
+    id: "com.tplink.kasa_android:id/device_switch"
+    label: "Toggle the plug power"
+- tapOn:
+    id: "com.tplink.kasa_android:id/device_switch"
+    label: "Toggle the plug power"

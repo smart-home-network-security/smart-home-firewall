@@ -1,0 +1,28 @@
+appId: com.amazon.dee.app
+name: "Power-on/off TP-Link plug using Alexa"
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+    label: "Open the Amazon Alexa app"
+- tapOn:
+    id: "com.amazon.dee.app:id/tab_channels_device"
+    label: "Open the Devices tab"
+- tapOn:
+    id: "DevicePageSearchButton"
+    label: "Open the search menu"
+- tapOn:
+    id: "DeviceSearchPageSearchInput_SearchInput"
+    label: "Open the search bar"
+- inputText:
+    text: "TP-Link"
+    label: "Type 'TP-Link' in the search bar"
+- doubleTapOn:
+    text: "TP-Link plug"
+    label: "Select the TP-Link plug"
+- tapOn:
+    point: "50%,23%"
+    label: "Toggle the plug power"
+- tapOn:
+    point: "50%,23%"
+    label: "Toggle the plug power"

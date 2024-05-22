@@ -1,0 +1,43 @@
+appId: com.amazon.dee.app
+name: "Power-on/off TP-Link plug using Alexa"
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+    label: "Open the Amazon Alexa app"
+- tapOn:
+    id: "com.amazon.dee.app:id/tab_channels_device"
+    label: "Open the Devices tab"
+- tapOn:
+    id: "DevicePageSearchButton"
+    label: "Open the search menu"
+- tapOn:
+    id: "DeviceSearchPageSearchInput_SearchInput"
+    label: "Open the search bar"
+- inputText:
+    text: "Lamp"
+    label: "Type 'Lamp' in the search bar"
+- doubleTapOn:
+    text: "Lamp"
+    index: 1
+    label: "Select the Philips Hue lamp"
+- tapOn:
+    point: "50%,23%"
+    label: "Turn on the lamp"
+- tapOn:
+    id: "ColorControl::Color=Custom-primary"
+    label: "Open the color picker"
+- scroll:
+    label: "Scroll down the color picker"
+- tapOn: 
+    text: "Orange"
+    label: "Set the color to orange"
+- tapOn:
+    id: "header-back-button"
+    label: "Close the color picker"
+- tapOn:
+    point: "85%,55%"
+    label: "Set the power to 100%"
+- tapOn:
+    point: "50%,23%"
+    label: "Turn off the lamp"

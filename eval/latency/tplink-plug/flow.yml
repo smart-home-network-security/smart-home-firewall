@@ -1,0 +1,30 @@
+appId: com.tplink.kasa_android
+---
+- runFlow:
+    file: kasa.yml
+    label: "Power-on/off TP-Link plug using Kasa"
+- runFlow:
+    file: smarthings.yml
+    label: "Power-on/off TP-Link plug using SmartThings"
+- runFlow:
+    file: "alexa.yml"
+    label: "Power-on/off TP-Link plug using Alexa"
+- runFlow:
+    file: "wifiUCLouvain.yml"
+    env:
+        WIFI: "UCLouvain"
+    label: "Connect to the UCLouvain Wi-Fi network"
+- runFlow:
+    file: kasa.yml
+    label: "Power-on/off TP-Link plug using Kasa"
+- runFlow:
+    file: smarthings.yml
+    label: "Power-on/off TP-Link plug using SmartThings"
+- runFlow:
+    file: "alexa.yml"
+    label: "Power-on/off TP-Link plug using Alexa"
+- runFlow:
+    file: "wifiUCLouvain.yml"
+    env:
+        WIFI: "OpenWrt-5GHz"
+    label: "Connect to the OpenWrt-5GHz Wi-Fi network"

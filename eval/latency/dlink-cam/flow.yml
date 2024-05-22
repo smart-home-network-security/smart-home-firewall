@@ -1,0 +1,21 @@
+appId: com.dlink.mydlinkunified
+name: D-Link Caméra
+---
+- launchApp:
+    appId: "com.dlink.mydlinkunified"
+    # clearState: true
+    stopApp: true
+    label: Start the D-Link app
+- tapOn:
+    id: "com.dlink.mydlinkunified:id/clStatus"
+    label: "Open the camera"
+- waitForAnimationToEnd:
+    timeout: 10000
+    label: "Wait 10 secs"
+- launchApp:
+    appId: "com.amazon.dee.app"
+    label: "Open the Amazon Alexa app"
+    # clearState: true
+    stopApp: true
+- tapOn: "Cameras"
+- tapOn: "Camera D"

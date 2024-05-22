@@ -1,0 +1,8 @@
+appId: com.tplink.kasa_android
+---
+- runFlow:
+    file: hueEssentials.yml
+    label: "Edit the light using Hue Essentials"
+- runFlow:
+    file: alexa.yml
+    label: "Edit the light using Alexa"
