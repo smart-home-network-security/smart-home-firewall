@@ -1,8 +1,30 @@
 appId: com.tplink.kasa_android
 ---
 - runFlow:
-    file: hueEssentials.yml
-    label: "Edit the light using Hue Essentials"
+      file: hue.yml
+      label: "Edit the light using Hue"
 - runFlow:
-    file: alexa.yml
-    label: "Edit the light using Alexa"
+      file: hueEssentials.yml
+      label: "Edit the light using Hue Essentials"
+- runFlow:
+      file: alexa.yml
+      label: "Edit the light using Alexa"
+- runFlow:
+      file: wifi.yml
+      label: "Switch Wi-Fi to UCLouvain"
+      env:
+          WIFI: UCLouvain
+- runFlow:
+      file: hue.yml
+      label: "Edit the light using Hue"
+- runFlow:
+      file: hueEssentials.yml
+      label: "Edit the light using Hue Essentials"
+- runFlow:
+      file: alexa.yml
+      label: "Edit the light using Alexa"
+- runFlow:
+      file: wifi.yml
+      label: "Switch Wi-Fi to OpenWrt-5GHz"
+      env:
+          WIFI: OpenWrt-5GHz
