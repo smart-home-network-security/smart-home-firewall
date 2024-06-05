@@ -10,7 +10,7 @@ appId: com.tplink.kasa_android
     file: "alexa.yml"
     label: "Power-on/off TP-Link plug using Alexa"
 - runFlow:
-    file: "wifiUCLouvain.yml"
+    file: "wifi.yml"
     env:
         WIFI: "UCLouvain"
     label: "Connect to the UCLouvain Wi-Fi network"
@@ -24,7 +24,7 @@ appId: com.tplink.kasa_android
     file: "alexa.yml"
     label: "Power-on/off TP-Link plug using Alexa"
 - runFlow:
-    file: "wifiUCLouvain.yml"
+    file: "wifi.yml"
     env:
         WIFI: "OpenWrt-5GHz"
     label: "Connect to the OpenWrt-5GHz Wi-Fi network"
