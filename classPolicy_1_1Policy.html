@@ -85,8 +85,8 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0d531a52d0aa622a1fc7ef464bd111da"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPolicy_1_1Policy.html#a0d531a52d0aa622a1fc7ef464bd111da">__init__</a> (self, str interaction_name, str policy_name, dict profile_data, dict device, bool is_backward=False, bool in_interaction=False)</td></tr>
-<tr class="separator:a0d531a52d0aa622a1fc7ef464bd111da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31071cde5ae8b4318376b24b99318dea"><td class="memItemLeft" align="right" valign="top">None&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPolicy_1_1Policy.html#a31071cde5ae8b4318376b24b99318dea">__init__</a> (self, str interaction_name, str policy_name, dict profile_data, dict device, bool is_backward=False, bool in_interaction=False, timeout=0)</td></tr>
+<tr class="separator:a31071cde5ae8b4318376b24b99318dea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2b4825f4852747461e7b3505d0098ac"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPolicy_1_1Policy.html#ae2b4825f4852747461e7b3505d0098ac">__eq__</a> (self, object other)</td></tr>
 <tr class="separator:ae2b4825f4852747461e7b3505d0098ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6595171aad5b18846fef58627f395de4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPolicy_1_1Policy.html#a6595171aad5b18846fef58627f395de4">__lt__</a> (self, object other)</td></tr>
@@ -176,6 +176,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ab366c4cd19e12c01860096419a55081e"><td class="memItemLeft" align="right" valign="top"><a id="ab366c4cd19e12c01860096419a55081e"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>other_host</b></td></tr>
 <tr class="separator:ab366c4cd19e12c01860096419a55081e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a324128ea605e56d7358f58aeee03f2fb"><td class="memItemLeft" align="right" valign="top"><a id="a324128ea605e56d7358f58aeee03f2fb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>timeout</b></td></tr>
+<tr class="separator:a324128ea605e56d7358f58aeee03f2fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36cd2144fc5573ab1603a192e48a4a64"><td class="memItemLeft" align="right" valign="top"><a id="a36cd2144fc5573ab1603a192e48a4a64"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>is_bidirectional</b></td></tr>
 <tr class="separator:a36cd2144fc5573ab1603a192e48a4a64"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -200,8 +203,8 @@ Static Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Class which represents a single access control policy.
 </pre> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a0d531a52d0aa622a1fc7ef464bd111da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d531a52d0aa622a1fc7ef464bd111da">&#9670;&nbsp;</a></span>__init__()</h2>
+<a id="a31071cde5ae8b4318376b24b99318dea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31071cde5ae8b4318376b24b99318dea">&#9670;&nbsp;</a></span>__init__()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -246,7 +249,13 @@ Static Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool &#160;</td>
-          <td class="paramname"><em>in_interaction</em> = <code>False</code>&#160;</td>
+          <td class="paramname"><em>in_interaction</em> = <code>False</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
