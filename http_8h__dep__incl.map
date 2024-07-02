@@ -1,0 +1,8 @@
+<map id="include/parsers/http.h" name="include/parsers/http.h">
+<area shape="rect" id="node1" title="HTTP message parser." alt="" coords="252,5,415,32"/>
+<area shape="rect" id="node2" href="$coap_8h.html" title="CoAP message parser." alt="" coords="73,80,241,107"/>
+<area shape="rect" id="node5" href="$src_2parsers_2http_8c.html" title="HTTP message parser." alt="" coords="266,80,401,107"/>
+<area shape="rect" id="node6" href="$test_2parsers_2http_8c.html" title="Unit tests for the HTTP parser." alt="" coords="425,80,565,107"/>
+<area shape="rect" id="node3" href="$src_2parsers_2coap_8c.html" title="CoAP message parser." alt="" coords="5,155,144,181"/>
+<area shape="rect" id="node4" href="$test_2parsers_2coap_8c.html" title="Unit tests for the CoAP parser." alt="" coords="169,155,314,181"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="include/rule_utils.h" name="include/rule_utils.h">
+<area shape="rect" id="node1" title="Interface to nftables counters." alt="" coords="154,5,299,32"/>
+<area shape="rect" id="node2" href="$nfqueue_8h.html" title="Wrapper for the netfilter_queue library." alt="" coords="5,80,144,107"/>
+<area shape="rect" id="node4" href="$src_2rule__utils_8c.html" title="Rule utilitaries." alt="" coords="169,80,285,107"/>
+<area shape="rect" id="node5" href="$test_2rule__utils_8c.html" title="Unit tests for the rule utilitaries." alt="" coords="309,80,432,107"/>
+<area shape="rect" id="node3" href="$nfqueue_8c.html" title="Wrapper for the netfilter_queue library." alt="" coords="20,155,129,181"/>
+</map>

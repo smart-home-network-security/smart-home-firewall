@@ -1,0 +1,5 @@
+<map id="rdata_t" name="rdata_t">
+<area shape="rect" id="node1" title=" " alt="" coords="13,184,81,211"/>
+<area shape="rect" id="node2" href="$structip__addr__t.html" title="IP (v4 or v6) address." alt="" coords="5,95,88,121"/>
+<area shape="rect" id="node3" href="$unionip__val__t.html" title="IP (v4 or v6) address value." alt="" coords="10,5,83,32"/>
+</map>

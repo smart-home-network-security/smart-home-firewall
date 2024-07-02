@@ -1,0 +1,5 @@
+<map id="include/parsers/coap.h" name="include/parsers/coap.h">
+<area shape="rect" id="node1" title="CoAP message parser." alt="" coords="73,5,241,32"/>
+<area shape="rect" id="node2" href="$src_2parsers_2coap_8c.html" title="CoAP message parser." alt="" coords="5,80,144,107"/>
+<area shape="rect" id="node3" href="$test_2parsers_2coap_8c.html" title="Unit tests for the CoAP parser." alt="" coords="169,80,314,107"/>
+</map>
