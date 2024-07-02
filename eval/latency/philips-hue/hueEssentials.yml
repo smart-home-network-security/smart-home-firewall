@@ -1,0 +1,41 @@
+appId: com.superthomaslab.hueessentials
+name: Hue Essentials
+---
+- launchApp:
+    appId: "com.superthomaslab.hueessentials"
+    clearState: false
+    stopApp: true
+    label: "Open the Hue Essentials app"
+- tapOn:
+    text: "Office"
+    index: 1
+    label: "Tap on the Office room"
+- tapOn:
+    point: "87%,31%"
+    label: "Turn on the light"
+- tapOn:
+    point: "81%,76%"
+    label: "Open the device settings"
+- tapOn:
+    point: "61%,76%"
+    label: "Open the color picker"
+- eraseText:
+    label: "Remove the old HEX color"
+- inputText: 
+    text: "#3F2A56"
+    label: "Set the new HEX color to purple"
+- tapOn:
+    id: "com.google.android.inputmethod.latin:id/0_resource_name_obfuscated"
+    index: 82
+    label: "Select the purple color"
+- hideKeyboard:
+    label: "Hide the keyboard"
+- tapOn:
+    point: "50%,16%"
+    label: "Set the power to 50%"
+- tapOn: 
+    text: "Close"
+    label: "Close the device settings"
+- tapOn:
+    point: "87%,31%"
+    label: "Turn off the light"

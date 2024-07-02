@@ -1,0 +1,29 @@
+appId: com.philips.lighting.hue2
+name: Hue
+---
+- launchApp:
+      appId: "com.philips.lighting.hue2"
+      clearState: false
+      stopApp: true
+      label: "Open the Hue app"
+- tapOn:
+      text: "Office"
+      label: "Turn on the light"
+- tapOn:
+      point: "50%,31%"
+      label: "Select the room"
+- tapOn:
+      point: "19%,64%"
+      label: "Select the light"
+- tapOn: "Effects"
+- "scroll"
+- tapOn:
+      point: "39%,49%"
+      label: "Switch color to `Opal`"
+- "back"
+- tapOn:
+      point: "15%,14%"
+      label: "Change the brightness"
+- tapOn:
+      point: "19%,71%"
+      label: "Turn off the light"

@@ -1,0 +1,11 @@
+appId: com.samsung.android.oneconnect
+title: "Power-on/off TP-Link plug using SmartThings"
+---
+- launchApp:
+    appId: "com.samsung.android.oneconnect"
+    clearState: false
+    stopApp: true
+    label: "Open the SmartThings app"
+- tapOn:
+    id: "com.samsung.android.oneconnect:id/menu_devices"
+    label: "Open the Devices tab"

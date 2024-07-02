@@ -20,6 +20,10 @@
         #endif /* DEBUG */
 
         verdict = NF_STOP;
+        {% if interaction_data %}
+        {{interaction_data}}.time_request = time(NULL) ;
+        {% endif%}
+
 {% endmacro %}
 
 {% macro write_callback_function(loop_index, nfqueue) %}
@@ -186,14 +190,28 @@ uint32_t callback_{{nfqueue_name}}(int pkt_id, int pkt_len, uint8_t *payload, vo
     {% set duration = "(interactions_data[{}].counters + {})->duration".format(interaction_idx, counters_idx["duration"]) %}
     {% endif %}
     {% endif %}
-
+    
     {% if state >= 0 %}
+    {% set timeout = policy["timeout"]%}
     {% set policy_name = "{}#{}".format(policy.interaction_name, policy.name) %}
     // Policy {{policy_name}}
     pthread_mutex_lock(&({{interaction_data}}.mutex));
     #if defined DEBUG || defined LOG
     previous_state = {{interaction_data}}.current_state;
     #endif
+
+    if (is_timedout({{timeout}}, {{interaction_data}}.time_request) && ({{interaction_data}}.current_state != 0)) {
+        {{interaction_data}}.current_state = 0 ; // reset the interaction
+        {{interaction_data}}.time_request = time(NULL) ;
+
+        #if defined DEBUG
+            puts("Packet is too old, dropped. current_state has been reset") ;
+        #endif
+        pthread_mutex_unlock(&({{interaction_data}}.mutex));
+
+        return NF_DROP;
+    }
+
     if (
         {% if "packet-count" in counters_idx %}
         {{packet_count}}.is_initialized &&
@@ -205,19 +223,19 @@ uint32_t callback_{{nfqueue_name}}(int pkt_id, int pkt_len, uint8_t *payload, vo
         (
         {% if ( policy.transient and ( not policy.is_backward and (previous_policy.transient or previous_policy.periodic) ) ) or ( (policy.transient or policy.periodic) and policy.is_backward and (second_previous_policy.transient or second_previous_policy.periodic) ) %}
         {% set previous_state = (state - 1) % (max_state + 1) if policy.periodic else (state - 2) % (max_state + 1) %}
-        {{interaction_data}}.current_state == {{previous_state}} ||
+        {{interaction_data}}.current_state >= {{previous_state}} ||
         {% endif %}
         {% if previous_policy.transient or policy.transient or (policy_idx == 0 and previous_policy.periodic) %}
         {% set previous_state = state if policy.periodic else (state - 1) % (max_state + 1) %}
-        {{interaction_data}}.current_state == {{previous_state}} ||
+        {{interaction_data}}.current_state >= {{previous_state}} ||
         {% endif %}
         {% if policy.periodic and policy_idx != num_policies - 1 %}
-        {{interaction_data}}.current_state == {{(state + 1) % (max_state + 1)}}
+        {{interaction_data}}.current_state >= {{(state + 1) % (max_state + 1)}}
         {%- if policy.periodic and policy_idx == 0 %} ||
         {% endif %}
         {% endif %}
         {% if (policy.periodic and policy_idx == 0) or not (policy.periodic and policy_idx != num_policies - 1) %}
-        {{interaction_data}}.current_state == {{state}}
+        {{interaction_data}}.current_state >= {{state}}
         {% endif %}
         )
         {% if policy.nfq_matches %}
@@ -357,7 +375,7 @@ uint32_t callback_{{nfqueue_name}}(int pkt_id, int pkt_len, uint8_t *payload, vo
         #ifdef DEBUG
         printf("{{policy_name}}: State %hhu -> State {{(state + 1) % (max_state + 1)}}\n", {{interaction_data}}.current_state);
         #endif
-        {{interaction_data}}.current_state = {{(state + 1) % (max_state + 1)}};
+        if({{interaction_data}}.current_state == {{state}}) {{interaction_data}}.current_state = {{(state + 1) % (max_state + 1)}};
         {% endif %}
         {% if policy.transient %}
         {% if "packet-count" in policy.counters %}
@@ -384,7 +402,7 @@ uint32_t callback_{{nfqueue_name}}(int pkt_id, int pkt_len, uint8_t *payload, vo
             #ifdef DEBUG
             printf("{{policy_name}}: State %hhu -> State {{(state + 1) % (max_state + 1)}}\n", {{interaction_data}}.current_state);
             #endif
-            {{interaction_data}}.current_state = {{(state + 1) % (max_state + 1)}};
+            if({{interaction_data}}.current_state == {{state}}){{interaction_data}}.current_state = {{(state + 1) % (max_state + 1)}};
             {% if "packet-count" in policy.counters %}
             {{packet_count}}.is_initialized = false;
             {% endif %}

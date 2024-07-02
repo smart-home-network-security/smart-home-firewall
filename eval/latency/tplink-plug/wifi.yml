@@ -1,0 +1,20 @@
+appId: com.android.settings
+name: "Connect to a Wi-Fi network"
+# env:
+#     WIFI : "wifiname"
+    
+---
+- launchApp:
+    # appId: "com.android.settings"
+    clearState: false
+    stopApp: true
+    label: "Open the Settings app"
+- tapOn: 
+    text: "Network & internet"
+    label: "Open the Network & internet settings"
+- tapOn:
+    text: "Wi‑Fi"
+    label: "Open the Wi-Fi settings"
+- tapOn: 
+    text: ${WIFI}
+    label: "Connect to the provided Wi-Fi network"
