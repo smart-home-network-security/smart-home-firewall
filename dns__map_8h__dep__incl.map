@@ -1,8 +1,0 @@
-<map id="include/dns_map.h" name="include/dns_map.h">
-<area shape="rect" id="node1" title="Implementation of a DNS domain name to IP addresses mapping, using Joshua J Baker&#39;s hashmap...." alt="" coords="239,5,383,32"/>
-<area shape="rect" id="node2" href="$dns_8h.html" title="DNS message parser." alt="" coords="69,80,229,107"/>
-<area shape="rect" id="node5" href="$src_2dns__map_8c.html" title="Implementation of a DNS domain name to IP addresses mapping, using Joshua J Baker&#39;s hashmap...." alt="" coords="253,80,368,107"/>
-<area shape="rect" id="node6" href="$test_2dns__map_8c.html" title="Unit tests for the mapping structure from DNS domain names to IP addresses." alt="" coords="393,80,514,107"/>
-<area shape="rect" id="node3" href="$src_2parsers_2dns_8c.html" title="DNS message parser." alt="" coords="5,155,136,181"/>
-<area shape="rect" id="node4" href="$test_2parsers_2dns_8c.html" title="Unit tests for the DNS parser." alt="" coords="161,155,298,181"/>
-</map>
