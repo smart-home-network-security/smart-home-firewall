@@ -19,7 +19,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          submodules: "true"
+          submodules: recursive
 
       - name: Install required packages
         run: sudo $GITHUB_WORKSPACE/.ci_scripts/publish-docs/install_packages.sh
