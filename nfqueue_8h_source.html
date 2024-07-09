@@ -86,7 +86,7 @@ $(function() {
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;pthread.h&gt;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;libnetfilter_queue/libnetfilter_queue.h&gt;</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="rule__utils_8h.html">rule_utils.h</a>&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;packet_utils.h&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="packet__utils_8h.html">packet_utils.h</a>&quot;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define DEFAULT_TIMEOUT 3600 </span><span class="comment">// Default timeout is one sec</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
@@ -97,7 +97,7 @@ $(function() {
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    pthread_mutex_t mutex;  <span class="comment">// State mutex</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    uint8_t current_state;  <span class="comment">// Current state</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="structcounters__t.html">counters_t</a> *counters;   <span class="comment">// Array of counters</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    ip_addr_t cached_ip;    <span class="comment">// Cached IP address</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="structip__addr__t.html">ip_addr_t</a> cached_ip;    <span class="comment">// Cached IP address</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">double</span> timeout;         <span class="comment">// Timeout of the request (in sec). 0 = DEFAULT_TIMEOUT ; -1 = no timeout</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    time_t time_request;    <span class="comment">// Time since last request ; set to 0 if no request has been made before</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;} <a class="code" href="structinteraction__data__t.html">interaction_data_t</a>;</div>
@@ -140,11 +140,13 @@ $(function() {
 <div class="ttc" id="anfqueue_8h_html_a7569209ef248ee2ebbb0ece3b35cf1b5"><div class="ttname"><a href="nfqueue_8h.html#a7569209ef248ee2ebbb0ece3b35cf1b5">basic_callback</a></div><div class="ttdeci">uint32_t basic_callback(int pkt_id, int pkt_len, uint8_t *payload, void *arg)</div><div class="ttdoc">Alias for a basic callback function.</div><div class="ttdef"><b>Definition:</b> nfqueue.h:69</div></div>
 <div class="ttc" id="anfqueue_8h_html_ad901cf897da5bb0c6ff0cb8e04ba02da"><div class="ttname"><a href="nfqueue_8h.html#ad901cf897da5bb0c6ff0cb8e04ba02da">get_pkt_id</a></div><div class="ttdeci">int get_pkt_id(struct nfq_data *nfad)</div><div class="ttdef"><b>Definition:</b> nfqueue.c:20</div></div>
 <div class="ttc" id="anfqueue_8h_html_aeffca4208e9e48be1ff3148e9838a672"><div class="ttname"><a href="nfqueue_8h.html#aeffca4208e9e48be1ff3148e9838a672">callback_struct_t</a></div><div class="ttdeci">struct callback_struct callback_struct_t</div></div>
+<div class="ttc" id="apacket__utils_8h_html"><div class="ttname"><a href="packet__utils_8h.html">packet_utils.h</a></div><div class="ttdoc">Utilitaries for payload manipulation and display.</div></div>
 <div class="ttc" id="arule__utils_8h_html"><div class="ttname"><a href="rule__utils_8h.html">rule_utils.h</a></div><div class="ttdoc">Interface to nftables counters.</div></div>
 <div class="ttc" id="astructcallback__struct_html"><div class="ttname"><a href="structcallback__struct.html">callback_struct</a></div><div class="ttdef"><b>Definition:</b> nfqueue.h:75</div></div>
 <div class="ttc" id="astructcounters__id__t_html"><div class="ttname"><a href="structcounters__id__t.html">counters_id_t</a></div><div class="ttdoc">Packet and duration counters ids.</div><div class="ttdef"><b>Definition:</b> nfqueue.h:50</div></div>
 <div class="ttc" id="astructcounters__t_html"><div class="ttname"><a href="structcounters__t.html">counters_t</a></div><div class="ttdef"><b>Definition:</b> rule_utils.h:44</div></div>
 <div class="ttc" id="astructinteraction__data__t_html"><div class="ttname"><a href="structinteraction__data__t.html">interaction_data_t</a></div><div class="ttdoc">Structure which stores the data relative to one policy interaction.</div><div class="ttdef"><b>Definition:</b> nfqueue.h:32</div></div>
+<div class="ttc" id="astructip__addr__t_html"><div class="ttname"><a href="structip__addr__t.html">ip_addr_t</a></div><div class="ttdoc">IP (v4 or v6) address.</div><div class="ttdef"><b>Definition:</b> packet_utils.h:37</div></div>
 <div class="ttc" id="astructthread__arg__t_html"><div class="ttname"><a href="structthread__arg__t.html">thread_arg_t</a></div><div class="ttdoc">Contains the necessary arguments for an nfqueue thread. The arguments are:</div><div class="ttdef"><b>Definition:</b> nfqueue.h:88</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

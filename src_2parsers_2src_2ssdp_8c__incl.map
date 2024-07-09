@@ -1,0 +1,13 @@
+<map id="src/parsers/src/ssdp.c" name="src/parsers/src/ssdp.c">
+<area shape="rect" id="node1" title="SSDP message parser." alt="" coords="195,5,356,32"/>
+<area shape="rect" id="node2" href="$ssdp_8h.html" title="SSDP message parser." alt="" coords="243,80,307,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,229,76,256"/>
+<area shape="rect" id="node4" title=" " alt="" coords="101,229,167,256"/>
+<area shape="rect" id="node5" title=" " alt="" coords="192,229,263,256"/>
+<area shape="rect" id="node6" title=" " alt="" coords="487,229,570,256"/>
+<area shape="rect" id="node7" title=" " alt="" coords="595,229,687,256"/>
+<area shape="rect" id="node8" href="$packet__utils_8h.html" title="Utilitaries for payload manipulation and display." alt="" coords="269,155,381,181"/>
+<area shape="rect" id="node9" title=" " alt="" coords="392,229,463,256"/>
+<area shape="rect" id="node10" href="$sha256_8h_source.html" title=" " alt="" coords="287,229,368,256"/>
+<area shape="rect" id="node11" title=" " alt="" coords="290,304,365,331"/>
+</map>

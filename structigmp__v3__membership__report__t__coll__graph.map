@@ -1,0 +1,4 @@
+<map id="igmp_v3_membership_report_t" name="igmp_v3_membership_report_t">
+<area shape="rect" id="node1" title="IGMPv3 membership report." alt="" coords="13,95,180,136"/>
+<area shape="rect" id="node2" href="$structigmp__v3__group__record__t.html" title="IGMPv3 Group Record." alt="" coords="5,5,188,32"/>
+</map>

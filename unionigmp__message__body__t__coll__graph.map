@@ -1,0 +1,7 @@
+<map id="igmp_message_body_t" name="igmp_message_body_t">
+<area shape="rect" id="node1" title="IGMP message body." alt="" coords="188,199,360,225"/>
+<area shape="rect" id="node2" href="$structigmp__v3__membership__query__t.html" title="IGMPv3 membership query." alt="" coords="5,95,172,136"/>
+<area shape="rect" id="node3" href="$structigmp__v2__message__t.html" title="IGMPv2 message." alt="" coords="196,102,352,129"/>
+<area shape="rect" id="node4" href="$structigmp__v3__membership__report__t.html" title="IGMPv3 membership report." alt="" coords="376,95,543,136"/>
+<area shape="rect" id="node5" href="$structigmp__v3__group__record__t.html" title="IGMPv3 Group Record." alt="" coords="368,5,551,32"/>
+</map>

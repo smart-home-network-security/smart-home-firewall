@@ -1,0 +1,6 @@
+<map id="dns_resource_record" name="dns_resource_record">
+<area shape="rect" id="node1" title=" " alt="" coords="5,273,161,300"/>
+<area shape="rect" id="node2" href="$unionrdata__t.html" title=" " alt="" coords="49,184,117,211"/>
+<area shape="rect" id="node3" href="$structip__addr__t.html" title="IP (v4 or v6) address." alt="" coords="42,95,125,121"/>
+<area shape="rect" id="node4" href="$unionip__val__t.html" title="IP (v4 or v6) address value." alt="" coords="47,5,120,32"/>
+</map>
