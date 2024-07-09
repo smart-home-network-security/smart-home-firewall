@@ -1,7 +1,5 @@
 <map id="Transport.Transport" name="Transport.Transport">
-<area shape="rect" id="node1" title=" " alt="" coords="25,80,172,107"/>
-<area shape="rect" id="node4" href="$classtcp_1_1tcp.html" title=" " alt="" coords="19,155,85,181"/>
-<area shape="rect" id="node5" href="$classudp_1_1udp.html" title=" " alt="" coords="109,155,184,181"/>
+<area shape="rect" id="node1" title=" " alt="" coords="11,80,157,107"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,5,69,32"/>
-<area shape="rect" id="node3" href="$classProtocol_1_1Protocol.html" title=" " alt="" coords="94,5,226,32"/>
+<area shape="rect" id="node3" title=" " alt="" coords="93,5,168,32"/>
 </map>
