@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 # Project name
-project(iot-firewall C)
+project(smart-home-firewall C)
 
 # Set variable whether we are cross-compiling for OpenWrt
 IF( CMAKE_CROSSCOMPILING AND DEFINED ENV{STAGING_DIR} )
@@ -16,7 +16,6 @@ link_directories($ENV{LD_LIBRARY_PATH})
 set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
 set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 set(BIN_DIR ${PROJECT_SOURCE_DIR}/bin)
-set(LIB_DIR ${PROJECT_SOURCE_DIR}/lib)
 set(EXECUTABLE_OUTPUT_PATH ${BIN_DIR})
 
 # Set compiler flags

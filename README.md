@@ -1,7 +1,11 @@
-# smart-home-firewall
-Profile-based, multi-layer Smart Home firewall, based on NFTables &amp; NFQueue, supporting device interactions.
+# Supervising Smart Home Device Interactions: A Profile-Based Firewall Approach
 
-Research accepted at [IFIP Networking 2024](https://networking.ifip.org/2024/).
+#### Author: François De Keersmaeker (@fdekeers)
+
+Profile-based, multi-layer Smart Home firewall, based on NFTables & NFQueue, supporting device interactions.
+
+Research accepted at [IFIP Networking 2024](https://networking.ifip.org/2024).
+Read the author's preprint version [here](http://hdl.handle.net/2078.1/288456).
 
 ## Local compilation
 
