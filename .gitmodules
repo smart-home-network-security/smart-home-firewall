@@ -1,6 +1,3 @@
-[submodule "hashmap"]
-	path = src/hashmap
-	url = https://github.com/tidwall/hashmap.c
 [submodule "src/translator/protocols"]
 	path = src/translator/protocols
 	url = git@github.com:smart-home-network-security/protocol-translators.git
