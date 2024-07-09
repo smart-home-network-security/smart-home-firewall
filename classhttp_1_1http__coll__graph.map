@@ -1,5 +1,6 @@
 <map id="http.http" name="http.http">
-<area shape="rect" id="node1" title=" " alt="" coords="46,95,125,121"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,77,32"/>
-<area shape="rect" id="node3" title=" " alt="" coords="101,5,160,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="91,171,169,197"/>
+<area shape="rect" id="node2" href="$classCustom_1_1Custom.html" title=" " alt="" coords="8,81,135,108"/>
+<area shape="rect" id="node3" href="$classProtocol_1_1Protocol.html" title=" " alt="" coords="5,5,137,32"/>
+<area shape="rect" id="node4" title=" " alt="" coords="159,81,218,108"/>
 </map>

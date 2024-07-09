@@ -1,4 +1,11 @@
 <map id="Custom.Custom" name="Custom.Custom">
-<area shape="rect" id="node1" title=" " alt="" coords="5,80,132,107"/>
-<area shape="rect" id="node2" title=" " alt="" coords="31,5,106,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="251,80,378,107"/>
+<area shape="rect" id="node3" href="$classcoap_1_1coap.html" title=" " alt="" coords="5,155,93,181"/>
+<area shape="rect" id="node4" href="$classdhcp_1_1dhcp.html" title=" " alt="" coords="117,155,205,181"/>
+<area shape="rect" id="node5" href="$classdns_1_1dns.html" title=" " alt="" coords="229,155,301,181"/>
+<area shape="rect" id="node7" href="$classhttp_1_1http.html" title=" " alt="" coords="326,155,405,181"/>
+<area shape="rect" id="node8" href="$classigmp_1_1igmp.html" title=" " alt="" coords="429,155,521,181"/>
+<area shape="rect" id="node9" href="$classssdp_1_1ssdp.html" title=" " alt="" coords="545,155,631,181"/>
+<area shape="rect" id="node2" href="$classProtocol_1_1Protocol.html" title=" " alt="" coords="249,5,381,32"/>
+<area shape="rect" id="node6" href="$classmdns_1_1mdns.html" title=" " alt="" coords="216,229,315,256"/>
 </map>
