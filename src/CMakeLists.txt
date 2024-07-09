@@ -4,8 +4,8 @@ cmake_minimum_required(VERSION 3.20)
 # Build libraries
 
 # hashmap
-add_library(hashmap STATIC ${INCLUDE_DIR}/hashmap.h hashmap.c)
-target_include_directories(hashmap PRIVATE ${INCLUDE_DIR})
+add_library(hashmap STATIC ${HASHMAP_DIR}/hashmap.h ${HASHMAP_DIR}/hashmap.c)
+target_include_directories(hashmap PRIVATE ${HASHMAP_DIR})
 install(TARGETS hashmap DESTINATION ${LIB_DIR})
 
 # SHA256
