@@ -19,12 +19,12 @@
 #include "packet_utils.h"
 #include "rule_utils.h"
 // Parsers
-#include "parsers/header.h"
+#include "header.h"
 {% for parser in custom_parsers %}
 {% if "dns" in parser %}
-#include "parsers/dns.h"
+#include "dns.h"
 {% else %}
-#include "parsers/{{parser}}.h"
+#include "{{parser}}.h"
 {% endif %}
 {% endfor %}
 

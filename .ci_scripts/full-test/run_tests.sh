@@ -1,8 +1,9 @@
 EXITCODE=0
+PARSERS_DIR="$GITHUB_WORKSPACE/src/parsers"
 VALGRIND_SUPP="$GITHUB_WORKSPACE/.ci_scripts/full-test/valgrind.supp"
 
 PREFIX=""
-for file in $GITHUB_WORKSPACE/bin/test/*
+for file in "$GITHUB_WORKSPACE"/bin/test/* "$PARSERS_DIR"/bin/test/*
 do
     if [[ "$file" == *"rule_utils-test" ]]
     then

@@ -11,5 +11,5 @@ target_link_libraries({{device}} jansson mnl nfnetlink nftnl nftables netfilter_
 ENDIF()
 target_link_libraries({{device}} nfqueue packet_utils rule_utils)
 target_link_libraries({{device}} ${PARSERS})
-target_include_directories({{device}} PRIVATE ${INCLUDE_DIR})
+target_include_directories({{device}} PRIVATE ${INCLUDE_DIR} ${INCLUDE_PARSERS_DIR})
 install(TARGETS {{device}} DESTINATION ${EXECUTABLE_OUTPUT_PATH})
