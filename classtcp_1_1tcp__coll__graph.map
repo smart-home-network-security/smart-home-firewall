@@ -1,5 +1,7 @@
 <map id="tcp.tcp" name="tcp.tcp">
-<area shape="rect" id="node1" title=" " alt="" coords="60,95,127,121"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,5,88,32"/>
-<area shape="rect" id="node3" title=" " alt="" coords="112,5,171,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="128,171,195,197"/>
+<area shape="rect" id="node2" href="$classTransport_1_1Transport.html" title=" " alt="" coords="25,81,172,108"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,5,69,32"/>
+<area shape="rect" id="node4" href="$classProtocol_1_1Protocol.html" title=" " alt="" coords="94,5,226,32"/>
+<area shape="rect" id="node5" title=" " alt="" coords="196,81,255,108"/>
 </map>

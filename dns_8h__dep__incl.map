@@ -1,5 +1,5 @@
 <map id="src/parsers/include/dns.h" name="src/parsers/include/dns.h">
 <area shape="rect" id="node1" title="DNS message parser." alt="" coords="101,5,245,47"/>
-<area shape="rect" id="node2" href="$src_2parsers_2src_2dns_8c.html" title="DNS message parser." alt="" coords="5,95,160,121"/>
-<area shape="rect" id="node3" href="$src_2parsers_2test_2dns_8c.html" title="Unit tests for the DNS parser." alt="" coords="184,95,344,121"/>
+<area shape="rect" id="node2" href="$src_2dns_8c.html" title="DNS message parser." alt="" coords="5,95,160,121"/>
+<area shape="rect" id="node3" href="$test_2dns_8c.html" title="Unit tests for the DNS parser." alt="" coords="184,95,344,121"/>
 </map>

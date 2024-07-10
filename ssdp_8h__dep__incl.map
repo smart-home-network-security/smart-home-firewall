@@ -1,5 +1,5 @@
 <map id="src/parsers/include/ssdp.h" name="src/parsers/include/ssdp.h">
 <area shape="rect" id="node1" title="SSDP message parser." alt="" coords="107,5,251,47"/>
-<area shape="rect" id="node2" href="$src_2parsers_2src_2ssdp_8c.html" title="SSDP message parser." alt="" coords="5,95,167,121"/>
-<area shape="rect" id="node3" href="$src_2parsers_2test_2ssdp_8c.html" title="Unit tests for the SSDP parser." alt="" coords="191,95,357,121"/>
+<area shape="rect" id="node2" href="$src_2ssdp_8c.html" title="SSDP message parser." alt="" coords="5,95,167,121"/>
+<area shape="rect" id="node3" href="$test_2ssdp_8c.html" title="Unit tests for the SSDP parser." alt="" coords="191,95,357,121"/>
 </map>
