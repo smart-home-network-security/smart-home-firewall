@@ -1,3 +1,6 @@
 [submodule "src/parsers"]
 	path = src/parsers
 	url = git@github.com:smart-home-network-security/protocol-parsers.git
+[submodule "src/translator/protocols"]
+	path = src/translator/protocols
+	url = git@github.com:smart-home-network-security/protocol-translators.git
