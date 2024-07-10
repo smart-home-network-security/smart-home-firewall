@@ -1,5 +1,5 @@
 var searchData=
 [
   ['mdns_372',['mDNS',['../classmDNS_1_1mDNS.html',1,'mDNS']]],
-  ['mdns_373',['mdns',['../classmdns_1_1mdns.html',1,'mdns']]]
+  ['mdns_373',['mdns',['../classprotocols_1_1mdns_1_1mdns.html',1,'protocols::mdns']]]
 ];

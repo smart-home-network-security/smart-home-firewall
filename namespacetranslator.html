@@ -88,6 +88,15 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:abe0c848e351b6f91cb65d104a0b81569"><td class="memItemLeft" align="right" valign="top"><a id="abe0c848e351b6f91cb65d104a0b81569"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>script_name</b> = os.path.basename(__file__)</td></tr>
+<tr class="separator:abe0c848e351b6f91cb65d104a0b81569"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3074d92f3d96f3c55d78eefb07b526d0"><td class="memItemLeft" align="right" valign="top"><a id="a3074d92f3d96f3c55d78eefb07b526d0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>script_path</b> = Path(os.path.abspath(__file__))</td></tr>
+<tr class="separator:a3074d92f3d96f3c55d78eefb07b526d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a580b23125eff73806222d1469e79ed91"><td class="memItemLeft" align="right" valign="top"><a id="a580b23125eff73806222d1469e79ed91"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>script_dir</b> = script_path.parents[0]</td></tr>
+<tr class="separator:a580b23125eff73806222d1469e79ed91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2008b807f07613a93fbf6d345ed3f683"><td class="memItemLeft" align="right" valign="top"><a id="a2008b807f07613a93fbf6d345ed3f683"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacetranslator.html#a2008b807f07613a93fbf6d345ed3f683">description</a> = &quot;Translate a device YAML profile to the corresponding pair of NFTables firewall script and <a class="el" href="classNFQueue_1_1NFQueue.html">NFQueue</a> C source code.&quot;</td></tr>
 <tr class="memdesc:a2008b807f07613a93fbf6d345ed3f683"><td class="mdescLeft">&#160;</td><td class="mdescRight">MAIN #####. <br /></td></tr>
@@ -122,14 +131,11 @@ string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="na
 <tr class="memitem:a96875e08145c11efea63a0aed2eaaa99"><td class="memItemLeft" align="right" valign="top"><a id="a96875e08145c11efea63a0aed2eaaa99"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>args</b> = parser.parse_args()</td></tr>
 <tr class="separator:a96875e08145c11efea63a0aed2eaaa99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3074d92f3d96f3c55d78eefb07b526d0"><td class="memItemLeft" align="right" valign="top"><a id="a3074d92f3d96f3c55d78eefb07b526d0"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>script_path</b> = os.path.abspath(os.path.dirname(__file__))</td></tr>
-<tr class="separator:a3074d92f3d96f3c55d78eefb07b526d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a154e213adbf7dfa2fa0536a446d0a6e0"><td class="memItemLeft" align="right" valign="top"><a id="a154e213adbf7dfa2fa0536a446d0a6e0"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>device_path</b> = os.path.abspath(os.path.dirname(args.profile))</td></tr>
 <tr class="separator:a154e213adbf7dfa2fa0536a446d0a6e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e6cd615f384b6563691b250bf3b3638"><td class="memItemLeft" align="right" valign="top"><a id="a8e6cd615f384b6563691b250bf3b3638"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>loader</b> = jinja2.FileSystemLoader(searchpath=f&quot;{script_path}/templates&quot;)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>loader</b> = jinja2.FileSystemLoader(searchpath=f&quot;{script_dir}/templates&quot;)</td></tr>
 <tr class="separator:a8e6cd615f384b6563691b250bf3b3638"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb51c2fa4e7d39f0bb679efaf5c6abd8"><td class="memItemLeft" align="right" valign="top"><a id="abb51c2fa4e7d39f0bb679efaf5c6abd8"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>env</b> = jinja2.Environment(loader=loader, trim_blocks=True, lstrip_blocks=True)</td></tr>

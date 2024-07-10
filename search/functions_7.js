@@ -4,7 +4,7 @@ var searchData=
   ['get_5fdhcp_5foption_481',['get_dhcp_option',['../classBOOTP_1_1BOOTP.html#ad2c8cf61d9fff70b669c5926fa53496c',1,'BOOTP::BOOTP']]],
   ['get_5fdict_5flog_482',['get_dict_log',['../classPacket_1_1Packet.html#a93a2bcd9d3c8d586b628ad02239bfc24',1,'Packet::Packet']]],
   ['get_5fdomain_5fname_5fhosts_483',['get_domain_name_hosts',['../classPolicy_1_1Policy.html#aa4778923c6569ec2cfd911815fd2e8af',1,'Policy::Policy']]],
-  ['get_5fdomain_5fname_5frule_484',['get_domain_name_rule',['../classdns_1_1dns.html#ae4f1a8eb9dea21bd92ba31ef79e2870f',1,'dns::dns']]],
+  ['get_5fdomain_5fname_5frule_484',['get_domain_name_rule',['../classprotocols_1_1dns_1_1dns.html#a12e1b73bd9f9b22b55231ecb6c96a2c9',1,'protocols::dns::dns']]],
   ['get_5fdst_5fport_485',['get_dst_port',['../src_2header_8c.html#ad5de26b107cc666f5ce7fca69d8f966c',1,'get_dst_port(uint8_t *data):&#160;header.c'],['../header_8h.html#ad5de26b107cc666f5ce7fca69d8f966c',1,'get_dst_port(uint8_t *data):&#160;header.c']]],
   ['get_5ffield_486',['get_field',['../classDNS_1_1DNS.html#ac1389bebd69e1db7221122c667b57be6',1,'DNS.DNS.get_field()'],['../classmDNS_1_1mDNS.html#a9356995cb98e3143a3490cca046e6ed0',1,'mDNS.mDNS.get_field()'],['../classPolicy_1_1Policy.html#a64576874c79ed7a9e84d4b90be7c7e32',1,'Policy.Policy.get_field(self, str field)']]],
   ['get_5ffield_5fstatic_487',['get_field_static',['../classPolicy_1_1Policy.html#a3fba0a8fe89aee4202e2fed7a80d206a',1,'Policy::Policy']]],

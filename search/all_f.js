@@ -2,7 +2,7 @@ var searchData=
 [
   ['set_5fdhcp_5foption_251',['set_dhcp_option',['../classBOOTP_1_1BOOTP.html#ad3f13d8e0deb821004ea0b50b282c32f',1,'BOOTP::BOOTP']]],
   ['sha256_5fctx_252',['SHA256_CTX',['../structSHA256__CTX.html',1,'']]],
-  ['ssdp_253',['ssdp',['../classssdp_1_1ssdp.html',1,'ssdp']]],
+  ['ssdp_253',['ssdp',['../classprotocols_1_1ssdp_1_1ssdp.html',1,'protocols::ssdp']]],
   ['ssdp_2ec_254',['ssdp.c',['../src_2ssdp_8c.html',1,'(Global Namespace)'],['../test_2ssdp_8c.html',1,'(Global Namespace)']]],
   ['ssdp_2eh_255',['ssdp.h',['../ssdp_8h.html',1,'']]],
   ['ssdp_5fmessage_256',['ssdp_message',['../structssdp__message.html',1,'']]],

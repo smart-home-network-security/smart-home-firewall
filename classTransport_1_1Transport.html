@@ -79,9 +79,10 @@ Inheritance diagram for Transport.Transport:</div>
 <div class="dyncontent">
 <div class="center"><img src="classTransport_1_1Transport__inherit__graph.png" border="0" usemap="#aTransport_8Transport_inherit__map" alt="Inheritance graph"/></div>
 <map name="aTransport_8Transport_inherit__map" id="aTransport_8Transport_inherit__map">
-<area shape="rect" title=" " alt="" coords="11,80,157,107"/>
-<area shape="rect" title=" " alt="" coords="5,5,69,32"/>
-<area shape="rect" title=" " alt="" coords="93,5,168,32"/>
+<area shape="rect" title=" " alt="" coords="76,80,223,107"/>
+<area shape="rect" href="classprotocols_1_1tcp_1_1tcp.html" title=" " alt="" coords="5,155,136,181"/>
+<area shape="rect" href="classprotocols_1_1udp_1_1udp.html" title=" " alt="" coords="160,155,299,181"/>
+<area shape="rect" title=" " alt="" coords="117,5,181,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -89,9 +90,8 @@ Collaboration diagram for Transport.Transport:</div>
 <div class="dyncontent">
 <div class="center"><img src="classTransport_1_1Transport__coll__graph.png" border="0" usemap="#aTransport_8Transport_coll__map" alt="Collaboration graph"/></div>
 <map name="aTransport_8Transport_coll__map" id="aTransport_8Transport_coll__map">
-<area shape="rect" title=" " alt="" coords="11,80,157,107"/>
-<area shape="rect" title=" " alt="" coords="5,5,69,32"/>
-<area shape="rect" title=" " alt="" coords="93,5,168,32"/>
+<area shape="rect" title=" " alt="" coords="5,80,152,107"/>
+<area shape="rect" title=" " alt="" coords="47,5,111,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -99,8 +99,6 @@ Collaboration diagram for Transport.Transport:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a8c2c7738493b951990eb3732d8ec462b"><td class="memItemLeft" align="right" valign="top">dict&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTransport_1_1Transport.html#a8c2c7738493b951990eb3732d8ec462b">tweak</a> (self)</td></tr>
 <tr class="separator:a8c2c7738493b951990eb3732d8ec462b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c83498c5f8109333536e985c8c158b4"><td class="memItemLeft" align="right" valign="top">dict&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTransport_1_1Transport.html#a8c83498c5f8109333536e985c8c158b4">parse</a> (self, bool is_backward=False, str initiator=&quot;&quot;)</td></tr>
-<tr class="separator:a8c83498c5f8109333536e985c8c158b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -109,59 +107,10 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a6cc384f799ed1ad79eba51deed18636a"><td class="memItemLeft" align="right" valign="top"><a id="a6cc384f799ed1ad79eba51deed18636a"></a>
 list&#160;</td><td class="memItemRight" valign="bottom"><b>ports</b> = []</td></tr>
 <tr class="separator:a6cc384f799ed1ad79eba51deed18636a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab82cd9bc2f57d039e104322465a7b527"><td class="memItemLeft" align="right" valign="top"><a id="ab82cd9bc2f57d039e104322465a7b527"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>layer</b> = 4</td></tr>
-<tr class="separator:ab82cd9bc2f57d039e104322465a7b527"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e48eb4bd45ff0265d3fc36621d9544e"><td class="memItemLeft" align="right" valign="top"><a id="a3e48eb4bd45ff0265d3fc36621d9544e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>custom_parser</b> = False</td></tr>
-<tr class="separator:a3e48eb4bd45ff0265d3fc36621d9544e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ea0f8e030fcacf140844b0b14d26bd2"><td class="memItemLeft" align="right" valign="top">list&#160;</td><td class="memItemRight" valign="bottom"><b>supported_keys</b></td></tr>
-<tr class="separator:a3ea0f8e030fcacf140844b0b14d26bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Transport layer (layer 4) packet, i.e. TCP or UDP.
 </pre> </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8c83498c5f8109333536e985c8c158b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c83498c5f8109333536e985c8c158b4">&#9670;&nbsp;</a></span>parse()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"> dict Transport.Transport.parse </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool &#160;</td>
-          <td class="paramname"><em>is_backward</em> = <code>False</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">str &#160;</td>
-          <td class="paramname"><em>initiator</em> = <code>&quot;&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<pre class="fragment">Parse a layer 4 protocol.
-
-:param is_backward (optional): Whether the protocol must be parsed for a backward rule.
-                               Optional, default is `False`.
-:param initiator (optional): Connection initiator (src or dst).
-                             Optional, default is "src".
-:return: Dictionary containing the (forward and backward) nftables and nfqueue rules for this policy.
-</pre> 
-</div>
-</div>
 <a id="a8c2c7738493b951990eb3732d8ec462b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8c2c7738493b951990eb3732d8ec462b">&#9670;&nbsp;</a></span>tweak()</h2>
 
@@ -210,32 +159,6 @@ in this respective order of priority.
 <div class="line">        <span class="stringliteral">&quot;sport&quot;</span>: <span class="stringliteral">&quot;port&quot;</span>,</div>
 <div class="line">        <span class="stringliteral">&quot;dport&quot;</span>: <span class="stringliteral">&quot;port&quot;</span></div>
 <div class="line">    }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a3ea0f8e030fcacf140844b0b14d26bd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ea0f8e030fcacf140844b0b14d26bd2">&#9670;&nbsp;</a></span>supported_keys</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">list Transport.Transport.supported_keys</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=  [</div>
-<div class="line">        <span class="stringliteral">&quot;src-port&quot;</span>,</div>
-<div class="line">        <span class="stringliteral">&quot;dst-port&quot;</span></div>
-<div class="line">    ]</div>
 </div><!-- fragment -->
 </div>
 </div>
