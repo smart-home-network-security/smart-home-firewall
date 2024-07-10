@@ -1,4 +1,4 @@
 #!/bin/bash
 
-apt update
-apt install doxygen graphviz
+apt-get update
+apt-get install doxygen graphviz
