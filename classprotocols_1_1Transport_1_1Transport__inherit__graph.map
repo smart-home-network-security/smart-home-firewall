@@ -1,4 +1,6 @@
 <map id="protocols.Transport.Transport" name="protocols.Transport.Transport">
-<area shape="rect" id="node1" title=" " alt="" coords="5,80,216,107"/>
-<area shape="rect" id="node2" href="$classprotocols_1_1Protocol_1_1Protocol.html" title=" " alt="" coords="13,5,209,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="44,80,255,107"/>
+<area shape="rect" id="node3" href="$classprotocols_1_1tcp_1_1tcp.html" title=" " alt="" coords="5,155,136,181"/>
+<area shape="rect" id="node4" href="$classprotocols_1_1udp_1_1udp.html" title=" " alt="" coords="160,155,299,181"/>
+<area shape="rect" id="node2" href="$classprotocols_1_1Protocol_1_1Protocol.html" title=" " alt="" coords="51,5,247,32"/>
 </map>
