@@ -4,6 +4,7 @@
 Generate edited PCAPs for firewall evaluation.
 """
 
+# Import libraries
 import os
 from pathlib import Path
 import glob
@@ -11,7 +12,7 @@ import shutil
 import argparse
 import json
 import logging
-import subprocess
+import pcap_fuzzer  # Custom PCAP fuzzing library
 
 
 def strictly_positive_int(value: any) -> int:
@@ -43,7 +44,6 @@ if __name__ == "__main__":
     parent_dir = script_path.parents[1]
     base_dir = script_path.parents[3]
     devices_dir = os.path.join(base_dir, "devices")
-    pcap_tweaker_path = os.path.join(base_dir, "src", "pcap_tweaker", "src", "pcap_tweaker.py")
 
     ### LOGGING CONFIGURATION ###
     logging.basicConfig(level=logging.INFO)
@@ -89,8 +89,7 @@ if __name__ == "__main__":
                 pcap_edited_path = os.path.join(pcap_edited_dir, pcap_edited_basename)
 
                 # Generate edited PCAP
-                cmd = f"python3 {pcap_tweaker_path} -o {pcap_edited_path} -r 5 {pcap_path}"
-                subprocess.run(cmd.split())
+                pcap_fuzzer.fuzz_pcaps(pcaps=pcap_path, output=pcap_edited_path, random_range=5)
                 logging.info(f"Generated edited PCAP {pcap_edited_basename}.")
 
             # Move files to correct directories

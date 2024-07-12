@@ -1,7 +1,9 @@
+## Import libraries
 import os
 import argparse
 import yaml
-from yaml_loaders.IncludeLoader import IncludeLoader
+# Import custom PyYAML loader
+from pyyaml_loaders import IncludeLoader
 
 
 ##### MAIN #####

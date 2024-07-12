@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.join(script_dir, "protocols"))
 from LogType import LogType
 from Policy import Policy
 from NFQueue import NFQueue
-from yaml_loaders.IncludeLoader import IncludeLoader
+from pyyaml_loaders import IncludeLoader
 
 
 ##### Custom Argparse types #####

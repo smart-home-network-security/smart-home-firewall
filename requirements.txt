@@ -1,2 +1,6 @@
+# Libs
 PyYAML
 Jinja2
+# Custom
+pyyaml-loaders
+pcap-fuzzer

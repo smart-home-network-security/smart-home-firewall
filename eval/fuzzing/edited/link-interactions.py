@@ -5,13 +5,15 @@ Link recorded packet verdicts with corresponding device interactions.
 Indicate, for each packet, if it should have been accepted or dropped.
 """
 
+## Import libraries
 import os
 from pathlib import Path
 import json
 import csv
 import yaml
 import logging
-from yaml_loaders.IncludeLoader import IncludeLoader
+# Import custom PyYAML loader
+from pyyaml_loaders import IncludeLoader
 
 # Verdict values
 ACCEPT = "ACCEPT"
