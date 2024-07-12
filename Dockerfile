@@ -69,4 +69,4 @@ ENV PATH=${TOOLCHAIN_PATH}/bin:$PATH
 
 # At runtime, run cross-compilation for OpenWrt
 WORKDIR ${HOME}/iot-firewall
-CMD ${HOME}/iot-firewall/build.sh -t ${HOME}/iot-firewall/openwrt/${ROUTER}/toolchain.cmake
+CMD ${HOME}/iot-firewall/build.sh -t ${HOME}/iot-firewall/openwrt/${ROUTER}.cmake

@@ -2,11 +2,11 @@ services:
   openwrt:
     image: fdekeers/openwrt_tl-wdr4900
     #image: fdekeers/openwrt_linksys-wrt1200ac
-    container_name: openwrt
+    container_name: openwrt-firewall
     environment:
       - ROUTER=tl-wdr4900
       #- ROUTER=linksys-wrt1200ac
     volumes:
       - .:/home/user/iot-firewall
-    command: ["/home/user/iot-firewall/build.sh", "-t", "/home/user/iot-firewall/openwrt/tl-wdr4900/toolchain.cmake"]
-    #command: ["/home/user/iot-firewall/build.sh", "-t", "/home/user/iot-firewall/openwrt/linksys-wrt1200ac/toolchain.cmake"]
+    command: ["/home/user/iot-firewall/build.sh", "-t", "/home/user/iot-firewall/openwrt/tl-wdr4900.cmake"]
+    #command: ["/home/user/iot-firewall/build.sh", "-t", "/home/user/iot-firewall/openwrt/linksys-wrt1200ac.cmake"]
