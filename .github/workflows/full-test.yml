@@ -1,4 +1,4 @@
-name: Translate profiles, compile, and run unit tests
+name: Test the whole system
 on: [push]
 
 
@@ -37,3 +37,6 @@ jobs:
       
       - name: Add nftables rules
         run:  $GITHUB_WORKSPACE/.ci_scripts/full-test/add_nft_rules.sh
+
+      - name: Run NFQueue executables
+        run: $GITHUB_WORKSPACE/.ci_scripts/firewall-test/run_exec.sh
