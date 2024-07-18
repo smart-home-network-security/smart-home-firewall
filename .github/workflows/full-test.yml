@@ -15,28 +15,28 @@ jobs:
           submodules: recursive
 
       - name: Install required packages
-        run: sudo $GITHUB_WORKSPACE/.ci_scripts/full-test/install_packages.sh
+        run: sudo $GITHUB_WORKSPACE/.ci_scripts/firewall-test/install_packages.sh
 
       - name: Install Python packages
         run: pip install -r $GITHUB_WORKSPACE/requirements.txt
 
       - name: Translate profiles
-        run: $GITHUB_WORKSPACE/.ci_scripts/full-test/translate_profiles.sh
+        run: $GITHUB_WORKSPACE/.ci_scripts/firewall-test/translate_profiles.sh
 
       - name: Build project with CMake
         run: $GITHUB_WORKSPACE/build.sh -d $GITHUB_WORKSPACE
 
       - name: Run CUnit tests
-        run: $GITHUB_WORKSPACE/.ci_scripts/full-test/run_tests.sh
+        run: $GITHUB_WORKSPACE/.ci_scripts/firewall-test/run_tests.sh
 
       - name: Run Valgrind on CUnit tests
-        run: $GITHUB_WORKSPACE/.ci_scripts/full-test/run_tests.sh valgrind
+        run: $GITHUB_WORKSPACE/.ci_scripts/firewall-test/run_tests.sh valgrind
 
       - name: Run cppcheck on source files
-        run: $GITHUB_WORKSPACE/.ci_scripts/full-test/run_cppcheck.sh
+        run: $GITHUB_WORKSPACE/.ci_scripts/firewall-test/run_cppcheck.sh
       
       - name: Add nftables rules
-        run:  $GITHUB_WORKSPACE/.ci_scripts/full-test/add_nft_rules.sh
+        run:  $GITHUB_WORKSPACE/.ci_scripts/firewall-test/add_nft_rules.sh
 
       - name: Run NFQueue executables
         run: $GITHUB_WORKSPACE/.ci_scripts/firewall-test/run_exec.sh
