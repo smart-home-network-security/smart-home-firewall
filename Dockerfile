@@ -56,7 +56,7 @@ RUN ${OPENWRT_HOME}/scripts/feeds update -a
 RUN ${OPENWRT_HOME}/scripts/feeds install -a
 
 # Configure OpenWrt toolchain
-COPY openwrt/${ROUTER}/config/config-minimal ${OPENWRT_HOME}/.config
+COPY openwrt/${ROUTER}/config-minimal ${OPENWRT_HOME}/.config
 RUN make defconfig
 RUN make download
 RUN make -j $(($(nproc)+1))
@@ -69,4 +69,4 @@ ENV PATH=${TOOLCHAIN_PATH}/bin:$PATH
 
 # At runtime, run cross-compilation for OpenWrt
 WORKDIR ${HOME}/iot-firewall
-CMD ${HOME}/iot-firewall/build.sh -t ${HOME}/iot-firewall/openwrt/${ROUTER}.cmake
+CMD ${HOME}/iot-firewall/build.sh -t ${HOME}/iot-firewall/openwrt/${ROUTER}/${ROUTER}.cmake

@@ -8,5 +8,5 @@ services:
       #- ROUTER=linksys-wrt1200ac
     volumes:
       - .:/home/user/iot-firewall
-    command: ["/home/user/iot-firewall/build.sh", "-t", "/home/user/iot-firewall/openwrt/tl-wdr4900.cmake"]
-    #command: ["/home/user/iot-firewall/build.sh", "-t", "/home/user/iot-firewall/openwrt/linksys-wrt1200ac.cmake"]
+    command: ["/home/user/iot-firewall/build.sh", "-t", "/home/user/iot-firewall/openwrt/tl-wdr4900/tl-wdr4900.cmake"]
+    #command: ["/home/user/iot-firewall/build.sh", "-t", "/home/user/iot-firewall/openwrt/linksys-wrt1200ac/linksys-wrt1200ac.cmake"]
