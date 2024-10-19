@@ -10,7 +10,7 @@ job-native-build:
     - source .venv/bin/activate
     - pip3 install -r requirements.txt
     - .ci_scripts/firewall-test/translate_profiles.sh
-    - firewall/build.sh -C firewall
+    - ./build.sh -C firewall
     - .ci_scripts/native-build/run_tests.sh
     - .ci_scripts/native-build/run_tests.sh valgrind
     - .ci_scripts/native-build/run_cppcheck.sh
