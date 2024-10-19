@@ -2,7 +2,7 @@
 
 # Constants
 TIMEOUT=5  # seconds
-BIN_DIR="$GITHUB_WORKSPACE/bin"
+BIN_DIR="bin"
 
 # Ensure globbing expands to an empty list if no matches are found
 shopt -s nullglob

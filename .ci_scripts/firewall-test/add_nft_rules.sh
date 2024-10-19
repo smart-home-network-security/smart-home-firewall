@@ -1,6 +1,6 @@
 EXITCODE=0
 
-for nft_script in $GITHUB_WORKSPACE/devices/*/firewall*.nft
+for nft_script in devices/*/firewall*.nft
 do
     # Try adding the ruleset
     sudo nft -f "$nft_script"
