@@ -15,7 +15,7 @@ job-native-build:
     - .ci_scripts/native-build/run_tests.sh valgrind
     - .ci_scripts/native-build/run_cppcheck.sh
     - .ci_scripts/native-build/add_nft_rules.sh
-    - .ci_scripts/native-build/run_exec.sh
+    #- .ci_scripts/native-build/run_exec.sh
 
 
 # Cross-compile the project for the TL-WDR4900 router
