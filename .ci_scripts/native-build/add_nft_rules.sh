@@ -1,5 +1,8 @@
 EXITCODE=0
 
+# Ensure globbing expands to an empty list if no matches are found
+shopt -s nullglob
+
 for nft_script in devices/*/firewall*.nft
 do
     # Try adding the ruleset

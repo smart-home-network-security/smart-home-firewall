@@ -2,8 +2,11 @@ EXITCODE=0
 PARSERS_DIR="src/parsers"
 VALGRIND_SUPP=".ci_scripts/native-build/valgrind.supp"
 
+# Ensure globbing expands to an empty list if no matches are found
+shopt -s nullglob
+
 PREFIX=""
-for file in "$GITHUB_WORKSPACE"/bin/test/* "$PARSERS_DIR"/bin/test/*
+for file in bin/test/* "$PARSERS_DIR"/bin/test/*
 do
     if [[ "$file" == *"rule_utils-test" ]]
     then

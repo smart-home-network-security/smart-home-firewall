@@ -1,6 +1,9 @@
 # NFQueue start index
 NFQ_ID_START=0
 
+# Ensure globbing expands to an empty list if no matches are found
+shopt -s nullglob
+
 for DEVICE in devices/*
 do
     if [ -d $DEVICE ]
