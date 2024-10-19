@@ -43,7 +43,7 @@ then
 fi
 
 # Clean directory
-rm -rf build bin
+sudo rm -rf build bin
 
 # Build project
 mkdir build bin
