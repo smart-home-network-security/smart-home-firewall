@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Build the project.
-# Usage: build.sh [-d working_directory] [-t cmake_toolchain_file]
-#   -d working_directory: The directory to build the project in.
+# Usage: build.sh [-C working_directory] [-t cmake_toolchain_file]
+#   -C working_directory: The directory to build the project in.
 #   -t cmake_toolchain_file: The CMake toolchain file to use.
 
 # Default values
@@ -11,15 +11,15 @@ CMAKE_TOOLCHAIN_FILE=""
 
 # Print usage information
 usage() {
-    echo "Usage: $0 [-d working_directory] [-t cmake_toolchain_file]" 1>&2
+    echo "Usage: $0 [-C working_directory] [-t cmake_toolchain_file]" 1>&2
     exit 1
 }
 
 # Parse command line arguments
-while getopts "d:t:" opt;
+while getopts "C:t:" opt;
 do
     case "${opt}" in
-        d)
+        C)
             # Working directory
             WORKING_DIRECTORY="${OPTARG}"
             echo "Building in directory ${WORKING_DIRECTORY}"
