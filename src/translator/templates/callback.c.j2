@@ -212,6 +212,26 @@ uint32_t callback_{{nfqueue_name}}(int pkt_id, int pkt_len, uint8_t *payload, vo
         return NF_DROP;
     }
 
+    {% set activity_period = policy["activity_period"] %}
+    {% if activity_period %}
+    {{interaction_data}}.current_time = time(NULL);
+    {{interaction_data}}.activity_period = malloc(sizeof(ActivityPeriod));
+    strcpy({{interaction_data}}.activity_period->start, "{{activity_period.start}}");
+    strcpy({{interaction_data}}.activity_period->duration, "{{activity_period.duration}}");
+    if (!is_in_activity_period({{interaction_data}}.activity_period, {{interaction_data}}.current_time)) {
+        #if defined DEBUG
+            puts("Packet is out of the activity period, dropped.") ;
+        #endif
+        
+        pthread_mutex_unlock(&({{interaction_data}}.mutex));
+        return NF_DROP;
+    }
+    #ifdef DEBUG
+        puts("Packet is in the activity period.") ;
+    #endif
+    
+    {% endif %}
+
     if (
         {% if "packet-count" in counters_idx %}
         {{packet_count}}.is_initialized &&

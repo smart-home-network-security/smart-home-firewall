@@ -247,3 +247,123 @@ bool is_timedout(double threshold, time_t last_request) {
 
 	return threshold < diff ;
 }
+
+/**
+ * @brief Parse the period string and fill in the corresponding values
+ * 
+ * @param cron_str 
+ * @param minutes 
+ * @param hours 
+ * @param days 
+ * @param dayOfWeek 
+ * @param is_duration 
+ */
+void parse_period(const char *period_str, int *minutes, int *hours, int *days, int *dayOfWeek, int is_duration) {
+    int index = 0;
+    char *token;
+    char temp_str[100];
+    strncpy(temp_str, period_str, sizeof(temp_str)-1);
+	temp_str[sizeof(temp_str) - 1] = '\0';
+    token = strtok(temp_str, " ");
+    int value;
+    while (token != NULL && index < 4) {
+        if (strcmp(token, "*") == 0) {
+            if (is_duration) {
+                value = 0;
+            } else {
+                value = -1;
+            }
+        } else {
+            value = atoi(token);
+        }
+
+        if (index == 0) {
+            *minutes = value;
+        } else if (index == 1) {
+            *hours = value;
+        } else if (index == 2) {
+            *days = value;
+        } else if (index == 3) {
+            *dayOfWeek = value;
+        }
+
+        index++;
+        token = strtok(NULL, " ");
+    }
+}
+
+/**
+ * @brief Get the Day Of Week from a time_t. 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+ * 
+ * @param time 
+ * @return int 
+ */
+int getDayOfWeek(time_t time) {
+    struct tm *time_info = localtime(&time);
+    return time_info->tm_wday;
+}
+
+/**
+ * @brief Find the previous trigger time before the current time
+ * 
+ * @param activity_period 
+ * @param current_time 
+ * @return time_t 
+ */
+time_t previous_trigger(const ActivityPeriod *activity_period, time_t current_time) {
+    struct tm *check_tm = localtime(&current_time);
+    int minutes, hours, days, dayOfWeek;
+    parse_period(activity_period->start, &minutes, &hours, &days, &dayOfWeek, 0);
+    // Set seconds to 0
+    check_tm->tm_sec = 0;
+    // Modify current date with the non "*" values
+    if (minutes != -1) {
+        check_tm->tm_min = minutes;
+    }
+    if (hours != -1) {
+        check_tm->tm_hour = hours;
+    }
+    if (days != -1) {
+        check_tm->tm_mday = days;
+    }
+    // loop until the previous trigger time is before the check time
+    while (mktime(check_tm) > current_time || (dayOfWeek != -1 && getDayOfWeek(mktime(check_tm)) != dayOfWeek)) {
+        if (days != -1) {
+            check_tm->tm_mon -= 1   ;
+            continue;
+        }
+        if (dayOfWeek != -1) {
+            check_tm->tm_mday -= 1;
+            continue;
+        }
+        if (hours != -1) {
+            check_tm->tm_mday -= 1;
+            continue;
+        }
+        if (minutes != -1) {
+            check_tm->tm_hour -= 1;
+            continue;
+        }    
+    }
+    return mktime(check_tm);
+}
+
+/**
+ * @brief Check if the current time is in the activity period of the policy
+ * 
+ * @param activity_period the activity period of the policy
+ * @param current_time the current time
+ * @return true the current time is in the activity period
+ * @return false the current time is not in the activity period
+ */
+bool is_in_activity_period(ActivityPeriod *activity_period, time_t current_time) {
+	int duration_minutes, duration_hours, duration_days, duration_dayOfWeek;
+    time_t start_time = previous_trigger(activity_period, current_time);
+    time_t end_time;
+
+    parse_period(activity_period->duration, &duration_minutes, &duration_hours, &duration_days, &duration_dayOfWeek, 1);
+
+    end_time = start_time + duration_minutes * 60 + duration_hours * 3600 + duration_days * 86400;
+
+    return (start_time <= current_time && current_time < end_time);
+}

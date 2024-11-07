@@ -309,6 +309,10 @@ if __name__ == "__main__":
                         timeout = profile_data["timeout"]
                     except KeyError:
                         timeout = 0
+                    try:
+                        activity_period = profile_data["activity-period"]
+                    except KeyError:
+                        activity_period = None
                     is_backward = "backward" in single_policy_name and profile_data.get("bidirectional", False)
                     policy_data = {
                         "interaction_name": interaction_policy_name,
@@ -317,7 +321,8 @@ if __name__ == "__main__":
                         "device": device,
                         "is_backward": is_backward,
                         "in_interaction": True,
-                        "timeout": timeout
+                        "timeout": timeout,
+                        "activity_period": activity_period
                     }
                     single_policy, new_nfq = parse_policy(policy_data, interaction_data, global_accs, len(single_policies), True, args.log_type, args.log_group)
                     if new_nfq:
