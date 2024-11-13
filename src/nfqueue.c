@@ -312,6 +312,9 @@ int getDayOfWeek(time_t time) {
  */
 time_t previous_trigger(const ActivityPeriod *activity_period, time_t current_time) {
     struct tm *check_tm = localtime(&current_time);
+	int current_day = check_tm->tm_mday;
+    int current_dayOfWeek = check_tm->tm_wday;
+    int current_hour = check_tm->tm_hour;
     int minutes, hours, days, dayOfWeek;
     parse_period(activity_period->start, &minutes, &hours, &days, &dayOfWeek, 0);
     // Set seconds to 0
@@ -345,6 +348,29 @@ time_t previous_trigger(const ActivityPeriod *activity_period, time_t current_ti
             continue;
         }    
     }
+
+    if (hours != -1 && current_hour != check_tm->tm_hour) {
+        if (minutes == -1) {
+            check_tm->tm_min = 59;
+        }
+    }
+    if (days != -1 && current_day != check_tm->tm_mday) {
+        if (hours == -1) {
+            check_tm->tm_hour = 23;
+        }
+        if (minutes == -1) {
+            check_tm->tm_min = 59;
+        }
+    }
+    if (dayOfWeek != -1 && current_dayOfWeek != check_tm->tm_wday) {
+        if (hours == -1) {
+            check_tm->tm_hour = 23;
+        }
+        if (minutes == -1) {
+            check_tm->tm_min = 59;
+        }
+    }
+	
     return mktime(check_tm);
 }
 
