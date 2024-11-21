@@ -11,6 +11,7 @@ import argparse
 import yaml
 import jinja2
 from typing import Tuple
+import re
 
 # Paths
 script_name = os.path.basename(__file__)
@@ -311,6 +312,15 @@ if __name__ == "__main__":
                         timeout = 0
                     try:
                         activity_period = profile_data["activity-period"]
+                        # Checking if activity period is valid
+                        startExpression = r'^(\*|\d+)\s(\*|\d+)\s(\*|\d+)\s(\*|\d+)$'
+                        durationExpression = r'^(\*|\d+)\s(\*|\d+)\s(\*|\d+)$'
+                        formatStart = "* * * *\n| | | |\n| | | +------ Day of the Week   (range: 0-6, 0 being Sunday, * for any)\n| | +-------- Day of the Month  (range: 1-31, * for any)\n| +---------- Hour              (range: 0-23, * for any)\n+------------ Minute            (range: 0-59, * for any)"
+                        formatDuration = "* * *\n| | |\n| | +-------- Time in Days\n| +---------- Time in Hours\n+------------ Time in Minutes"
+                        if not re.fullmatch(startExpression, activity_period["start"]):
+                            raise ValueError(f"Invalid start expression in activity period for policy {single_policy_name}: {activity_period["start"]}. Please follow the following format :\n" + formatStart)
+                        if not re.fullmatch(durationExpression, activity_period["duration"]):
+                            raise ValueError(f"Invalid duration expression in activity period for policy {single_policy_name}: {activity_period["duration"]}. Please follow the following format :\n" + formatDuration)
                     except KeyError:
                         activity_period = None
                     is_backward = "backward" in single_policy_name and profile_data.get("bidirectional", False)
