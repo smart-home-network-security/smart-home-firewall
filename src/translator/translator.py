@@ -128,6 +128,8 @@ def parse_policy(policy_data: dict, interaction_data: dict, global_accs: dict, p
     # Add nftables rules
     is_unidirectional_one_off = policy.one_off and not policy.is_bidirectional
     not_nfq = not policy.nfq_matches and not is_interaction and (policy.periodic or is_unidirectional_one_off)
+    if not_nfq and policy.activity_period:
+        raise ValueError(f"Policy {policy.name} is not expected to have an activity period as it is not used by any NFQueue.")
     nfq_id = -1 if not_nfq else interaction_data["nfq_id_base"] + interaction_data["nfq_id_offset"]
     policy.build_nft_rule(nfq_id, log_type, log_group)
     new_nfq = False
@@ -238,14 +240,27 @@ if __name__ == "__main__":
         if "single-policies" in profile:
             for policy_name in profile["single-policies"]:
                 profile_data = profile["single-policies"][policy_name]
-
+                try:
+                    activity_period = profile_data["activity-period"]
+                    # Checking if activity period is valid
+                    startExpression = r'^(\*|\d+)\s(\*|\d+)\s(\*|\d+)\s(\*|\d+)$'
+                    durationExpression = r'^(\*|\d+)\s(\*|\d+)\s(\*|\d+)$'
+                    formatStart = "* * * *\n| | | |\n| | | +------ Day of the Week   (range: 0-6, 0 being Sunday, * for any)\n| | +-------- Day of the Month  (range: 1-31, * for any)\n| +---------- Hour              (range: 0-23, * for any)\n+------------ Minute            (range: 0-59, * for any)"
+                    formatDuration = "* * *\n| | |\n| | +-------- Time in Days\n| +---------- Time in Hours\n+------------ Time in Minutes"
+                    if not re.fullmatch(startExpression, activity_period["start"]):
+                        raise ValueError(f"Invalid start expression in activity period for policy {policy_name}: {activity_period["start"]}. Please follow the following format :\n" + formatStart)
+                    if not re.fullmatch(durationExpression, activity_period["duration"]):
+                        raise ValueError(f"Invalid duration expression in activity period for policy {policy_name}: {activity_period["duration"]}. Please follow the following format :\n" + formatDuration)
+                except KeyError:
+                    activity_period = None
                 policy_data = {
                     "interaction_name": "single",
                     "policy_name": policy_name,
                     "profile_data": profile_data,
                     "device": device,
                     "is_backward": False,
-                    "in_interaction": False
+                    "in_interaction": False,
+                    "activity_period": activity_period
                 }
                 interaction_data = {
                     "policy_idx": -1,
