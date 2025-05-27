@@ -1,0 +1,39 @@
+# fictional temperature sensor device profile
+
+---
+device-info:
+  name: temperature-sensor
+  ipv4: 192.168.1.201
+  mac: 02:00:00:00:00:01
+
+single-policies:
+  connect-command:
+    protocols:
+      mqtt:
+        packet-type: 1
+        client-id-length: 11
+        client-id: "temp_sensor"
+        clean-session: true
+        keep-alive: 60
+      tcp:
+        src-port: 49152
+        dst-port: 1883
+      ipv4:
+        src: self
+        dst: 192.168.1.100
+
+  temperature-publishing:
+    protocols:
+      mqtt:
+        packet-type: 3
+        topic-name: "temperature"
+        payload-length: 7
+        # payload-regex: "-?[0-9]?[0-9]\\\\.[0-9]°[CF]"
+      tcp:
+        src-port: 49152
+        dst-port: 1883
+      ipv4:
+        src: self
+        dst: 192.168.1.100
+
+...

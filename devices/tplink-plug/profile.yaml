@@ -1,3 +1,5 @@
+# Initial TP-Link smart plug profile.
+
 ---
 device-info:
   name: tplink-plug
@@ -172,7 +174,7 @@ interactions:
   # DNS + HTTPS towards cloud (domain n-devs.tplinkcloud.com)
   dns-https-tplinkcloud:
 
-    dns-query-plug-tplinkcloud:
+    dns...-query-plug-tplinkcloud:
       protocols:
         dns:
           qtype: A
@@ -247,7 +249,7 @@ interactions:
           tpa: self
 
   
-  # ARP from plug to phone
+  # ARP from phone to plug
   arp-phone-plug:
 
     arp-request-phone-plug:
@@ -270,9 +272,118 @@ interactions:
           spa: self
           tpa: phone
 
+  tls-phys-plug:
+    tls-phys-plug-client-hello:
+      protocols:
+        tls:
+          handshake-type: 1 # client hello
+          tls-version: 1.2
+          session-id: false
+        tcp:
+          src-port: 45840
+          dst-port: 443
+        ipv4:
+          src: 192.168.1.147
+          dst: 54.76.18.183
+    
+    tls-plug-phys-server-hello:
+      protocols:
+        tls:
+          handshake-type: 2 # server hello
+          tls-version: "1.2"
+        tcp:
+          src-port: 443
+          dst-port: 45840
+        ipv4:
+          src: 54.76.18.183
+          dst: 192.168.1.147
+    
+    tls-plug-phys-tcp-msg:
+      protocols:
+        tcp:
+          src-port: 443
+          dst-port: 45840
+        ipv4:
+          src: 54.76.18.183
+          dst: 192.168.1.147
+    
+    tls-plug-phys-certificate--server-key-exchange--server-hello-done:
+      protocols:
+        tls:
+          handshake-type: 11, 12, 14 # certificate, server key exchange, server hello done
+          tls-version: "1.2"
+        tcp:
+          src-port: 443
+          dst-port: 45840
+        ipv4:
+          src: 54.76.18.183
+          dst: 192.168.1.147
+    
+    tls-phys-plug-client-key-exchange:
+      protocols:
+        tls:
+          handshake-type: 16 # client key exchange
+          tls-version: 1.2
+        tcp:
+          src-port: 45840
+          dst-port: 443
+        ipv4:
+          src: 192.168.1.147
+          dst: 54.76.18.183
 
+    tls-phys-plug-change-cipher-spec:
+      protocols:
+        tls:
+          content-type: 20 # change cipher spec
+          tls-version: "1.2"
+        tcp:
+          src-port: 45840
+          dst-port: 443
+        ipv4:
+          src: 192.168.1.147
+          dst: 54.76.18.183
+    
+    tls-phys-plug-finished:
+      protocols:
+        tls:
+          handshake-type: 0x00 # fifth byte 
+          tls-version: "1.2"
+        tcp:
+          src-port: 45840
+          dst-port: 443
+        ipv4:
+          src: 192.168.1.147
+          dst: 54.76.18.183
+    
+    tls-plug-phys-change-cipher-spec--finished:
+      protocols:
+        tls:
+          handshake-type: 20, 0xc7 # change cipher spec, finished
+          tls-version: "1.2"
+        tcp:
+          src-port: 443
+          dst-port: 45840
+        ipv4:
+          src: 54.76.18.183
+          dst: 192.168.1.147
+    
+    tls-phys-plug-application-data:
+      protocols:
+        tls:
+          content-type: 23 # application data
+          tls-version: "1.2"
+        tcp:
+          src-port: 45840
+          dst-port: 443
+        ipv4:
+          src: 192.168.1.147
+          dst: 54.76.18.183
+      bidirectional: true
+      stats:
+        rate: 69/second # 57 * 1.2
+ 
   # Generic traffic from plug to cloud API
-  update-to-cloud:
+  toggle-plug:
 
     dns-plug-use1-api:
       protocols:

@@ -50,7 +50,7 @@ done
 shift $((OPTIND-1))
 
 # Iterate on all devices
-for DEVICE in amazon-echo dlink-cam philips-hue smartthings-hub tplink-plug xiaomi-cam
+for DEVICE in amazon-echo dlink-cam philips-hue smartthings-hub tplink-plug xiaomi-cam temperature-sensor humidity-sensor
 do
     DEVICE_PATH="$DEVICES_DIR/$DEVICE"
     if [[ -d "$DEVICE_PATH" ]]

@@ -113,6 +113,12 @@ uint32_t callback_{{nfqueue_name}}(int pkt_id, int pkt_len, uint8_t *payload, vo
     #ifdef DEBUG
     dns_print_message(dns_message);
     #endif
+    {% elif "tls" in policy.custom_parser %}
+    // Parse payload as TLS packet, possibly multiple TLS messages
+    tls_packet_t *tls_packet = tls_parse_packet(payload + skipped, pkt_len - skipped);
+    #ifdef DEBUG
+    tls_print_packet(tls_packet);
+    #endif
     {% elif policy.custom_parser %}
     // Parse payload as {{policy.custom_parser|upper}} message
     {{policy.custom_parser}}_message_t {{policy.custom_parser}}_message = {{policy.custom_parser}}_parse_message(payload + skipped
@@ -455,7 +461,11 @@ uint32_t callback_{{nfqueue_name}}(int pkt_id, int pkt_len, uint8_t *payload, vo
     // Free memory allocated for parsed messages
     {% if "dns" in custom_parser %}
     dns_free_message(dns_message);
-    {% elif custom_parser != "ssdp" %}
+    {% elif custom_parser == "tls" %}
+    if (tls_packet != NULL) {
+        tls_free_packet(tls_packet);
+    }
+    {% elif custom_parser != "ssdp" and custom_parser != "tls" and custom_parser != "mqtt" %}
     {{custom_parser}}_free_message({{custom_parser}}_message);
     {% endif %}
     {% endfor %}

@@ -1,0 +1,33 @@
+device-info:
+  name: humidity-sensor
+  ipv4: 192.168.1.202
+  mac: 02:00:00:00:00:02
+
+single-policies:
+  connect-command:
+    protocols:
+      mqtt:
+        packet-type: 1
+        client-id-length: 15
+        client-id: "humidity_sensor"
+        clean-session: true
+        keep-alive: 60
+      tcp:
+        src-port: 49153
+        dst-port: 1883
+      ipv4:
+        src: self
+        dst: 192.168.1.100
+
+  humidity-publishing:
+    protocols:
+      mqtt:
+        packet-type: 3
+        topic-name: "humidity"
+        payload-length: 4-5
+      tcp:
+        src-port: 49153
+        dst-port: 1883
+      ipv4:
+        src: self
+        dst: 192.168.1.100
