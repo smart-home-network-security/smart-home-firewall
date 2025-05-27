@@ -202,6 +202,7 @@ class NFQueue:
         """
         result = False
         timeout = policy.timeout
+        activity_period = policy.activity_period
         # Update nfqueue queue number if necessary
         if self.queue_num < 0 and policy.queue_num >= 0:
             self.queue_num = policy.queue_num
@@ -214,7 +215,8 @@ class NFQueue:
             "state": state,
             "policy": policy,
             "counters_idx": {},
-            "timeout": timeout
+            "timeout": timeout,
+            "activity_period": activity_period
         }
 
         # Update NFT stat matches if necessary

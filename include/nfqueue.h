@@ -27,6 +27,14 @@
 #define DEFAULT_TIMEOUT 3600 // Default timeout is one sec
 
 /**
+ * @brief Structure defining the period of activity of a policy.
+ */
+typedef struct {
+    char start[20];
+    char duration[20];
+} ActivityPeriod;
+
+/**
  * @brief Structure which stores the data relative to one policy interaction.
  */
 typedef struct {
@@ -39,6 +47,8 @@ typedef struct {
     ip_addr_t cached_ip;    // Cached IP address
     double timeout;         // Timeout of the request (in sec). 0 = DEFAULT_TIMEOUT ; -1 = no timeout
     time_t time_request;    // Time since last request ; set to 0 if no request has been made before
+    time_t current_time;   // Current time
+    ActivityPeriod *activity_period; // Activity period of the policy
 } interaction_data_t;
 
 /**
@@ -130,5 +140,44 @@ void* nfqueue_thread(void *arg);
  */
 bool is_timedout(double threshold, time_t last_request);
 
+
+/**
+ * @brief Parse the period string and fill in the corresponding values
+ * 
+ * @param cron_str 
+ * @param minutes 
+ * @param hours 
+ * @param days 
+ * @param dayOfWeek 
+ * @param is_duration 
+ */
+void parse_period(const char *period_str, int *minutes, int *hours, int *days, int *dayOfWeek, int is_duration);
+
+/**
+ * @brief Get the Day Of Week from a time_t. 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+ * 
+ * @param time 
+ * @return int 
+ */
+int getDayOfWeek(time_t time);
+
+/**
+ * @brief Find the previous trigger time before the current time
+ * 
+ * @param activity_period 
+ * @param current_time 
+ * @return time_t 
+ */
+time_t previous_trigger(const ActivityPeriod *activity_period, time_t current_time);
+
+/**
+ * @brief Check if the current time is in the activity period of the policy
+ * 
+ * @param activity_period the activity period of the policy
+ * @param current_time the current time
+ * @return true the current time is in the activity period
+ * @return false the current time is not in the activity period
+ */
+bool is_in_activity_period(ActivityPeriod *activity_period, time_t current_time);
 
 #endif /* _IOTFIREWALL_NFQUEUE_ */
