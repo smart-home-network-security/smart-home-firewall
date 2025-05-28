@@ -85,6 +85,97 @@ def flatten_policies(single_policy_name: str, single_policy: dict, acc: dict = {
         for subpolicy in single_policy:
             flatten_policies(subpolicy, single_policy[subpolicy], acc)
 
+# Newly added: Convert to first representation
+def convert_to_first_representation(interaction_policy: dict) -> dict:
+    """
+    Convert an interaction policy from the second representation to the first representation.
+    The second representation has loop and next as dictionaries with full policy definitions,
+    while the first representation has them as lists/strings of policy names.
+
+    :param interaction_policy: The interaction policy to convert
+    :return: The converted interaction policy in the first representation
+    """
+    def find_key(d: dict, target_key: str) -> bool:
+        """
+        Recursively search for a key in a dictionary.
+        
+        :param d: Dictionary to search in
+        :param target_key: Key to search for
+        :return: True if key is found, False otherwise
+        """
+        for key, value in d.items():
+            if key == target_key:
+                return True
+            elif isinstance(value, dict):
+                if find_key(value, target_key):
+                    return True
+        return False
+    
+    # First check if this interaction policy supports loop functionality
+    has_loop = find_key(interaction_policy, "loop")
+    has_next = find_key(interaction_policy, "next")
+    if not (has_loop and has_next):
+        return interaction_policy
+    
+    # Create a shared dictionary to store loop and next info
+    shared_info = {
+        "loop_info": None,
+        "next_info": None
+    }
+    
+    def process_dict(d: dict) -> dict:
+        result = {}
+        
+        for key, value in d.items():
+            if key == "loop" and isinstance(value, dict):
+                # Keep original loop dictionary
+                result["loop-original"] = value
+                # Store loop info in shared dictionary
+                shared_info["loop_info"] = list(value.keys())
+            elif key == "next" and isinstance(value, dict):
+                # Keep original next dictionary
+                result["next-original"] = value
+                # Store next info in shared dictionary
+                shared_info["next_info"] = list(value.keys())[0]
+            elif isinstance(value, dict):
+                # Recursively process nested dictionaries
+                result[key] = process_dict(value)
+            else:
+                # Keep other values as is
+                result[key] = value
+        
+        return result
+    
+    # Create a copy to avoid modifying the original
+    converted = interaction_policy.copy()
+    result = process_dict(converted)
+    
+    # Add loop and next info at the top level
+    if shared_info["loop_info"] is not None:
+        result["loop"] = shared_info["loop_info"]
+    if shared_info["next_info"] is not None:
+        result["next"] = shared_info["next_info"]
+    
+    # Process loop-original and next-original
+    def process_original(d: dict) -> dict:
+        result = {}
+        for key, value in d.items():
+            if key == "loop-original":
+                # Move the value up one level
+                result.update(value)
+            elif key == "next-original":
+                # Move the value up one level
+                result.update(value)
+            elif isinstance(value, dict):
+                # Recursively process nested dictionaries
+                result[key] = process_original(value)
+            else:
+                # Keep other values as is
+                result[key] = value
+        return result
+    
+    return process_original(result)
+
 
 def parse_policy(policy_data: dict, interaction_data: dict, global_accs: dict, policies_count: int, is_interaction: bool = False, log_type: LogType = LogType.NONE, log_group: int = 100) -> Tuple[Policy, bool]:
     """
@@ -124,7 +215,23 @@ def parse_policy(policy_data: dict, interaction_data: dict, global_accs: dict, p
         interaction_data["max_state"] += 1
         if policy.transient:
             interaction_data["max_state"] += 1
-    
+
+    # Newly added: Add loop-related attributes if this policy is part of a loop
+    if interaction_data["has_loop"]:
+        if policy_data["policy_name"] in interaction_data["loop_policies"]:
+            policy.is_loop_policy = True
+            # Determine role based on position in loop_policies
+            if policy_data["policy_name"] == interaction_data["loop_policies"][0]:
+                policy.loop_role = "enter"
+            elif policy_data["policy_name"] == interaction_data["loop_policies"][-1]:
+                policy.loop_role = "exit"
+            else:
+                policy.loop_role = "in_loop"   
+        if policy_data["policy_name"] == interaction_data["next_policy"]:
+            # Explicitly mark the next policy after the loop
+            policy.is_loop_policy = False
+            policy.loop_role = "next"
+
     # Add nftables rules
     is_unidirectional_one_off = policy.one_off and not policy.is_bidirectional
     not_nfq = not policy.nfq_matches and not is_interaction and (policy.periodic or is_unidirectional_one_off)
@@ -267,7 +374,11 @@ if __name__ == "__main__":
                     "max_state": -1,
                     "nfq_id_base": nfq_id_base,
                     "nfq_id_offset": 0,
-                    "policies": []
+                    "policies": [],
+                    # Newly added: Add loop keys                
+                    "has_loop": False,
+                    "loop_policies": [],
+                    "next_policy": None
                 }
                 
                 # Parse policy
@@ -300,13 +411,17 @@ if __name__ == "__main__":
         if "interactions" in profile:
             for interaction_policy_name in profile["interactions"]:
                 interaction_policy = profile["interactions"][interaction_policy_name]
+                # Newly added: Convert to first representation
+                interaction_policy = convert_to_first_representation(interaction_policy)
 
                 # Iterate on single policies
 
                 # First pass, to flatten nested policies
                 single_policies = {}
                 for single_policy_name in interaction_policy:
-                    flatten_policies(single_policy_name, interaction_policy[single_policy_name], single_policies)
+                    # Newly added: Skip loop and next keywords
+                    if single_policy_name not in ["loop", "next"]:
+                        flatten_policies(single_policy_name, interaction_policy[single_policy_name], single_policies)
 
                 # Second pass, parse policies
                 interaction_data = {
@@ -314,8 +429,25 @@ if __name__ == "__main__":
                     "max_state": -1,
                     "nfq_id_base": nfq_id_base,
                     "nfq_id_offset": 0,
-                    "policies": []
+                    "policies": [],
+                    # Newly added: Add loop keys                
+                    "has_loop": False,
+                    "loop_policies": [],
+                    "next_policy": None
                 }
+
+                # Newly added: Add loop processing
+                if "loop" in interaction_policy and "next" in interaction_policy:
+                    interaction_data["has_loop"] = True
+                    loop_policy_names = interaction_policy.get("loop", []) 
+                    next_policy_name = interaction_policy.get("next", None) 
+                    # Newly added: Add loop policy
+                    for single_policy_name in single_policies:
+                        if single_policy_name.rsplit("-backward", 1)[0] in loop_policy_names:
+                            interaction_data["loop_policies"].append(single_policy_name)
+                        # Newly added: Set next policy
+                        if single_policy_name == next_policy_name:
+                            interaction_data["next_policy"] = single_policy_name  
 
                 update_nfq_id_base = False
                 for single_policy_name in single_policies:
