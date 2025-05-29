@@ -66,6 +66,9 @@ class Policy:
         self.one_off = not self.transient and not self.periodic  # Whether the policy represents a one-off pattern
         self.initiator = profile_data["initiator"] if "initiator" in profile_data else ""
 
+        # Newly added: Add new loop-related attributes
+        self.is_loop_policy = False     # Whether this policy is part of a loop
+        self.loop_role = ""             # Role in terms of loop: "enter", "next", or ""
 
     def __eq__(self, other: object) -> bool:
         """
@@ -90,7 +93,11 @@ class Policy:
                  self.queue_num == other.queue_num and
                  self.is_bidirectional == other.is_bidirectional and
                  self.transient == other.transient and
-                 self.periodic == other.periodic )
+                 self.periodic == other.periodic and
+                 # Newly added: Add new loop-related attribute comparisons
+                 self.is_loop_policy == other.is_loop_policy and
+                 self.loop_role == other.loop_role)
+                
 
 
     def __lt__(self, other: object) -> bool:

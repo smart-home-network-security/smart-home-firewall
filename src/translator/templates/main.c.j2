@@ -52,6 +52,9 @@ int main(int argc, char const *argv[]) {
         (interactions_data[{{loop.index0}}].counters + i)->packet_count.is_initialized = false;
         (interactions_data[{{loop.index0}}].counters + i)->duration.is_initialized = false;
     }
+    {# Newly added: Initialize in_loop to false #}
+    // Set in_loop states to false
+    interactions_data[{{loop.index0}}].in_loop = false;
 
     {% endfor %}
 
