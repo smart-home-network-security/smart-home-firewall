@@ -21,13 +21,13 @@ set(LIB_DIR ${PROJECT_SOURCE_DIR}/lib)
 set(EXECUTABLE_OUTPUT_PATH ${BIN_DIR})
 
 # Set compiler flags
-#add_compile_options(-Wall -Werror -Wno-unused-variable -DDEBUG)   # Debug
+add_compile_options(-Wall -Werror -Wno-unused-variable -DDEBUG)   # Debug
 #add_compile_options(-Wall -Werror -Wno-unused-variable -DLOG)     # Logging
 #add_compile_options(-Wall -Werror -Wno-unused-variable)           # Production
 # With optimisation
 #add_compile_options(-Wall -Werror -Wno-unused-variable -O3 -DDEBUG)   # Debug
 #add_compile_options(-Wall -Werror -Wno-unused-variable -O3 -DLOG)     # Packet Logging
-add_compile_options(-Wall -Werror -Wno-unused-variable -O3)           # Production
+#dd_compile_options(-Wall -Werror -Wno-unused-variable -O3)           # Production
 # With debug symbols
 #add_compile_options(-Wall -Werror -Wno-unused-variable -g)  # Without debug logging
 #add_compile_options(-Wall -Werror -Wno-unused-variable -DDEBUG -g)  # With debug logging

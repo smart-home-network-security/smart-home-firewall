@@ -242,7 +242,7 @@ bool is_timedout(double threshold, time_t last_request) {
 
 	#ifdef DEBUG
 		printf("\nComparing the last request %ld and the time now %ld : %f", last_request, now, diff) ;
-		printf("\nthreshold (%f) < diff = %b", threshold,(threshold < diff)) ;
+		printf("\nthreshold (%f) < diff = %d", threshold,(threshold < diff)) ;
 	#endif
 
 	return threshold < diff ;
