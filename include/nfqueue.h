@@ -49,6 +49,7 @@ typedef struct {
     time_t time_request;    // Time since last request ; set to 0 if no request has been made before
     time_t current_time;   // Current time
     ActivityPeriod *activity_period; // Activity period of the policy
+    bool in_loop;           // Whether currently in a loop
 } interaction_data_t;
 
 /**

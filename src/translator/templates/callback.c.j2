@@ -25,8 +25,8 @@
         {% endif%}
 
 {% endmacro %}
-
-{% macro write_callback_function(loop_index, nfqueue) %}
+{# Newly modified: added nfqueues parameter #}
+{% macro write_callback_function(loop_index, nfqueue, nfqueues) %}
 {% set nfqueue_name = nfqueue.name.replace('-', '_') %}
 {% set nfqueue_name = nfqueue_name.replace('#', '_') %}
 /**
@@ -196,7 +196,21 @@ uint32_t callback_{{nfqueue_name}}(int pkt_id, int pkt_len, uint8_t *payload, vo
     {% set duration = "(interactions_data[{}].counters + {})->duration".format(interaction_idx, counters_idx["duration"]) %}
     {% endif %}
     {% endif %}
-    
+    {# Newly added: Initialize variables using namespace #}
+    {% set vars = namespace(exit_policy=None, exit_state=None, exit_policy_idx=None, before_exit_policy=None) %}
+    {# Newly added: Find exit policy and before_exit_policy from all nfqueues #}
+    {% for nfq in nfqueues %}
+        {% for policy_dict in nfq.policies %}
+            {% if policy_dict["policy"].is_loop_policy and policy_dict["policy"].loop_role == "exit" %}
+                {% set vars.exit_policy = policy_dict["policy"] %}
+                {% set vars.exit_state = policy_dict["state"] %}
+                {% set vars.exit_policy_idx = policy_dict["policy_idx"] %}
+            {% endif %}
+            {% if policy_dict["policy"].name == interaction["loop_policies"][-2] %}
+                {% set vars.before_exit_policy = policy_dict["policy"] %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
     {% if state >= 0 %}
     {% set timeout = policy["timeout"]%}
     {% set policy_name = "{}#{}".format(policy.interaction_name, policy.name) %}
@@ -246,7 +260,26 @@ uint32_t callback_{{nfqueue_name}}(int pkt_id, int pkt_len, uint8_t *payload, vo
         {{duration}}.is_initialized &&
         {% endif %}
         {% if max_state > 0 %}
+        ({# Newly added: begin of loop support #} 
+        {% if policy.is_loop_policy and policy.loop_role == "enter" %}
         (
+        {{interaction_data}}.in_loop && 
+        {%if vars.exit_policy.one_off %}
+        {{interaction_data}}.current_state == {{(vars.exit_state + 1) % (max_state + 1)}}
+        {%elif vars.exit_policy.transient%}
+        ({{interaction_data}}.current_state == {{vars.exit_state}} || {{interaction_data}}.current_state == {{(vars.exit_state + 1) % (max_state + 1)}})
+        {%elif vars.exit_policy.periodic%}
+        {%if vars.exit_policy_idx != num_policies - 1 %}
+        {{interaction_data}}.current_state == {{(vars.exit_state + 1) % (max_state + 1)}}
+        {%elif vars.before_exit_policy.transient %}
+        {{interaction_data}}.current_state == {{(vars.exit_state + 1) % (max_state + 1)}}
+        {%else%}
+        {{interaction_data}}.current_state == {{vars.exit_state}}
+        {%endif%}
+        {%endif%}
+        ) ||
+        {% endif %}
+        {# Newly added: end of loop support #}
         {% if ( policy.transient and ( not policy.is_backward and (previous_policy.transient or previous_policy.periodic) ) ) or ( (policy.transient or policy.periodic) and policy.is_backward and (second_previous_policy.transient or second_previous_policy.periodic) ) %}
         {% set previous_state = (state - 1) % (max_state + 1) if policy.periodic else (state - 2) % (max_state + 1) %}
         {{interaction_data}}.current_state >= {{previous_state}} ||
@@ -328,7 +361,18 @@ uint32_t callback_{{nfqueue_name}}(int pkt_id, int pkt_len, uint8_t *payload, vo
         {% endif %}
         {% endif %}
     ) {
-
+        {# Newly added: begin of loop support #}
+        {% if policy.is_loop_policy and policy.loop_role == "enter" %}
+        // Enter loop, update loop state
+        {{interaction_data}}.in_loop = true;
+        {% endif %}
+        {% if not policy.is_loop_policy and policy.loop_role == "next" %}
+        // Exit loop, update loop state
+        if ({{interaction_data}}.in_loop) {
+            {{interaction_data}}.in_loop = false;
+            }
+        {% endif %}
+        {# Newly added: end of loop support #}
         {% set is_dns_response = namespace(value=False) %}
         {% if policy.custom_parser == "dns" %}
         {% for nfq_match in policy.nfq_matches %}
@@ -485,7 +529,7 @@ uint32_t callback_{{nfqueue_name}}(int pkt_id, int pkt_len, uint8_t *payload, vo
 {% endmacro %}
 
 {% for nfqueue in nfqueues if nfqueue.queue_num >= 0 %}
-
-{{ write_callback_function(loop.index, nfqueue) }}
+{# Newly modified: passed nfqueues parameter #}
+{{ write_callback_function(loop.index, nfqueue, nfqueues) }}
 
 {% endfor %}
