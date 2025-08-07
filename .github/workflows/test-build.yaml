@@ -50,11 +50,19 @@ jobs:
         with:
           submodules: recursive
       
-      - name: Install Python packages
-        run: pip3 install -r requirements.txt
+      - name: Setup Python virtual environment
+        run: |
+          python3.12 -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          deactivate
 
       - name: Translate profiles
-        run: .ci_scripts/test-build/translate_profiles.sh
+        run: |
+          source .venv/bin/activate
+          .ci_scripts/test-build/translate_profiles.sh
+          deactivate
 
       - name: Run cross-compilation
         run: docker compose run --rm --remove-orphans cross-compilation /home/user/iot-firewall/docker_cmd.sh tl-wdr4900 $(id -u $(whoami)) $(id -g $(whoami))
