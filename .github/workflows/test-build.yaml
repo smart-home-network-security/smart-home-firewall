@@ -1,0 +1,60 @@
+name: test-build
+on: [push]
+
+
+jobs:
+
+  native-build:
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      
+      - name: Install packages
+        run: sudo .ci_scripts/test-build/install_packages.sh
+      
+      - name: Install Python packages
+        run: pip3 install -r requirements.txt
+
+      - name: Translate profiles
+        run: .ci_scripts/test-build/translate_profiles.sh
+      
+      - name: Translate test device's profile
+        run: python3 src/translator/translator.py test/device/profile.yaml 0
+      
+      - name: Build project
+        run: ./build.sh -T
+      
+      - name: Run unit tests
+        run: .ci_scripts/test-build/run_tests.sh
+
+      - name: Run unit tests with Valgrind
+        run: .ci_scripts/test-build/run_tests.sh valgrind
+      
+      - name: Run Cppcheck
+        run: .ci_scripts/test-build/run_cppcheck.sh
+      
+      - name: Add nftables rules
+        run: .ci_scripts/test-build/add_nft_rules.sh
+
+
+  cross-compilation:
+    runs-on: self-hosted
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      
+      - name: Install Python packages
+        run: pip3 install -r requirements.txt
+
+      - name: Translate profiles
+        run: .ci_scripts/test-build/translate_profiles.sh
+
+      - name: Run cross-compilation
+        run: docker compose run --rm --remove-orphans cross-compilation /home/user/iot-firewall/docker_cmd.sh tl-wdr4900 $(id -u $(whoami)) $(id -g $(whoami))

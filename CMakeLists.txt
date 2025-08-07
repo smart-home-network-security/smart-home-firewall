@@ -37,7 +37,7 @@ set(PARSERS header dns dhcp http igmp ssdp coap tls mqtt)
 
 # Subdirectories containing code
 add_subdirectory(src)
-IF( NOT OPENWRT_CROSSCOMPILING )
+IF( DO_TESTS AND NOT OPENWRT_CROSSCOMPILING )
     add_subdirectory(test)
 ENDIF()
 add_subdirectory(devices)

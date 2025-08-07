@@ -5,17 +5,17 @@ variables:
 # Natively build and test the project
 job-native-build:
   script:
-    - sudo .ci_scripts/native-build/install_packages.sh
+    - sudo .ci_scripts/test-build/install_packages.sh
     - python3 -m venv .venv
     - source .venv/bin/activate
     - pip3 install -r requirements.txt
-    - .ci_scripts/native-build/translate_profiles.sh
-    - ./build.sh
-    - .ci_scripts/native-build/run_tests.sh
-    - .ci_scripts/native-build/run_tests.sh valgrind
-    - .ci_scripts/native-build/run_cppcheck.sh
-    - .ci_scripts/native-build/add_nft_rules.sh
-    #- .ci_scripts/native-build/run_exec.sh
+    - .ci_scripts/test-build/translate_profiles.sh
+    - ./build.sh -T
+    - .ci_scripts/test-build/run_tests.sh
+    - .ci_scripts/test-build/run_tests.sh valgrind
+    - .ci_scripts/test-build/run_cppcheck.sh
+    - .ci_scripts/test-build/add_nft_rules.sh
+    #- .ci_scripts/test-build/run_exec.sh
 
 
 # Cross-compile the project for the TL-WDR4900 router
@@ -24,5 +24,5 @@ job-cross-compilation:
     - python3 -m venv .venv
     - source .venv/bin/activate
     - pip3 install -r requirements.txt
-    - .ci_scripts/native-build/translate_profiles.sh
+    - .ci_scripts/test-build/translate_profiles.sh
     - docker compose run cross-compilation /home/user/iot-firewall/docker_cmd.sh tl-wdr4900 $(id -u $USER) $(id -g $USER)

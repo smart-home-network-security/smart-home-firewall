@@ -1,6 +1,6 @@
 ---
 device-info:
-  name: test
+  name: device-test
   mac: 50:dc:e7:a2:d8:95
   ipv4: 192.168.1.150
   ipv6: fddd:ed18:f05b:0:adef:a05d:fcbe:afc9
