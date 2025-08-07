@@ -35,7 +35,7 @@ fi
 ### MAIN ###
 
 # Cross-compile sources
-"$BASE_DIR"/build.sh -C "$BASE_DIR" -t "$BASE_DIR"/firewall/openwrt/$ROUTER/$ROUTER.cmake
+"$BASE_DIR"/build.sh -C "$BASE_DIR" -t "$BASE_DIR"/openwrt/$ROUTER/$ROUTER.cmake
 
 # Change perimissions
 ROOT_UID=0
